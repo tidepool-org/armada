@@ -28,6 +28,7 @@ describe('message API', function() {
         it('returns 400 when no group to create sent', function(done) {
 
             var testGroup = {
+                nothing : ''
             };
 
             supertest(apiEndPoint)

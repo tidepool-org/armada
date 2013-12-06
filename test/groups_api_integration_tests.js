@@ -59,6 +59,37 @@ describe('message API', function() {
             });
         });
 
+        it('returns id with 201 response', function(done) {
+
+            var testGroup = {
+                name : 'integration test',
+                owners: ['99999','222222'],
+                patient : '99999'
+            };
+
+            supertest(apiEndPoint)
+            .post('/api/group/create')
+            .send({group:testGroup})
+            .expect(201)
+            .end(function(err, res) {
+                if (err) return done(err);
+                res.body.should.have.property('id');
+                res.body.id.should.not.be.empty;
+                done();
+            });
+        });
+
+        it('returns 400 when no data is sent', function(done) {
+
+            supertest(apiEndPoint)
+            .post('/api/group/create')
+            .expect(400)
+            .end(function(err, res) {
+                if (err) return done(err);
+                done();
+            });
+        });
+
     });
 
    

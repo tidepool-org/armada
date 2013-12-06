@@ -126,7 +126,7 @@ describe('message API', function() {
 
     });
 
-    describe('post /api/group/memberof', function() {
+    describe('get /api/group/memberof', function() {
 
 
         it('returns 204 when no there is no groups', function(done) {
@@ -144,6 +144,36 @@ describe('message API', function() {
 
             supertest(apiEndPoint)
             .get('/api/group/memberof/12345')
+            .expect(200)
+            .end(function(err, res) {
+                if (err) return done(err);
+
+                res.body.groups.length.should.equal(2);
+
+                done();
+            });
+        });
+
+    });
+
+    describe('get /api/group/ownerof', function() {
+
+
+        it('returns 204 when no there is no groups', function(done) {
+
+            supertest(apiEndPoint)
+            .get('/api/group/ownerof/12345')
+            .expect(204)
+            .end(function(err, res) {
+                if (err) return done(err);
+                done();
+            });
+        });
+
+        it('returns 200 and two groups when I ask for 3343', function(done) {
+
+            supertest(apiEndPoint)
+            .get('/api/group/ownerof/3343')
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);

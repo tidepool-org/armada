@@ -8,17 +8,46 @@ var should = require('chai').should(),
     config = require('../env'),
     groupsService,
     apiEndPoint,
-    testDbInstance;
+    testDbInstance,
+    testGroups;
+
+/*
+    Dummy groups that we load for tests
+*/
+testGroups = [{
+        name : 'family',
+        owners: ['99999','222222'],
+        patient : '12345'
+    },
+    {
+        name : 'medical',
+        owners: ['3343','5555'],
+        patient : '12345'
+    },
+    {
+        name : 'careteam',
+        owners: ['3343','8898'],
+        patient : '8876'
+    }];
 
 describe('message API', function() {
 
     before(function(){
         /*
-        Setup api and also load data for tests
+        Connections
         */
         apiEndPoint = 'http://localhost:3002/';
         testDbInstance = mongojs('mongodb://localhost/group-api', ['groups']);
+        /*
+        Cleanup previous runs then load our test data
+        */
         testDbInstance.groups.remove();
+        testGroups.forEach(function(group) {
+            testDbInstance.groups.save(group);
+        });
+        /*
+        Kick-off the groups-api
+        */
         groupsService = require('../lib/index.js');
 
     });
@@ -44,9 +73,9 @@ describe('message API', function() {
         it('returns 201 when a group is created', function(done) {
 
             var testGroup = {
-                name : 'integration test',
+                name : 'test create for 201',
                 owners: ['99999','222222'],
-                patient : '12345'
+                patient : '444444'
             };
 
             supertest(apiEndPoint)
@@ -62,7 +91,7 @@ describe('message API', function() {
         it('returns id with 201 response', function(done) {
 
             var testGroup = {
-                name : 'integration test',
+                name : 'test create to get id',
                 owners: ['99999','222222'],
                 patient : '99999'
             };
@@ -84,6 +113,22 @@ describe('message API', function() {
             supertest(apiEndPoint)
             .post('/api/group/create')
             .expect(400)
+            .end(function(err, res) {
+                if (err) return done(err);
+                done();
+            });
+        });
+
+    });
+
+    describe('post /api/group/memberof', function() {
+
+
+        it('returns 204 when no there is no groups', function(done) {
+
+            supertest(apiEndPoint)
+            .get('/api/group/memberof/33333')
+            .expect(204)
             .end(function(err, res) {
                 if (err) return done(err);
                 done();

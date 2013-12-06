@@ -32,16 +32,15 @@ testGroups = [{
 
 describe('message API', function() {
 
-    before(function(){
+    before(function(){   
         /*
         Connections
         */
         apiEndPoint = 'http://localhost:3002/';
-        testDbInstance = mongojs('mongodb://localhost/group-api', ['groups']);
+        testDbInstance = mongojs('mongodb://localhost/tidepool-platform', ['groups']);
         /*
         Cleanup previous runs then load our test data
         */
-        testDbInstance.groups.remove();
         testGroups.forEach(function(group) {
             testDbInstance.groups.save(group);
         });
@@ -49,6 +48,12 @@ describe('message API', function() {
         Kick-off the groups-api
         */
         groupsService = require('../lib/index.js');
+
+    });
+
+    after(function(){
+        
+        testDbInstance.groups.remove();
 
     });
 
@@ -131,6 +136,20 @@ describe('message API', function() {
             .expect(204)
             .end(function(err, res) {
                 if (err) return done(err);
+                done();
+            });
+        });
+
+        it('returns 200 and two groups when I ask for 12345', function(done) {
+
+            supertest(apiEndPoint)
+            .get('/api/group/memberof/12345')
+            .expect(200)
+            .end(function(err, res) {
+                if (err) return done(err);
+
+                res.body.groups.length.should.equal(2);
+
                 done();
             });
         });

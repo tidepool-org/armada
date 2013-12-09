@@ -90,15 +90,14 @@ function handleFindGroupsPatientIn(userId,callback) {
     return resolveCallbackValues(callback,patientInGroups);
 }
 
-
-function handleAddUserToGroup(data,callback) {
-    log.debug('Adding user[%s] to group[%s]', data.userId,data.groupId);
+function handleAddUserToGroup(groupId, userId, callback) {
+    log.debug('Adding user[%s] to group[%s]', userId, groupId);
 
     return resolveCallbackValues(callback,true);
 }
 
-function handleRemoveUserFromGroup(data,callback){
-     log.debug('Removing user[%s] from group[%s]', data.userId,data.groupId);
+function handleRemoveUserFromGroup(groupId, userId,callback){
+     log.debug('Removing user[%s] from group[%s]', userId, groupId);
 
     return resolveCallbackValues(callback,true);
 }

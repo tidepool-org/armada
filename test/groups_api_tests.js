@@ -92,6 +92,7 @@ describe('message API', function() {
 
             supertest(normalPathAPIEndPoint)
             .post('/api/group/adduser/34444444')
+            .send({userid:'12345997'})
             .expect(200,done);
         });
 
@@ -99,6 +100,7 @@ describe('message API', function() {
 
             supertest(normalPathAPIEndPoint)
             .post('/api/group/deluser/34444444')
+            .send({userid:'12345997'})
             .expect(200,done);
         });
     });
@@ -163,6 +165,7 @@ describe('message API', function() {
 
             supertest(noDataEndpoint)
             .post('/api/group/adduser/88888888')
+            .send({userid:'12345997'})
             .expect(204,done);
         });
 
@@ -170,6 +173,7 @@ describe('message API', function() {
 
             supertest(noDataEndpoint)
             .post('/api/group/deluser/99999775')
+            .send({userid:'12345997'})
             .expect(204,done);
         });
     });
@@ -280,6 +284,7 @@ describe('message API', function() {
 
             supertest(errorsEndpoint)
             .post('/api/group/adduser/33333')
+            .send({userid:'12345997'})
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -296,6 +301,7 @@ describe('message API', function() {
 
             supertest(errorsEndpoint)
             .post('/api/group/deluser/33333')
+            .send({userid:'12345997'})
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);

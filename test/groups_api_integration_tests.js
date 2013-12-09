@@ -64,7 +64,6 @@ describe('message API', function() {
         testGroups.forEach(function(group) {
             testDbInstance.groups.save(group);
         });
-        
     });
 
     after(function(){
@@ -137,11 +136,9 @@ describe('message API', function() {
                 done();
             });
         });
-
     });
 
     describe('get /api/group/memberof', function() {
-
 
         it('returns 204 when no there is no groups', function(done) {
 
@@ -167,11 +164,9 @@ describe('message API', function() {
                 done();
             });
         });
-
     });
 
     describe('get /api/group/ownerof', function() {
-
 
         it('returns 204 when no there is no groups', function(done) {
 
@@ -197,11 +192,9 @@ describe('message API', function() {
                 done();
             });
         });
-
     });
 
     describe('get /api/group/patient', function() {
-
 
         it('returns 204 when no there are no groups', function(done) {
 
@@ -227,8 +220,5 @@ describe('message API', function() {
                 done();
             });
         });
-
-    });
-
-   
+    });   
 });

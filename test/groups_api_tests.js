@@ -181,25 +181,71 @@ describe('message API', function() {
             errorsFoundService.stop();
         });
 
-        it('/api/group/memberof returns 204 when no data', function(done) {
+        it('/api/group/create returns error when one has been raised', function(done) {
+
+             var testGroup = {
+                name : 'test create for 201',
+                owners: ['99999','222222'],
+                patient : '444444'
+            };
+
+            supertest(errorsEndpoint)
+            .post('/api/group/create')
+            .send({group:testGroup})
+            .expect(500)
+            .end(function(err, res) {
+                if (err) return done(err);
+
+                res.body.should.have.property('error');
+                //res.body.error.should.not.be.empty;
+
+                done();
+            });
+        });
+
+        it('/api/group/memberof returns error when one has been raised', function(done) {
 
             supertest(errorsEndpoint)
             .get('/api/group/memberof/33333')
-            .expect(204,done);
+            .expect(500)
+            .end(function(err, res) {
+                if (err) return done(err);
+
+                res.body.should.have.property('error');
+                //res.body.error.should.not.be.empty;
+
+                done();
+            });
         });
 
-        it('/api/group/ownerof returns 204 when no data', function(done) {
+        it('/api/group/ownerof returns error when one has been raised', function(done) {
 
             supertest(errorsEndpoint)
             .get('/api/group/ownerof/33333')
-            .expect(204,done);
+            .expect(500)
+            .end(function(err, res) {
+                if (err) return done(err);
+
+                res.body.should.have.property('error');
+                //res.body.error.should.not.be.empty;
+
+                done();
+            });
         });
 
-        it('/api/group/patient returns 204 when all good', function(done) {
+        it('/api/group/patient returns error when one has been raised', function(done) {
 
             supertest(errorsEndpoint)
             .get('/api/group/patient/33333')
-            .expect(204,done);
+            .expect(500)
+            .end(function(err, res) {
+                if (err) return done(err);
+
+                res.body.should.have.property('error');
+                //res.body.error.should.not.be.empty;
+
+                done();
+            });
         });
     });
 

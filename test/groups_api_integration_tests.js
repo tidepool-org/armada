@@ -4,8 +4,7 @@ var should = require('chai').should(),
 /* jshint +W079 *//* jshint +W098 */
     supertest = require('supertest'),
     mongojs = require('mongojs'),
-
-    config = require('../env'),
+    crud,
     groupsService,
     apiEndPoint,
     testDbInstance,
@@ -32,29 +31,44 @@ testGroups = [{
 
 describe('message API', function() {
 
-    before(function(){   
+    before(function(){ 
+
+        var config,
+        service,
+        MongoHandler,
+        crudHandler;
+
+        MongoHandler = require('../lib/handler/MongoHandler');
+        config = require('../env');
+        service = require('../lib/ArmardaService');
+    
+        if(config.mongodb_connection_string === undefined || config.mongodb_connection_string === null){
+            config.mongodb_connection_string = 'mongodb://localhost/tidepool-platform'
+        }
+
+        console.log('test config ',config);
+        crudHandler = new MongoHandler(config);
+
+        //lets get this party started
+        service.start(crudHandler,config.port);
+
         /*
         Connections
         */
-        apiEndPoint = 'http://localhost:3002/';
+        apiEndPoint = 'http://localhost:'+config.port;
         testDbInstance = mongojs('mongodb://localhost/tidepool-platform', ['groups']);
+
         /*
-        Cleanup previous runs then load our test data
+        Load our test data
         */
         testGroups.forEach(function(group) {
             testDbInstance.groups.save(group);
         });
-        /*
-        Kick-off the groups-api
-        */
-        groupsService = require('../lib/index.js');
-
+        
     });
 
     after(function(){
-        
         testDbInstance.groups.remove();
-
     });
 
     describe('post /api/group/create', function() {
@@ -179,6 +193,36 @@ describe('message API', function() {
                 if (err) return done(err);
 
                 res.body.groups.length.should.equal(2);
+
+                done();
+            });
+        });
+
+    });
+
+    describe('get /api/group/patient', function() {
+
+
+        it('returns 204 when no there are no groups', function(done) {
+
+            supertest(apiEndPoint)
+            .get('/api/group/patient/777777777')
+            .expect(204)
+            .end(function(err, res) {
+                if (err) return done(err);
+                done();
+            });
+        });
+
+        it('returns 200 and one groups when I ask for patient 8876', function(done) {
+
+            supertest(apiEndPoint)
+            .get('/api/group/patient/8876')
+            .expect(200)
+            .end(function(err, res) {
+                if (err) return done(err);
+
+                res.body.groups.length.should.equal(1);
 
                 done();
             });

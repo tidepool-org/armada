@@ -15,6 +15,8 @@ var FakeMongoHandler = function(config) {
     this.findGroupsPatientIn = handleFindGroupsPatientIn;
     this.findGroupsMemberOf = handleFindGroupsMemberOf;
     this.findGroupsOwnerOf = handleFindGroupsOwnerOf;
+    this.addUserToGroup = handleAddUserToGroup;
+    this.removeUserFromGroup = handleRemoveUserFromGroup;
 };
 
 function resolveCallbackValues(callback,data){
@@ -86,6 +88,19 @@ function handleFindGroupsPatientIn(userId,callback) {
     }];
 
     return resolveCallbackValues(callback,patientInGroups);
+}
+
+
+function handleAddUserToGroup(data,callback) {
+    log.debug('Adding user[%s] to group[%s]', data.userId,data.groupId);
+
+    return resolveCallbackValues(callback,true);
+}
+
+function handleRemoveUserFromGroup(data,callback){
+     log.debug('Removing user[%s] from group[%s]', data.userId,data.groupId);
+
+    return resolveCallbackValues(callback,true);
 }
 
 module.exports = FakeMongoHandler;

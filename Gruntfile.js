@@ -89,6 +89,7 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['mochaTest']);
     // Standard tasks
     grunt.registerTask('test', ['mochaTest']);
+    grunt.registerTask('integration-test', ['mochaTest']);
     grunt.registerTask('start-mongo', ['shell:startMongo']);
     grunt.registerTask('start-api', ['shell:startAPI']);
 

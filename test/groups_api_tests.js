@@ -87,6 +87,20 @@ describe('message API', function() {
             .get('/api/group/patient/33333')
             .expect(200,done);
         });
+
+        it('/api/group/adduser returns 200 when all good', function(done) {
+
+            supertest(normalPathAPIEndPoint)
+            .post('/api/group/adduser/34444444')
+            .expect(200,done);
+        });
+
+        it('/api/group/deluser returns 200 when all good', function(done) {
+
+            supertest(normalPathAPIEndPoint)
+            .post('/api/group/deluser/34444444')
+            .expect(200,done);
+        });
     });
 
     describe('test no data returned', function() {
@@ -138,10 +152,24 @@ describe('message API', function() {
             .expect(204,done);
         });
 
-        it('/api/group/patient returns 204 when all good', function(done) {
+        it('/api/group/patient returns 204 when no data', function(done) {
 
             supertest(noDataEndpoint)
             .get('/api/group/patient/33333')
+            .expect(204,done);
+        });
+
+        it('/api/group/adduser returns 204 when no match', function(done) {
+
+            supertest(noDataEndpoint)
+            .post('/api/group/adduser/88888888')
+            .expect(204,done);
+        });
+
+        it('/api/group/deluser returns 204 when no match', function(done) {
+
+            supertest(noDataEndpoint)
+            .post('/api/group/deluser/99999775')
             .expect(204,done);
         });
     });
@@ -237,6 +265,37 @@ describe('message API', function() {
 
             supertest(errorsEndpoint)
             .get('/api/group/patient/33333')
+            .expect(500)
+            .end(function(err, res) {
+                if (err) return done(err);
+
+                res.body.should.have.property('error');
+                //res.body.error.should.not.be.empty;
+
+                done();
+            });
+        });
+
+        it('/api/group/adduser returns error when one has been raised', function(done) {
+
+            supertest(errorsEndpoint)
+            .post('/api/group/adduser/33333')
+            .expect(500)
+            .end(function(err, res) {
+                if (err) return done(err);
+
+                res.body.should.have.property('error');
+                //res.body.error.should.not.be.empty;
+
+                done();
+            });
+        });
+
+        //deluser
+        it('/api/group/deluser returns error when one has been raised', function(done) {
+
+            supertest(errorsEndpoint)
+            .post('/api/group/deluser/33333')
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);

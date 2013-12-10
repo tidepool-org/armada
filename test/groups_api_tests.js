@@ -49,6 +49,7 @@ describe('message API', function() {
             var testGroup = {
                 name : 'test create for 201',
                 owners: ['99999','222222'],
+                members: ['99999','222222','33333212'],
                 patient : '444444'
             };
 
@@ -63,7 +64,8 @@ describe('message API', function() {
 
             var testGroup = {
                 name : 'test create for 201',
-                owners: ['99999','222222'],
+                owners: ['99999'],
+                members: ['99999','222222','33333212'],
                 patient : '444444'
             };
 
@@ -218,6 +220,7 @@ describe('message API', function() {
              var testGroup = {
                 name : 'test create for 201',
                 owners: ['99999','222222'],
+                members: ['99999','222222','33333212'],
                 patient : '444444'
             };
 

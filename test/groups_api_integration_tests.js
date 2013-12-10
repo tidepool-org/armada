@@ -16,16 +16,19 @@ var should = require('chai').should(),
 testGroups = [{
         name : 'family',
         owners: ['99999','222222'],
+        members: ['99999','222222','4982883'],
         patient : '12345'
     },
     {
         name : 'medical',
         owners: ['3343','5555'],
+        members: ['3343','5555','4982883'],
         patient : '12345'
     },
     {
         name : 'careteam',
         owners: ['3343','8898'],
+        members: ['3343','8898','4982883'],
         patient : '8876'
     }];
 
@@ -59,15 +62,13 @@ describe('message API', function() {
         testDbInstance = mongojs('mongodb://localhost/tidepool-platform', ['groups']);
 
         /*
-        Load our test data
+        Clean and then load our test data
         */
+        testDbInstance.groups.remove();
+
         testGroups.forEach(function(group) {
             testDbInstance.groups.save(group);
         });
-    });
-
-    after(function(){
-        testDbInstance.groups.remove();
     });
 
     describe('post /api/group/create', function() {
@@ -93,6 +94,7 @@ describe('message API', function() {
             var testGroup = {
                 name : 'test create for 201',
                 owners: ['99999','222222'],
+                members: ['99999','222222'],
                 patient : '444444'
             };
 
@@ -111,6 +113,7 @@ describe('message API', function() {
             var testGroup = {
                 name : 'test create to get id',
                 owners: ['99999','222222'],
+                members: ['99999','222222'],
                 patient : '99999'
             };
 
@@ -220,5 +223,56 @@ describe('message API', function() {
                 done();
             });
         });
+    });
+
+    describe('put /api/group/adduser/:groupid', function() {
+
+        var testGroupContent;
+
+        before(function(done){
+            //Get existing group to use in tests 
+            testDbInstance.groups.findOne({},function(err, doc) {
+                testGroupContent = doc;
+                done();
+            });
+        });
+
+        it('returns 200 when user is added to the group', function(done) {
+
+            var groupId = testGroupContent._id;
+            var userToAdd = '12345997x1';
+
+console.log('find: '+groupId);
+console.log('then add: '+userToAdd);
+
+            supertest(apiEndPoint)
+            .put('/api/group/adduser/'+groupId)
+            .send({userid : userToAdd})
+            .expect(200)
+            .end(function(err, res) {
+                if (err) return done(err);
+                //get the group and check
+                var updatedGroup = res.body.group;
+                updatedGroup.members.should.contain(userToAdd);
+                done();
+            });
+        });
+
+        it('returns 204 when try to add user to group that does not exist', function(done) {
+
+            var gakeGroupId = mongojs.ObjectId().toString();
+            var userToAdd = '12345997x1';
+
+            supertest(apiEndPoint)
+            .put('/api/group/adduser/'+gakeGroupId)
+            .send({userid : userToAdd})
+            .expect(204)
+            .end(function(err, res) {
+                if (err) return done(err);
+                
+                done();
+            });
+        });
+
     });   
 });

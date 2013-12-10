@@ -240,10 +240,7 @@ describe('message API', function() {
         it('returns 200 when user is added to the group', function(done) {
 
             var groupId = testGroupContent._id;
-            var userToAdd = '12345997x1';
-
-console.log('find: '+groupId);
-console.log('then add: '+userToAdd);
+            var userToAdd = '12345997';
 
             supertest(apiEndPoint)
             .put('/api/group/adduser/'+groupId)
@@ -260,11 +257,11 @@ console.log('then add: '+userToAdd);
 
         it('returns 204 when try to add user to group that does not exist', function(done) {
 
-            var gakeGroupId = mongojs.ObjectId().toString();
-            var userToAdd = '12345997x1';
+            var fakeGroupId = mongojs.ObjectId().toString();
+            var userToAdd = '12345997';
 
             supertest(apiEndPoint)
-            .put('/api/group/adduser/'+gakeGroupId)
+            .put('/api/group/adduser/'+fakeGroupId)
             .send({userid : userToAdd})
             .expect(204)
             .end(function(err, res) {

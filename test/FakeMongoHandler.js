@@ -44,12 +44,14 @@ function handleFindGroupsMemberOf(userId,callback) {
         id: '65587876679870098',
         name : 'medical',
         owners: [userId,'5555'],
+        members: [userId,'5555'],
         patient : '12345'
     },
     {
         id: '87987987987897987987',
         name : 'careteam',
         owners: ['3343','8898'],
+        members: ['3343','8898'],
         patient : userId
     }];
 
@@ -64,12 +66,14 @@ function handleFindGroupsOwnerOf(userId,callback) {
         id: '65587876679870098',
         name : 'medical',
         owners: [userId,'5555'],
+        members: [userId,'5555'],
         patient : '12345'
     },
     {
         id: '87987987987897987987',
         name : 'careteam',
         owners: [userId,'8898'],
+        members: [userId,'8898'],
         patient : '9999999'
     }];
 
@@ -84,6 +88,7 @@ function handleFindGroupsPatientIn(userId,callback) {
         id: '65587876679870098',
         name : 'medical',
         owners: ['88665','5555'],
+        members: ['88665','5555'],
         patient : userId
     }];
 
@@ -93,13 +98,31 @@ function handleFindGroupsPatientIn(userId,callback) {
 function handleAddUserToGroup(groupId, userId, callback) {
     log.debug('Adding user[%s] to group[%s]', userId, groupId);
 
-    return resolveCallbackValues(callback,true);
+    var addUserToGroups = 
+    {
+        id: '65587876679870098',
+        name : 'medical',
+        owners: ['88665','5555'],
+        members: ['88665','5555',userId],
+        patient : '9999999'
+    };
+
+    return resolveCallbackValues(callback,addUserToGroups);
 }
 
 function handleRemoveUserFromGroup(groupId, userId,callback){
-     log.debug('Removing user[%s] from group[%s]', userId, groupId);
+    log.debug('Removing user[%s] from group[%s]', userId, groupId);
 
-    return resolveCallbackValues(callback,true);
+    var removeFromGroups = {
+
+        id: '65587876679870098',
+        name : 'medical',
+        owners: ['88665','5555'],
+        members: ['88665','5555'],
+        patient : '9999999'
+    };
+
+    return resolveCallbackValues(callback,removeFromGroups);
 }
 
 module.exports = FakeMongoHandler;

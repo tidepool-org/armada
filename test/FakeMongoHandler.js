@@ -25,7 +25,11 @@ function resolveCallbackValues(callback,data){
     if (settings.throwErrors){
         return callback(new Error('fake error'),null);        
     }else if (settings.returnNone){
-        return callback(null,[]);        
+        //if expecting an array return empty array
+        if( Object.prototype.toString.call( data ) === '[object Array]' ) {
+            return callback(null,[]);
+        }
+        return callback(null,''); 
     }
 
     return callback(null,data);

@@ -178,6 +178,13 @@ describe('message API', function() {
             .send({userid:'12345997'})
             .expect(204,done);
         });
+
+        it('/api/group/getpatient returns error when one has been raised', function(done) {
+
+            supertest(noDataEndpoint)
+            .get('/api/group/getpatient/33333')
+            .expect(204,done);
+        });
     });
 
     describe('test errors returned', function() {

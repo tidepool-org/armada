@@ -342,5 +342,35 @@ describe('message API', function() {
             });
         });
 
+    }); 
+
+    describe('get /api/group/getpatient/:groupid', function() {
+
+        var testGroup;
+
+        before(function(done){
+            //Get existing group to use in tests 
+            testDbInstance.groups.findOne({},function(err, doc) {
+                testGroup = doc;
+                done();
+            });
+        });
+
+        it('returns 200 and the patient id when found', function(done) {
+
+            var groupId = testGroup._id;
+            var patientId = testGroup.patient;
+
+            supertest(apiEndPoint)
+            .get('/api/group/getpatient/'+groupId)
+            .expect(200)
+            .end(function(err, res) {
+                if (err) return done(err);
+                //get the group and check
+                res.body.patient.should.equal(patientId);
+                done();
+            });
+        });
+
     });   
 });

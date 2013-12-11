@@ -13,5 +13,6 @@
   "smarttabs": false,
   "trailing": true,
   "undef": true,
+  "eqnull": true,
   "unused": "vars"
 }

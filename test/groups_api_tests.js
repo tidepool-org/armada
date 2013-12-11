@@ -2,7 +2,9 @@
 
 /*jshint unused: vars */
 var should = require('chai').should(),
-    supertest = require('supertest');
+    supertest = require('supertest'),
+    Armada = require('../lib/ArmadaService'),
+    FakeMongoHandler = require('./handler/FakeMongoHandler');
 
 describe('message API', function() {
 
@@ -13,24 +15,21 @@ describe('message API', function() {
 
         before(function(){
 
-            var FakeMongoHandler,
-            fakeCrudHandler,
+            var fakeCrudHandler,
             port;
 
             port = 3400;
-
-            FakeMongoHandler = require('./handler/FakeMongoHandler');
-            normalPathService = require('../lib/ArmadaService');
-
+            
             var testConfig  = {
                 throwErrors : false,
                 returnNone : false
             };
         
             fakeCrudHandler = new FakeMongoHandler(testConfig);
+            normalPathService = new Armada(fakeCrudHandler,port);
 
             //lets get this party started
-            normalPathService.start(fakeCrudHandler,port);
+            normalPathService.start();
 
             //endpoint for service
             normalPathAPIEndPoint = 'http://localhost:'+port;
@@ -132,15 +131,10 @@ describe('message API', function() {
 
         before(function(){
 
-            var FakeMongoHandler,
-            fakeCrudHandler,
+            var fakeCrudHandler,
             port;
 
             port = 3400;
-
-            FakeMongoHandler = require('./handler/FakeMongoHandler');
-
-            noDataFoundService = require('../lib/ArmadaService');
         
             var testConfig  = {
                 throwErrors : false,
@@ -148,9 +142,10 @@ describe('message API', function() {
             };
         
             fakeCrudHandler = new FakeMongoHandler(testConfig);
+            noDataFoundService = new Armada(fakeCrudHandler,port);
 
             //lets get this party started
-            noDataFoundService.start(fakeCrudHandler,port);
+            noDataFoundService.start();
 
             noDataEndpoint = 'http://localhost:'+port;
         
@@ -212,14 +207,10 @@ describe('message API', function() {
 
         before(function(){
 
-            var FakeMongoHandler,
-            fakeCrudHandler,
+            var fakeCrudHandler,
             port;
 
             port = 3400;
-
-            FakeMongoHandler = require('./handler/FakeMongoHandler');
-            errorsFoundService = require('../lib/ArmadaService');
         
             var testConfig  = {
                 throwErrors : true,
@@ -227,9 +218,10 @@ describe('message API', function() {
             };
         
             fakeCrudHandler = new FakeMongoHandler(testConfig);
+            errorsFoundService = new Armada(fakeCrudHandler,port);
 
             //lets get this party started
-            errorsFoundService.start(fakeCrudHandler,port);
+            errorsFoundService.start();
 
             errorsEndpoint = 'http://localhost:'+port;
         

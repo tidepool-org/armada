@@ -3,6 +3,8 @@
 var should = require('chai').should(),
     supertest = require('supertest'),
     mongojs = require('mongojs'),
+    ArmadaService = require('../lib/ArmadaService'),
+    MongoHandler = require('../lib/handler/MongoHandler'),
     apiEndPoint,
     testDbInstance,
     testGroups;
@@ -41,22 +43,20 @@ describe('message API', function() {
 
         var config,
         service,
-        MongoHandler,
         crudHandler;
 
-        MongoHandler = require('../lib/handler/MongoHandler');
         config = require('../env');
-        service = require('../lib/ArmadaService');
-    
+        
         if(config.mongodb_connection_string === undefined || config.mongodb_connection_string === null){
             config.mongodb_connection_string = 'mongodb://localhost/tidepool-platform';
         }
 
         console.log('test config ',config);
         crudHandler = new MongoHandler(config);
+        service = new ArmadaService(crudHandler,config.port);
 
         //lets get this party started
-        service.start(crudHandler,config.port);
+        service.start();
 
         /*
         Connections

@@ -30,6 +30,12 @@ testGroups = [{
         owners: ['3343','8898'],
         members: ['3343','8898','4982883'],
         patient : '8876'
+    },
+    {
+        name : 'test_deluser',
+        owners: ['111'],
+        members: ['111','88sjjs88'],
+        patient : '99'
     }];
 
 describe('message API', function() {
@@ -267,6 +273,72 @@ describe('message API', function() {
             .end(function(err, res) {
                 if (err) return done(err);
                 
+                done();
+            });
+        });
+
+    });
+
+    describe('put /api/group/deluser/:groupid', function() {
+
+        var testDeleteUserGroup;
+
+        before(function(done){
+            //Get existing group to use in tests 
+            testDbInstance.groups.findOne({name:'test_deluser'},function(err, doc) {
+                testDeleteUserGroup = doc;
+                done();
+            });
+        });
+
+        it('returns 200 when user is removed from the group', function(done) {
+
+            var groupId = testDeleteUserGroup._id;
+            var userToRemove = testDeleteUserGroup.members[1];
+
+            supertest(apiEndPoint)
+            .put('/api/group/deluser/'+groupId)
+            .send({userid : userToRemove})
+            .expect(200)
+            .end(function(err, res) {
+                if (err) return done(err);
+                //get the group and check
+                var updatedGroup = res.body.group;
+                updatedGroup.members.should.not.contain(userToRemove);
+                done();
+            });
+        });
+
+        it('returns 204 when try to remove user from a group that does not exist', function(done) {
+
+            var fakeGroupId = mongojs.ObjectId().toString();
+            var userToRemove = '12345997';
+
+            supertest(apiEndPoint)
+            .put('/api/group/deluser/'+fakeGroupId)
+            .send({userid : userToRemove})
+            .expect(204)
+            .end(function(err, res) {
+                if (err) return done(err);
+                
+                done();
+            });
+        });
+
+        it('returns 200 when try to remove a user that is not in the group anyway', function(done) {
+
+            //i am just guessing????
+
+            var groupId = testDeleteUserGroup._id;
+            var userToRemove = '123xx45997';
+
+            supertest(apiEndPoint)
+            .put('/api/group/deluser/'+groupId)
+            .send({userid : userToRemove})
+            .expect(200)
+            .end(function(err, res) {
+                if (err) return done(err);
+
                 done();
             });
         });

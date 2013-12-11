@@ -44,7 +44,7 @@ describe('message API', function() {
             normalPathService.stop();
         });
 
-       /* it('/api/group/create 201 when all good', function(done) {
+        it('/api/group/create 201 when all good', function(done) {
 
             var testGroup = {
                 name : 'test create for 201',
@@ -88,7 +88,7 @@ describe('message API', function() {
             supertest(normalPathAPIEndPoint)
             .get('/api/group/patient/33333')
             .expect(200,done);
-        });*/
+        });
 
         it('/api/group/adduser returns 200 when all good', function(done) {
 
@@ -106,7 +106,7 @@ describe('message API', function() {
             .expect(200,done);
         });
     });
-/*
+
     describe('test no data returned', function() {
 
         var noDataEndpoint,
@@ -316,5 +316,5 @@ describe('message API', function() {
             });
         });
     });
-*/
+
 });

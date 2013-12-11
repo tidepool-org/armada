@@ -315,6 +315,21 @@ describe('message API', function() {
                 done();
             });
         });
+
+        it('/api/group/getpatient returns error when one has been raised', function(done) {
+
+            supertest(errorsEndpoint)
+            .get('/api/group/getpatient/33333')
+            .expect(500)
+            .end(function(err, res) {
+                if (err) return done(err);
+
+                res.body.should.have.property('error');
+                //res.body.error.should.not.be.empty;
+
+                done();
+            });
+        });
     });
 
 });

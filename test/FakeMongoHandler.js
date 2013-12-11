@@ -17,6 +17,7 @@ var FakeMongoHandler = function(config) {
     this.findGroupsOwnerOf = handleFindGroupsOwnerOf;
     this.addUserToGroup = handleAddUserToGroup;
     this.removeUserFromGroup = handleRemoveUserFromGroup;
+    this.findPatientForGroup = handleFindPatientForGroup;
 };
 
 function resolveCallbackValues(callback,data){
@@ -123,6 +124,12 @@ function handleRemoveUserFromGroup(groupId, userId,callback){
     };
 
     return resolveCallbackValues(callback,removeFromGroups);
+}
+
+function handleFindPatientForGroup(groupId,callback){
+    log.debug('Find paitient for group[%s]', groupId);
+
+    return resolveCallbackValues(callback,'99999999');
 }
 
 module.exports = FakeMongoHandler;

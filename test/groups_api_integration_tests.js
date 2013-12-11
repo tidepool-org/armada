@@ -328,7 +328,6 @@ describe('message API', function() {
         it('returns 200 when try to remove a user that is not in the group anyway', function(done) {
 
             //i am just guessing????
-
             var groupId = testDeleteUserGroup._id;
             var userToRemove = '123xx45997';
 

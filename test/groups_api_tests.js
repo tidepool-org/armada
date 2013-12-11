@@ -22,7 +22,7 @@ describe('message API', function() {
 
             port = 3400;
 
-            FakeMongoHandler = require('./FakeMongoHandler');
+            FakeMongoHandler = require('./handler/FakeMongoHandler');
             normalPathService = require('../lib/ArmardaService');
 
             var testConfig  = {
@@ -105,6 +105,13 @@ describe('message API', function() {
             .send({userid:'12345997'})
             .expect(200,done);
         });
+
+        it('/api/group/patient returns 200 when all good', function(done) {
+
+            supertest(normalPathAPIEndPoint)
+            .get('/api/group/patient/34444444')
+            .expect(200,done);
+        });
     });
 
     describe('test no data returned', function() {
@@ -121,7 +128,8 @@ describe('message API', function() {
 
             port = 3400;
 
-            FakeMongoHandler = require('./FakeMongoHandler');
+            FakeMongoHandler = require('./handler/FakeMongoHandler');
+
             noDataFoundService = require('../lib/ArmardaService');
         
             var testConfig  = {
@@ -201,7 +209,7 @@ describe('message API', function() {
 
             port = 3400;
 
-            FakeMongoHandler = require('./FakeMongoHandler');
+            FakeMongoHandler = require('./handler/FakeMongoHandler');
             errorsFoundService = require('../lib/ArmardaService');
         
             var testConfig  = {

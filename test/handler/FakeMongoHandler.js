@@ -8,7 +8,7 @@ settings;
 */
 var FakeMongoHandler = function(config) {
 
-    log = require('../lib/log.js')('FakeMongoHandler.js');
+    log = require('../../lib/log.js')('FakeMongoHandler.js');
     settings = config;
 
     this.createGroup = handleCreateGroup;

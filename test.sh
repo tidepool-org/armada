@@ -1,5 +1,5 @@
 #! /bin/bash -eu
 
-grunt test
+grunt unit-test
 
 

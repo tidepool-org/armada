@@ -112,6 +112,20 @@ describe('message API', function() {
             .get('/api/group/patient/34444444')
             .expect(200,done);
         });
+
+        it('/api/group/member returns 501 as not yet implemented', function(done) {
+
+            supertest(normalPathAPIEndPoint)
+            .get('/api/group/members/34444444')
+            .expect(501,done);
+        });
+
+        it('/api/group/allusers returns 501 as not yet implemented', function(done) {
+
+            supertest(normalPathAPIEndPoint)
+            .get('/api/group/allusers/34444444')
+            .expect(501,done);
+        });
     });
 
     describe('test no data returned', function() {

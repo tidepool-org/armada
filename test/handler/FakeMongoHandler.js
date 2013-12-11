@@ -23,13 +23,13 @@ var FakeMongoHandler = function(config) {
 function resolveCallbackValues(callback,data){
     
     if (settings.throwErrors){
-        return callback(new Error('fake error'),null);        
+        return callback(new Error('fake error'),null);
     }else if (settings.returnNone){
         //if expecting an array return empty array
         if( Object.prototype.toString.call( data ) === '[object Array]' ) {
             return callback(null,[]);
         }
-        return callback(null,''); 
+        return callback(null,'');
     }
 
     return callback(null,data);
@@ -44,8 +44,7 @@ function handleCreateGroup (group,callback) {
 function handleFindGroupsMemberOf(userId,callback) {
     log.debug('Finding groups member of userid[%s]', userId);
 
-    var memberGroups = [
-    {
+    var memberGroups = [{
         id: '65587876679870098',
         name : 'medical',
         owners: [userId,'5555'],
@@ -66,8 +65,7 @@ function handleFindGroupsMemberOf(userId,callback) {
 function handleFindGroupsOwnerOf(userId,callback) {
     log.debug('Finding groups owned by userid[%s]', userId);
 
-    var ownerGroups = [
-    {
+    var ownerGroups = [{
         id: '65587876679870098',
         name : 'medical',
         owners: [userId,'5555'],
@@ -88,8 +86,7 @@ function handleFindGroupsOwnerOf(userId,callback) {
 function handleFindGroupsPatientIn(userId,callback) {
     log.debug('Finding groups patient[%s] is in', userId);
 
-    var patientInGroups = [
-    {
+    var patientInGroups = [{
         id: '65587876679870098',
         name : 'medical',
         owners: ['88665','5555'],
@@ -103,7 +100,7 @@ function handleFindGroupsPatientIn(userId,callback) {
 function handleAddUserToGroup(groupId, userId, callback) {
     log.debug('Adding user[%s] to group[%s]', userId, groupId);
 
-    var addUserToGroups = 
+    var addUserToGroups =
     {
         id: '65587876679870098',
         name : 'medical',

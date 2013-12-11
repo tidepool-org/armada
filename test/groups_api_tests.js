@@ -20,7 +20,7 @@ describe('message API', function() {
             port = 3400;
 
             FakeMongoHandler = require('./handler/FakeMongoHandler');
-            normalPathService = require('../lib/ArmardaService');
+            normalPathService = require('../lib/ArmadaService');
 
             var testConfig  = {
                 throwErrors : false,
@@ -140,7 +140,7 @@ describe('message API', function() {
 
             FakeMongoHandler = require('./handler/FakeMongoHandler');
 
-            noDataFoundService = require('../lib/ArmardaService');
+            noDataFoundService = require('../lib/ArmadaService');
         
             var testConfig  = {
                 throwErrors : false,
@@ -219,7 +219,7 @@ describe('message API', function() {
             port = 3400;
 
             FakeMongoHandler = require('./handler/FakeMongoHandler');
-            errorsFoundService = require('../lib/ArmardaService');
+            errorsFoundService = require('../lib/ArmadaService');
         
             var testConfig  = {
                 throwErrors : true,

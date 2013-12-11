@@ -46,7 +46,7 @@ describe('message API', function() {
 
         MongoHandler = require('../lib/handler/MongoHandler');
         config = require('../env');
-        service = require('../lib/ArmardaService');
+        service = require('../lib/ArmadaService');
     
         if(config.mongodb_connection_string === undefined || config.mongodb_connection_string === null){
             config.mongodb_connection_string = 'mongodb://localhost/tidepool-platform';

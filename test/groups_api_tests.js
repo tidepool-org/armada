@@ -1,10 +1,8 @@
 'use strict';
-/* jshint -W079 *//* jshint -W098 */
+
+/*jshint unused: vars */
 var should = require('chai').should(),
-/* jshint +W079 *//* jshint +W098 */
-    supertest = require('supertest'),
-    service,
-    apiEndPoint;
+    supertest = require('supertest');
 
 describe('message API', function() {
 
@@ -13,10 +11,9 @@ describe('message API', function() {
         var normalPathService,
         normalPathAPIEndPoint;
 
-        before(function(){ 
+        before(function(){
 
-            var config,
-            FakeMongoHandler,
+            var FakeMongoHandler,
             fakeCrudHandler,
             port;
 
@@ -133,10 +130,9 @@ describe('message API', function() {
         var noDataEndpoint,
         noDataFoundService;
 
-        before(function(){ 
+        before(function(){
 
-            var config,
-            FakeMongoHandler,
+            var FakeMongoHandler,
             fakeCrudHandler,
             port;
 
@@ -214,10 +210,9 @@ describe('message API', function() {
         var errorsEndpoint,
         errorsFoundService;
 
-        before(function(){ 
+        before(function(){
 
-            var config,
-            FakeMongoHandler,
+            var FakeMongoHandler,
             fakeCrudHandler,
             port;
 
@@ -246,7 +241,8 @@ describe('message API', function() {
 
         it('/api/group/create returns error when one has been raised', function(done) {
 
-             var testGroup = {
+            var testGroup =
+            {
                 name : 'test create for 201',
                 owners: ['99999','222222'],
                 members: ['99999','222222','33333212'],

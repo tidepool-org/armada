@@ -1,11 +1,8 @@
 'use strict';
-/* jshint -W079 *//* jshint -W098 */
+
 var should = require('chai').should(),
-/* jshint +W079 *//* jshint +W098 */
     supertest = require('supertest'),
     mongojs = require('mongojs'),
-    crud,
-    groupsService,
     apiEndPoint,
     testDbInstance,
     testGroups;
@@ -40,7 +37,7 @@ testGroups = [{
 
 describe('message API', function() {
 
-    before(function(){ 
+    before(function(){
 
         var config,
         service,
@@ -52,7 +49,7 @@ describe('message API', function() {
         service = require('../lib/ArmardaService');
     
         if(config.mongodb_connection_string === undefined || config.mongodb_connection_string === null){
-            config.mongodb_connection_string = 'mongodb://localhost/tidepool-platform'
+            config.mongodb_connection_string = 'mongodb://localhost/tidepool-platform';
         }
 
         console.log('test config ',config);
@@ -342,7 +339,7 @@ describe('message API', function() {
             });
         });
 
-    }); 
+    });
 
     describe('get /api/group/getpatient/:groupid', function() {
 
@@ -372,6 +369,6 @@ describe('message API', function() {
             });
         });
 
-    }); 
+    });
 
 });

@@ -231,7 +231,7 @@ describe('message API', function() {
             errorsFoundService.stop();
         });
 
-        it('/api/group/create returns error when one has been raised', function(done) {
+        it('/api/group/create returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             var testGroup =
             {
@@ -247,60 +247,50 @@ describe('message API', function() {
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);
-
-                res.body.should.have.property('error');
-                //res.body.error.should.not.be.empty;
-
+                res.body.should.not.property('error');
                 done();
             });
         });
 
-        it('/api/group/memberof returns error when one has been raised', function(done) {
+        it('/api/group/memberof returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(errorsEndpoint)
             .get('/api/group/memberof/33333')
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);
-
-                res.body.should.have.property('error');
-                //res.body.error.should.not.be.empty;
-
+                res.body.should.not.property('error');
                 done();
             });
+
         });
 
-        it('/api/group/ownerof returns error when one has been raised', function(done) {
+        it('/api/group/ownerof returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(errorsEndpoint)
             .get('/api/group/ownerof/33333')
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);
-
-                res.body.should.have.property('error');
-                //res.body.error.should.not.be.empty;
-
+                res.body.should.not.property('error');
                 done();
             });
+
         });
 
-        it('/api/group/patient returns error when one has been raised', function(done) {
+        it('/api/group/patient returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(errorsEndpoint)
             .get('/api/group/patient/33333')
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);
-
-                res.body.should.have.property('error');
-                //res.body.error.should.not.be.empty;
-
+                res.body.should.not.property('error');
                 done();
             });
         });
 
-        it('/api/group/adduser returns error when one has been raised', function(done) {
+        it('/api/group/adduser returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(errorsEndpoint)
             .put('/api/group/adduser/33333')
@@ -308,16 +298,12 @@ describe('message API', function() {
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);
-
-                res.body.should.have.property('error');
-                //res.body.error.should.not.be.empty;
-
+                res.body.should.not.property('error');
                 done();
             });
         });
 
-        //deluser
-        it('/api/group/deluser returns error when one has been raised', function(done) {
+        it('/api/group/deluser returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(errorsEndpoint)
             .put('/api/group/deluser/33333')
@@ -325,25 +311,19 @@ describe('message API', function() {
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);
-
-                res.body.should.have.property('error');
-                //res.body.error.should.not.be.empty;
-
+                res.body.should.not.property('error');
                 done();
             });
         });
 
-        it('/api/group/getpatient returns error when one has been raised', function(done) {
+        it('/api/group/getpatient 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(errorsEndpoint)
             .get('/api/group/getpatient/33333')
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);
-
-                res.body.should.have.property('error');
-                //res.body.error.should.not.be.empty;
-
+                res.body.should.not.property('error');
                 done();
             });
         });

@@ -41,6 +41,9 @@ describe('message API', function() {
 
     before(function(){
 
+        /*
+        Setup
+        */
         var config,
         service,
         crudHandler;
@@ -92,19 +95,11 @@ describe('message API', function() {
             });
         });
 
-        it('returns 201 when a group is created', function(done) {
-
-            var testGroup = {
-                name : 'test create for 201',
-                owners: ['99999','222222'],
-                members: ['99999','222222'],
-                patient : '444444'
-            };
+        it('returns 400 when no data is sent', function(done) {
 
             supertest(apiEndPoint)
             .post('/api/group/create')
-            .send({group:testGroup})
-            .expect(201)
+            .expect(400)
             .end(function(err, res) {
                 if (err) return done(err);
                 done();
@@ -131,17 +126,7 @@ describe('message API', function() {
                 done();
             });
         });
-
-        it('returns 400 when no data is sent', function(done) {
-
-            supertest(apiEndPoint)
-            .post('/api/group/create')
-            .expect(400)
-            .end(function(err, res) {
-                if (err) return done(err);
-                done();
-            });
-        });
+        
     });
 
     describe('get /api/group/memberof', function() {

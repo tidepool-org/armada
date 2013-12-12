@@ -10,7 +10,7 @@ var ArmadaService = require('../lib/ArmadaService'),
 /*
     Setup for testing
 */
-var TestingService = function(crudHandler,port,integrationTest) {
+var TestingSetup = function(crudHandler,port,integrationTest) {
 
     isIntegration = integrationTest;
 
@@ -23,12 +23,20 @@ var TestingService = function(crudHandler,port,integrationTest) {
     service.start();
     this.stopService = stopTestService;
     this.mongoInstance = getMongoInstance;
+    this.mongoId = getMongoId;
     this.localhostEndpoint = getLocalhostEndpoint;
 
 };
 
 function stopTestService(){
     service.stop();
+}
+
+function getMongoId(){
+    if(isIntegration){
+        return mongojs.ObjectId().toString();
+    }
+    return false;
 }
 
 function getMongoInstance(){
@@ -42,4 +50,4 @@ function getLocalhostEndpoint(){
     return 'http://localhost:'+servicePort;
 }
 
-module.exports = TestingService;
+module.exports = TestingSetup;

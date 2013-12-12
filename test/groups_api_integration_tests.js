@@ -2,10 +2,10 @@
 
 var should = require('chai').should(),
     supertest = require('supertest'),
-    mongojs = require('mongojs'),
-    ArmadaService = require('../lib/ArmadaService'),
+    TestingSetup = require('./TestingSetup'),
     MongoHandler = require('../lib/handler/MongoHandler'),
     apiEndPoint,
+    setup,
     testDbInstance,
     testGroups;
 
@@ -45,27 +45,20 @@ describe('message API', function() {
         Setup
         */
         var config,
-        service,
         crudHandler;
 
         config = require('../env');
         
-        if(config.mongodb_connection_string === undefined || config.mongodb_connection_string === null){
+        if(config.mongodb_connection_string == null){
             config.mongodb_connection_string = 'mongodb://localhost/tidepool-platform';
         }
 
         console.log('test config ',config);
         crudHandler = new MongoHandler(config);
-        service = new ArmadaService(crudHandler,config.port);
-
-        //lets get this party started
-        service.start();
-
-        /*
-        Connections
-        */
-        apiEndPoint = 'http://localhost:'+config.port;
-        testDbInstance = mongojs('mongodb://localhost/tidepool-platform', ['groups']);
+        
+        setup = new TestingSetup(crudHandler,config.port,true);
+        testDbInstance = setup.mongoInstance();
+        apiEndPoint = setup.localhostEndpoint();
 
         /*
         Clean and then load our test data
@@ -245,7 +238,7 @@ describe('message API', function() {
 
         it('returns 204 when try to add user to group that does not exist', function(done) {
 
-            var fakeGroupId = mongojs.ObjectId().toString();
+            var fakeGroupId = setup.mongoId();
             var userToAdd = '12345997';
 
             supertest(apiEndPoint)
@@ -293,7 +286,7 @@ describe('message API', function() {
 
         it('returns 204 when try to remove user from a group that does not exist', function(done) {
 
-            var fakeGroupId = mongojs.ObjectId().toString();
+            var fakeGroupId = setup.mongoId();
             var userToRemove = '12345997';
 
             supertest(apiEndPoint)

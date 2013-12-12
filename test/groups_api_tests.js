@@ -3,14 +3,14 @@
 /*jshint unused: vars */
 var should = require('chai').should(),
     supertest = require('supertest'),
-    TestingService = require('./TestingService'),
+    TestingSetup = require('./TestingSetup'),
     FakeMongoHandler = require('./handler/FakeMongoHandler');
 
 describe('message API', function() {
 
     describe('test normal route ', function() {
 
-        var testingService;
+        var setup;
 
         before(function(){
 
@@ -25,12 +25,12 @@ describe('message API', function() {
             };
         
             fakeCrudHandler = new FakeMongoHandler(testConfig);
-            testingService = new TestingService(fakeCrudHandler,port,false);
+            setup = new TestingSetup(fakeCrudHandler,port,false);
         
         });
 
         after(function(){
-            testingService.stopService();
+            setup.stopService();
         });
 
         it('/api/group/create 201 when all good', function(done) {
@@ -42,7 +42,7 @@ describe('message API', function() {
                 patient : '444444'
             };
 
-            supertest(testingService.localhostEndpoint())
+            supertest(setup.localhostEndpoint())
             .post('/api/group/create')
             .send({group:testGroup})
             .expect(201,done);
@@ -58,7 +58,7 @@ describe('message API', function() {
                 patient : '444444'
             };
 
-            supertest(testingService.localhostEndpoint())
+            supertest(setup.localhostEndpoint())
             .post('/api/group/create')
             .send({group:testGroup})
             .expect(201,done);
@@ -67,21 +67,21 @@ describe('message API', function() {
 
         it('/api/group/memberof returns 200 when all good', function(done) {
 
-            supertest(testingService.localhostEndpoint())
+            supertest(setup.localhostEndpoint())
             .get('/api/group/memberof/33333')
             .expect(200,done);
         });
 
         it('/api/group/patient returns 200 when all good', function(done) {
 
-            supertest(testingService.localhostEndpoint())
+            supertest(setup.localhostEndpoint())
             .get('/api/group/patient/33333')
             .expect(200,done);
         });
 
         it('/api/group/adduser returns 200 when all good', function(done) {
 
-            supertest(testingService.localhostEndpoint())
+            supertest(setup.localhostEndpoint())
             .post('/api/group/adduser/34444444')
             .send({userid:'12345997'})
             .expect(200,done);
@@ -89,7 +89,7 @@ describe('message API', function() {
 
         it('/api/group/deluser returns 200 when all good', function(done) {
 
-            supertest(testingService.localhostEndpoint())
+            supertest(setup.localhostEndpoint())
             .del('/api/group/deluser/34444444')
             .send({userid:'12345997'})
             .expect(200,done);
@@ -97,21 +97,21 @@ describe('message API', function() {
 
         it('/api/group/patient returns 200 when all good', function(done) {
 
-            supertest(testingService.localhostEndpoint())
+            supertest(setup.localhostEndpoint())
             .get('/api/group/patient/34444444')
             .expect(200,done);
         });
 
         it('/api/group/member returns 501 as not yet implemented', function(done) {
 
-            supertest(testingService.localhostEndpoint())
+            supertest(setup.localhostEndpoint())
             .get('/api/group/members/34444444')
             .expect(501,done);
         });
 
         it('/api/group/allusers returns 501 as not yet implemented', function(done) {
 
-            supertest(testingService.localhostEndpoint())
+            supertest(setup.localhostEndpoint())
             .get('/api/group/allusers/34444444')
             .expect(501,done);
         });
@@ -119,7 +119,7 @@ describe('message API', function() {
 
     describe('test no data returned', function() {
 
-        var noDataFoundService;
+        var noDataFoundSetup;
 
         before(function(){
 
@@ -134,38 +134,38 @@ describe('message API', function() {
             };
         
             fakeCrudHandler = new FakeMongoHandler(testConfig);
-            noDataFoundService = new TestingService(fakeCrudHandler,port,false);
+            noDataFoundSetup = new TestingSetup(fakeCrudHandler,port,false);
         
         });
 
         after(function(){
-            noDataFoundService.stopService();
+            noDataFoundSetup.stopService();
         });
 
         it('/api/group/memberof returns 204 when no data', function(done) {
 
-            supertest(noDataFoundService.localhostEndpoint())
+            supertest(noDataFoundSetup.localhostEndpoint())
             .get('/api/group/memberof/33333')
             .expect(204,done);
         });
 
         it('/api/group/ownerof returns 204 when no data', function(done) {
 
-            supertest(noDataFoundService.localhostEndpoint())
+            supertest(noDataFoundSetup.localhostEndpoint())
             .get('/api/group/ownerof/33333')
             .expect(204,done);
         });
 
         it('/api/group/patient returns 204 when no data', function(done) {
 
-            supertest(noDataFoundService.localhostEndpoint())
+            supertest(noDataFoundSetup.localhostEndpoint())
             .get('/api/group/patient/33333')
             .expect(204,done);
         });
 
         it('/api/group/adduser returns 204 when no match', function(done) {
 
-            supertest(noDataFoundService.localhostEndpoint())
+            supertest(noDataFoundSetup.localhostEndpoint())
             .post('/api/group/adduser/88888888')
             .send({userid:'12345997'})
             .expect(204,done);
@@ -173,7 +173,7 @@ describe('message API', function() {
 
         it('/api/group/deluser returns 204 when no match', function(done) {
 
-            supertest(noDataFoundService.localhostEndpoint())
+            supertest(noDataFoundSetup.localhostEndpoint())
             .del('/api/group/deluser/99999775')
             .send({userid:'12345997'})
             .expect(204,done);
@@ -181,7 +181,7 @@ describe('message API', function() {
 
         it('/api/group/getpatient returns error when one has been raised', function(done) {
 
-            supertest(noDataFoundService.localhostEndpoint())
+            supertest(noDataFoundSetup.localhostEndpoint())
             .get('/api/group/getpatient/33333')
             .expect(204,done);
         });
@@ -189,7 +189,7 @@ describe('message API', function() {
 
     describe('test errors returned', function() {
 
-        var errorsFoundService;
+        var errorsFoundSetup;
 
         before(function(){
 
@@ -204,12 +204,12 @@ describe('message API', function() {
             };
         
             fakeCrudHandler = new FakeMongoHandler(testConfig);
-            errorsFoundService = new TestingService(fakeCrudHandler,port,false);
+            errorsFoundSetup = new TestingSetup(fakeCrudHandler,port,false);
         
         });
 
         after(function(){
-            errorsFoundService.stopService();
+            errorsFoundSetup.stopService();
         });
 
         it('/api/group/create returns 500 and does not return error so we do not leak implemention details', function(done) {
@@ -222,7 +222,7 @@ describe('message API', function() {
                 patient : '444444'
             };
 
-            supertest(errorsFoundService.localhostEndpoint())
+            supertest(errorsFoundSetup.localhostEndpoint())
             .post('/api/group/create')
             .send({group:testGroup})
             .expect(500)
@@ -235,7 +235,7 @@ describe('message API', function() {
 
         it('/api/group/memberof returns 500 and does not return error so we do not leak implemention details', function(done) {
 
-            supertest(errorsFoundService.localhostEndpoint())
+            supertest(errorsFoundSetup.localhostEndpoint())
             .get('/api/group/memberof/33333')
             .expect(500)
             .end(function(err, res) {
@@ -248,7 +248,7 @@ describe('message API', function() {
 
         it('/api/group/ownerof returns 500 and does not return error so we do not leak implemention details', function(done) {
 
-            supertest(errorsFoundService.localhostEndpoint())
+            supertest(errorsFoundSetup.localhostEndpoint())
             .get('/api/group/ownerof/33333')
             .expect(500)
             .end(function(err, res) {
@@ -261,7 +261,7 @@ describe('message API', function() {
 
         it('/api/group/patient returns 500 and does not return error so we do not leak implemention details', function(done) {
 
-            supertest(errorsFoundService.localhostEndpoint())
+            supertest(errorsFoundSetup.localhostEndpoint())
             .get('/api/group/patient/33333')
             .expect(500)
             .end(function(err, res) {
@@ -273,7 +273,7 @@ describe('message API', function() {
 
         it('/api/group/adduser returns 500 and does not return error so we do not leak implemention details', function(done) {
 
-            supertest(errorsFoundService.localhostEndpoint())
+            supertest(errorsFoundSetup.localhostEndpoint())
             .post('/api/group/adduser/33333')
             .send({userid:'12345997'})
             .expect(500)
@@ -286,7 +286,7 @@ describe('message API', function() {
 
         it('/api/group/deluser returns 500 and does not return error so we do not leak implemention details', function(done) {
 
-            supertest(errorsFoundService.localhostEndpoint())
+            supertest(errorsFoundSetup.localhostEndpoint())
             .del('/api/group/deluser/33333')
             .send({userid:'12345997'})
             .expect(500)
@@ -299,7 +299,7 @@ describe('message API', function() {
 
         it('/api/group/getpatient 500 and does not return error so we do not leak implemention details', function(done) {
 
-            supertest(errorsFoundService.localhostEndpoint())
+            supertest(errorsFoundSetup.localhostEndpoint())
             .get('/api/group/getpatient/33333')
             .expect(500)
             .end(function(err, res) {

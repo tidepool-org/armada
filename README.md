@@ -21,7 +21,7 @@ build.sh
 Assuming you have a set of config values (see **"Config"** below), load them with:
 
 ```bash
-source config/local.sh
+source config/dev.sh
 ```
 
 If running locally, you will need to start a local instance of MongoDB:

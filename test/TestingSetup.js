@@ -24,6 +24,8 @@ var TestingSetup = function(crudHandler,port,integrationTest) {
     this.stopService = stopTestService;
     this.mongoInstance = getMongoInstance;
     this.mongoId = getMongoId;
+    this.checkId = isValidId;
+    this.checkGroup = isValidGroup;
     this.localhostEndpoint = getLocalhostEndpoint;
 
 };
@@ -35,6 +37,34 @@ function stopTestService(){
 function getMongoId(){
     if(isIntegration){
         return mongojs.ObjectId().toString();
+    }
+    return false;
+}
+
+function isValidGroup(group){
+console.log("## checking ##",group);
+    
+    if (('id' in group && isValidId(group.id)) &&
+    ('name' in group && group.name !== '') &&
+    ('owners' in group && group.owners.length > 0) &&
+    ('members' in group && group.members.length > 0) &&
+    ('patient' in group && group.patient !== '')) 
+    {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function isValidId(idString){
+    if(isIntegration){
+        try{
+            mongojs.ObjectId(idString);
+            return true;
+        }
+        catch(error){
+            return false;
+        }
     }
     return false;
 }

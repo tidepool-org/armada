@@ -119,6 +119,26 @@ describe('message API', function() {
                 done();
             });
         });
+
+        it('id is valid', function(done) {
+
+            var testGroup = {
+                name : 'test create to get id',
+                owners: ['99999','222222'],
+                members: ['99999','222222'],
+                patient : '99999'
+            };
+
+            supertest(apiEndPoint)
+            .post('/api/group/create')
+            .send({group:testGroup})
+            .expect(201)
+            .end(function(err, res) {
+                if (err) return done(err);
+                setup.checkId(res.body.id).should.be.true;
+                done();
+            });
+        });
         
     });
 
@@ -144,6 +164,25 @@ describe('message API', function() {
                 if (err) return done(err);
 
                 res.body.groups.length.should.equal(2);
+
+                done();
+            });
+        });
+
+        it('the groups should be valid', function(done) {
+
+            supertest(apiEndPoint)
+            .get('/api/group/memberof/12345')
+            .expect(200)
+            .end(function(err, res) {
+                if (err) return done(err);
+console.log('groups: ',res.body.groups)
+
+                var foundGroups = res.body.groups;
+
+                foundGroups.forEach(function(group){
+                    setup.checkGroup(group).should.be.true;
+                });
 
                 done();
             });

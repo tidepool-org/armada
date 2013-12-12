@@ -21,13 +21,16 @@ var TestingHelper = function(crudHandler,port,integrationTest) {
 
     service = new ArmadaService(crudHandler,servicePort);
     service.start();
-    this.stopArmadaService = stopTestService;
-    this.mongoTestInstance = getMongoInstance;
-    this.createMongoId = getMongoId;
-    this.validateId = isValidId;
-    this.validateGroup = isValidGroup;
-    this.armadaServiceEndpoint = getLocalhostEndpoint;
 
+    return {
+        stopArmadaService : stopTestService,
+        mongoTestInstance : getMongoInstance,
+        createMongoId : getMongoId,
+        validateId : isValidId,
+        validateGroup : isValidGroup,
+        armadaServiceEndpoint : getLocalhostEndpoint
+    };
+    
 };
 
 function stopTestService(){

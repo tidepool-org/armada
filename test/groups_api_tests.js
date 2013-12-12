@@ -89,7 +89,7 @@ describe('message API', function() {
         it('/api/group/adduser returns 200 when all good', function(done) {
 
             supertest(normalPathAPIEndPoint)
-            .put('/api/group/adduser/34444444')
+            .post('/api/group/adduser/34444444')
             .send({userid:'12345997'})
             .expect(200,done);
         });
@@ -179,7 +179,7 @@ describe('message API', function() {
         it('/api/group/adduser returns 204 when no match', function(done) {
 
             supertest(noDataEndpoint)
-            .put('/api/group/adduser/88888888')
+            .post('/api/group/adduser/88888888')
             .send({userid:'12345997'})
             .expect(204,done);
         });
@@ -293,7 +293,7 @@ describe('message API', function() {
         it('/api/group/adduser returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(errorsEndpoint)
-            .put('/api/group/adduser/33333')
+            .post('/api/group/adduser/33333')
             .send({userid:'12345997'})
             .expect(500)
             .end(function(err, res) {

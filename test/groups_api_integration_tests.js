@@ -246,7 +246,7 @@ describe('message API', function() {
             var userToAdd = '12345997';
 
             supertest(apiEndPoint)
-            .put('/api/group/adduser/'+groupId)
+            .post('/api/group/adduser/'+groupId)
             .send({userid : userToAdd})
             .expect(200)
             .end(function(err, res) {
@@ -264,7 +264,7 @@ describe('message API', function() {
             var userToAdd = '12345997';
 
             supertest(apiEndPoint)
-            .put('/api/group/adduser/'+fakeGroupId)
+            .post('/api/group/adduser/'+fakeGroupId)
             .send({userid : userToAdd})
             .expect(204)
             .end(function(err, res) {

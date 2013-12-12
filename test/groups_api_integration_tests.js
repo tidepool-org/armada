@@ -176,7 +176,6 @@ describe('message API', function() {
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
-console.log('groups: ',res.body.groups)
 
                 var foundGroups = res.body.groups;
 
@@ -202,7 +201,7 @@ console.log('groups: ',res.body.groups)
             });
         });
 
-        it('returns 200 and two groups when I ask for 3343', function(done) {
+        it('returns 200 and two groups', function(done) {
 
             supertest(apiEndPoint)
             .get('/api/group/ownerof/3343')
@@ -211,6 +210,23 @@ console.log('groups: ',res.body.groups)
                 if (err) return done(err);
 
                 res.body.groups.length.should.equal(2);
+                done();
+            });
+        });
+
+        it('the two groups should be valid', function(done) {
+
+            supertest(apiEndPoint)
+            .get('/api/group/ownerof/3343')
+            .expect(200)
+            .end(function(err, res) {
+                if (err) return done(err);
+
+                var foundGroups = res.body.groups;
+
+                foundGroups.forEach(function(group){
+                    setup.checkGroup(group).should.be.true;
+                });
 
                 done();
             });

@@ -42,7 +42,6 @@ function getMongoId(){
 }
 
 function isValidGroup(group){
-console.log("## checking ##",group);
     
     if (('id' in group && isValidId(group.id)) &&
     ('name' in group && group.name !== '') &&

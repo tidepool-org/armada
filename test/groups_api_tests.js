@@ -3,8 +3,8 @@ var fixture = require('./fixtures.js'),
 /*jshint unused:false */
     should = fixture.should,
     supertest = fixture.supertest,
-    TestingHelper = fixture.TestingHelper,
-    FakeMongoHandler = require('./handler/FakeMongoHandler');
+    testingHelper = fixture.testingHelper,
+    fakeMongoHandler = require('./handler/FakeMongoHandler');
 
 describe('message API', function() {
 
@@ -24,8 +24,8 @@ describe('message API', function() {
                 returnNone : false
             };
         
-            fakeCrudHandler = new FakeMongoHandler(testConfig);
-            helper = TestingHelper(fakeCrudHandler,port,false);
+            fakeCrudHandler = fakeMongoHandler(testConfig);
+            helper = testingHelper(fakeCrudHandler,port,false);
         
         });
 
@@ -133,8 +133,8 @@ describe('message API', function() {
                 returnNone : true
             };
         
-            fakeCrudHandler = new FakeMongoHandler(testConfig);
-            noDataHelper = TestingHelper(fakeCrudHandler,port,false);
+            fakeCrudHandler = fakeMongoHandler(testConfig);
+            noDataHelper = testingHelper(fakeCrudHandler,port,false);
         
         });
 
@@ -203,8 +203,8 @@ describe('message API', function() {
                 returnNone : false
             };
         
-            fakeCrudHandler = new FakeMongoHandler(testConfig);
-            errorsFoundHelper = TestingHelper(fakeCrudHandler,port,false);
+            fakeCrudHandler = fakeMongoHandler(testConfig);
+            errorsFoundHelper = testingHelper(fakeCrudHandler,port,false);
         
         });
 

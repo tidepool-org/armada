@@ -4,8 +4,8 @@ var fixture = require('./fixtures.js'),
 /*jshint unused:false */
     should = fixture.should,
     supertest = fixture.supertest,
-    TestHelper = fixture.TestingHelper,
-    MongoHandler = require('../lib/handler/MongoHandler'),
+    testHelper = fixture.testingHelper,
+    mongoHandler = require('../lib/handler/MongoHandler'),
     apiEndPoint,
     helper,
     testDbInstance,
@@ -56,9 +56,9 @@ describe('message API', function() {
         }
 
         console.log('test config ',config);
-        crudHandler = MongoHandler(config);
+        crudHandler = mongoHandler(config);
         
-        helper = TestHelper(crudHandler,config.port,true);
+        helper = testHelper(crudHandler,config.port,true);
         testDbInstance = helper.mongoTestInstance();
         apiEndPoint = helper.armadaServiceEndpoint();
 

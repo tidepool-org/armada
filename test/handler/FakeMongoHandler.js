@@ -6,18 +6,21 @@ settings;
 /*
     Handler CRUD opertaions via Mongo instance
 */
-var FakeMongoHandler = function(config) {
+var fakeMongoHandler = function(config) {
 
     log = require('../../lib/log.js')('FakeMongoHandler.js');
     settings = config;
 
-    this.createGroup = handleCreateGroup;
-    this.findGroupsPatientIn = handleFindGroupsPatientIn;
-    this.findGroupsMemberOf = handleFindGroupsMemberOf;
-    this.findGroupsOwnerOf = handleFindGroupsOwnerOf;
-    this.addUserToGroup = handleAddUserToGroup;
-    this.removeUserFromGroup = handleRemoveUserFromGroup;
-    this.findPatientForGroup = handleFindPatientForGroup;
+    return {
+        createGroup : handleCreateGroup,
+        findGroupsPatientIn : handleFindGroupsPatientIn,
+        findGroupsMemberOf : handleFindGroupsMemberOf,
+        findGroupsOwnerOf : handleFindGroupsOwnerOf,
+        addUserToGroup : handleAddUserToGroup,
+        removeUserFromGroup : handleRemoveUserFromGroup,
+        findPatientForGroup : handleFindPatientForGroup
+    };
+
 };
 
 function resolveCallbackValues(callback,data){
@@ -133,4 +136,4 @@ function handleFindPatientForGroup(groupId,callback){
     return resolveCallbackValues(callback,'99999999');
 }
 
-module.exports = FakeMongoHandler;
+module.exports = fakeMongoHandler;

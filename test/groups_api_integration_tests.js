@@ -1,8 +1,10 @@
 'use strict';
 
-var should = require('chai').should(),
-    supertest = require('supertest'),
-    TestHelper = require('./TestingHelper'),
+var fixture = require('./fixture.js'),
+/*jshint unused:false */
+    should = fixture.should,
+    supertest = fixture.supertest,
+    TestHelper = fixture.TestingHelper,
     MongoHandler = require('../lib/handler/MongoHandler'),
     apiEndPoint,
     helper,
@@ -115,7 +117,7 @@ describe('message API', function() {
             .end(function(err, res) {
                 if (err) return done(err);
                 res.body.should.have.property('id');
-                res.body.id.should.not.be.empty;
+                res.body.id.should.not.equal('');
                 done();
             });
         });
@@ -135,7 +137,7 @@ describe('message API', function() {
             .expect(201)
             .end(function(err, res) {
                 if (err) return done(err);
-                helper.validateId(res.body.id).should.be.true;
+                helper.validateId(res.body.id).should.equal(true);
                 done();
             });
         });
@@ -169,7 +171,7 @@ describe('message API', function() {
                 var foundGroups = res.body.groups;
 
                 foundGroups.forEach(function(group){
-                    helper.validateGroup(group).should.be.true;
+                    helper.validateGroup(group).should.equal(true);
                 });
 
                 done();
@@ -203,7 +205,7 @@ describe('message API', function() {
                 var foundGroups = res.body.groups;
 
                 foundGroups.forEach(function(group){
-                    helper.validateGroup(group).should.be.true;
+                    helper.validateGroup(group).should.equal(true);
                 });
 
                 done();
@@ -238,7 +240,7 @@ describe('message API', function() {
                 var foundGroups = res.body.groups;
 
                 foundGroups.forEach(function(group){
-                    helper.validateGroup(group).should.be.true;
+                    helper.validateGroup(group).should.equal(true);
                 });
 
                 done();
@@ -290,7 +292,7 @@ describe('message API', function() {
                 //get the group and check
                 var updatedGroup = res.body.group;
                 updatedGroup.members.should.contain(userToAdd);
-                helper.validateGroup(updatedGroup).should.be.true;
+                helper.validateGroup(updatedGroup).should.equal(true);
 
                 done();
             });
@@ -341,7 +343,7 @@ describe('message API', function() {
                 var updatedGroup = res.body.group;
                 updatedGroup.members.should.not.contain(userToRemove);
 
-                helper.validateGroup(updatedGroup).should.be.true;
+                helper.validateGroup(updatedGroup).should.equal(true);
 
                 done();
             });

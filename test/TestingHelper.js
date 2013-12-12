@@ -48,7 +48,7 @@ function isValidGroup(group){
     ('name' in group && group.name !== '') &&
     ('owners' in group && group.owners.length > 0) &&
     ('members' in group && group.members.length > 0) &&
-    ('patient' in group && group.patient !== '')) 
+    ('patient' in group && group.patient !== ''))
     {
         return true;
     } else {

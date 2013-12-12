@@ -1,9 +1,9 @@
 'use strict';
-
-/*jshint unused: vars */
-var should = require('chai').should(),
-    supertest = require('supertest'),
-    TestingSetup = require('./TestingSetup'),
+var fixture = require('./fixture.js'),
+/*jshint unused:false */
+    should = fixture.should,
+    supertest = fixture.supertest,
+    TestingHelper = fixture.TestingHelper,
     FakeMongoHandler = require('./handler/FakeMongoHandler');
 
 describe('message API', function() {
@@ -25,7 +25,7 @@ describe('message API', function() {
             };
         
             fakeCrudHandler = new FakeMongoHandler(testConfig);
-            setup = new TestingSetup(fakeCrudHandler,port,false);
+            setup = new TestingHelper(fakeCrudHandler,port,false);
         
         });
 
@@ -134,7 +134,7 @@ describe('message API', function() {
             };
         
             fakeCrudHandler = new FakeMongoHandler(testConfig);
-            noDataFoundSetup = new TestingSetup(fakeCrudHandler,port,false);
+            noDataFoundSetup = new TestingHelper(fakeCrudHandler,port,false);
         
         });
 
@@ -204,7 +204,7 @@ describe('message API', function() {
             };
         
             fakeCrudHandler = new FakeMongoHandler(testConfig);
-            errorsFoundSetup = new TestingSetup(fakeCrudHandler,port,false);
+            errorsFoundSetup = new TestingHelper(fakeCrudHandler,port,false);
         
         });
 

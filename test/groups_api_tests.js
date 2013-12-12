@@ -97,7 +97,7 @@ describe('message API', function() {
         it('/api/group/deluser returns 200 when all good', function(done) {
 
             supertest(normalPathAPIEndPoint)
-            .put('/api/group/deluser/34444444')
+            .del('/api/group/deluser/34444444')
             .send({userid:'12345997'})
             .expect(200,done);
         });
@@ -187,7 +187,7 @@ describe('message API', function() {
         it('/api/group/deluser returns 204 when no match', function(done) {
 
             supertest(noDataEndpoint)
-            .put('/api/group/deluser/99999775')
+            .del('/api/group/deluser/99999775')
             .send({userid:'12345997'})
             .expect(204,done);
         });
@@ -306,7 +306,7 @@ describe('message API', function() {
         it('/api/group/deluser returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(errorsEndpoint)
-            .put('/api/group/deluser/33333')
+            .del('/api/group/deluser/33333')
             .send({userid:'12345997'})
             .expect(500)
             .end(function(err, res) {

@@ -278,23 +278,23 @@ describe('message API', function() {
 
     describe('put /api/group/deluser/:groupid', function() {
 
-        var testDeleteUserGroup;
+        var testdelUserGroup;
 
         before(function(done){
             //Get existing group to use in tests 
             testDbInstance.groups.findOne({name:'test_deluser'},function(err, doc) {
-                testDeleteUserGroup = doc;
+                testdelUserGroup = doc;
                 done();
             });
         });
 
         it('returns 200 when user is removed from the group', function(done) {
 
-            var groupId = testDeleteUserGroup._id;
-            var userToRemove = testDeleteUserGroup.members[1];
+            var groupId = testdelUserGroup._id;
+            var userToRemove = testdelUserGroup.members[1];
 
             supertest(apiEndPoint)
-            .put('/api/group/deluser/'+groupId)
+            .del('/api/group/deluser/'+groupId)
             .send({userid : userToRemove})
             .expect(200)
             .end(function(err, res) {
@@ -312,7 +312,7 @@ describe('message API', function() {
             var userToRemove = '12345997';
 
             supertest(apiEndPoint)
-            .put('/api/group/deluser/'+fakeGroupId)
+            .del('/api/group/deluser/'+fakeGroupId)
             .send({userid : userToRemove})
             .expect(204)
             .end(function(err, res) {
@@ -325,11 +325,11 @@ describe('message API', function() {
         it('returns 200 when try to remove a user that is not in the group anyway', function(done) {
 
             //i am just guessing????
-            var groupId = testDeleteUserGroup._id;
+            var groupId = testdelUserGroup._id;
             var userToRemove = '123xx45997';
 
             supertest(apiEndPoint)
-            .put('/api/group/deluser/'+groupId)
+            .del('/api/group/deluser/'+groupId)
             .send({userid : userToRemove})
             .expect(200)
             .end(function(err, res) {

@@ -259,6 +259,24 @@ describe('message API', function() {
                 done();
             });
         });
+
+        it('the one group is valid', function(done) {
+
+            supertest(apiEndPoint)
+            .get('/api/group/patient/8876')
+            .expect(200)
+            .end(function(err, res) {
+                if (err) return done(err);
+
+                var foundGroups = res.body.groups;
+
+                foundGroups.forEach(function(group){
+                    setup.checkGroup(group).should.be.true;
+                });
+
+                done();
+            });
+        });
     });
 
     describe('put /api/group/adduser/:groupid', function() {

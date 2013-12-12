@@ -10,7 +10,7 @@ var ArmadaService = require('../lib/ArmadaService'),
 /*
     Setup for testing
 */
-var TestingSetup = function(crudHandler,port,integrationTest) {
+var TestingHelper = function(crudHandler,port,integrationTest) {
 
     isIntegration = integrationTest;
 
@@ -21,12 +21,12 @@ var TestingSetup = function(crudHandler,port,integrationTest) {
 
     service = new ArmadaService(crudHandler,servicePort);
     service.start();
-    this.stopService = stopTestService;
-    this.mongoInstance = getMongoInstance;
-    this.mongoId = getMongoId;
-    this.checkId = isValidId;
-    this.checkGroup = isValidGroup;
-    this.localhostEndpoint = getLocalhostEndpoint;
+    this.stopArmadaService = stopTestService;
+    this.mongoTestInstance = getMongoInstance;
+    this.createMongoId = getMongoId;
+    this.validateId = isValidId;
+    this.validateGroup = isValidGroup;
+    this.armadaServiceEndpoint = getLocalhostEndpoint;
 
 };
 
@@ -41,6 +41,7 @@ function getMongoId(){
     return false;
 }
 
+//do we have all the required feilds we expect in a group
 function isValidGroup(group){
     
     if (('id' in group && isValidId(group.id)) &&
@@ -55,6 +56,7 @@ function isValidGroup(group){
     }
 }
 
+//is the id valid given we are using mongo?
 function isValidId(idString){
     if(isIntegration){
         try{
@@ -79,4 +81,4 @@ function getLocalhostEndpoint(){
     return 'http://localhost:'+servicePort;
 }
 
-module.exports = TestingSetup;
+module.exports = TestingHelper;

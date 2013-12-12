@@ -2,10 +2,10 @@
 
 var should = require('chai').should(),
     supertest = require('supertest'),
-    TestingSetup = require('./TestingSetup'),
+    TestHelper = require('./TestingHelper'),
     MongoHandler = require('../lib/handler/MongoHandler'),
     apiEndPoint,
-    setup,
+    helper,
     testDbInstance,
     testGroups;
 
@@ -56,9 +56,9 @@ describe('message API', function() {
         console.log('test config ',config);
         crudHandler = new MongoHandler(config);
         
-        setup = new TestingSetup(crudHandler,config.port,true);
-        testDbInstance = setup.mongoInstance();
-        apiEndPoint = setup.localhostEndpoint();
+        helper = new TestHelper(crudHandler,config.port,true);
+        testDbInstance = helper.mongoTestInstance();
+        apiEndPoint = helper.armadaServiceEndpoint();
 
         /*
         Clean and then load our test data
@@ -135,7 +135,7 @@ describe('message API', function() {
             .expect(201)
             .end(function(err, res) {
                 if (err) return done(err);
-                setup.checkId(res.body.id).should.be.true;
+                helper.validateId(res.body.id).should.be.true;
                 done();
             });
         });
@@ -169,7 +169,7 @@ describe('message API', function() {
                 var foundGroups = res.body.groups;
 
                 foundGroups.forEach(function(group){
-                    setup.checkGroup(group).should.be.true;
+                    helper.validateGroup(group).should.be.true;
                 });
 
                 done();
@@ -203,7 +203,7 @@ describe('message API', function() {
                 var foundGroups = res.body.groups;
 
                 foundGroups.forEach(function(group){
-                    setup.checkGroup(group).should.be.true;
+                    helper.validateGroup(group).should.be.true;
                 });
 
                 done();
@@ -238,7 +238,7 @@ describe('message API', function() {
                 var foundGroups = res.body.groups;
 
                 foundGroups.forEach(function(group){
-                    setup.checkGroup(group).should.be.true;
+                    helper.validateGroup(group).should.be.true;
                 });
 
                 done();
@@ -290,7 +290,7 @@ describe('message API', function() {
                 //get the group and check
                 var updatedGroup = res.body.group;
                 updatedGroup.members.should.contain(userToAdd);
-                setup.checkGroup(updatedGroup).should.be.true;
+                helper.validateGroup(updatedGroup).should.be.true;
 
                 done();
             });
@@ -341,7 +341,7 @@ describe('message API', function() {
                 var updatedGroup = res.body.group;
                 updatedGroup.members.should.not.contain(userToRemove);
 
-                setup.checkGroup(updatedGroup).should.be.true;
+                helper.validateGroup(updatedGroup).should.be.true;
 
                 done();
             });

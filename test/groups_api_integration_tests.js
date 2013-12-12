@@ -144,17 +144,6 @@ describe('message API', function() {
 
     describe('get /api/group/memberof', function() {
 
-        it('returns 204 when no there is no groups', function(done) {
-
-            supertest(apiEndPoint)
-            .get('/api/group/memberof/33333')
-            .expect(204)
-            .end(function(err, res) {
-                if (err) return done(err);
-                done();
-            });
-        });
-
         it('returns 200 and two groups when I ask for 12345', function(done) {
 
             supertest(apiEndPoint)
@@ -190,17 +179,6 @@ describe('message API', function() {
 
     describe('get /api/group/ownerof', function() {
 
-        it('returns 204 when no there is no groups', function(done) {
-
-            supertest(apiEndPoint)
-            .get('/api/group/ownerof/12345')
-            .expect(204)
-            .end(function(err, res) {
-                if (err) return done(err);
-                done();
-            });
-        });
-
         it('returns 200 and two groups', function(done) {
 
             supertest(apiEndPoint)
@@ -235,17 +213,6 @@ describe('message API', function() {
 
     describe('get /api/group/patient', function() {
 
-        it('returns 204 when no there are no groups', function(done) {
-
-            supertest(apiEndPoint)
-            .get('/api/group/patient/777777777')
-            .expect(204)
-            .end(function(err, res) {
-                if (err) return done(err);
-                done();
-            });
-        });
-
         it('returns 200 and one groups when I ask for patient 8876', function(done) {
 
             supertest(apiEndPoint)
@@ -260,7 +227,7 @@ describe('message API', function() {
             });
         });
 
-        it('the one group is valid', function(done) {
+        it('the one group for patient is valid', function(done) {
 
             supertest(apiEndPoint)
             .get('/api/group/patient/8876')
@@ -302,25 +269,29 @@ describe('message API', function() {
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
-                //get the group and check
-                var updatedGroup = res.body.group;
-                updatedGroup.members.should.contain(userToAdd);
+            
+                res.body.should.have.property('group');
+
                 done();
             });
         });
 
-        it('returns 204 when try to add user to group that does not exist', function(done) {
+        it('the updated group is returned with the new user and is valid', function(done) {
 
-            var fakeGroupId = setup.mongoId();
+            var groupId = testGroupContent._id;
             var userToAdd = '12345997';
 
             supertest(apiEndPoint)
-            .post('/api/group/adduser/'+fakeGroupId)
+            .post('/api/group/adduser/'+groupId)
             .send({userid : userToAdd})
-            .expect(204)
+            .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
-                
+                //get the group and check
+                var updatedGroup = res.body.group;
+                updatedGroup.members.should.contain(userToAdd);
+                setup.checkGroup(updatedGroup).should.be.true;
+
                 done();
             });
         });
@@ -339,7 +310,23 @@ describe('message API', function() {
             });
         });
 
-        it('returns 200 when user is removed from the group', function(done) {
+        it('returns 200 and the updated group when user is removed from the group', function(done) {
+
+            var groupId = testdelUserGroup._id;
+            var userToRemove = testdelUserGroup.members[1];
+
+            supertest(apiEndPoint)
+            .del('/api/group/deluser/'+groupId)
+            .send({userid : userToRemove})
+            .expect(200)
+            .end(function(err, res) {
+                if (err) return done(err);
+                res.body.should.have.property('group');
+                done();
+            });
+        });
+
+        it('the updated group does not contain the user and is valid', function(done) {
 
             var groupId = testdelUserGroup._id;
             var userToRemove = testdelUserGroup.members[1];
@@ -353,22 +340,9 @@ describe('message API', function() {
                 //get the group and check
                 var updatedGroup = res.body.group;
                 updatedGroup.members.should.not.contain(userToRemove);
-                done();
-            });
-        });
 
-        it('returns 204 when try to remove user from a group that does not exist', function(done) {
+                setup.checkGroup(updatedGroup).should.be.true;
 
-            var fakeGroupId = setup.mongoId();
-            var userToRemove = '12345997';
-
-            supertest(apiEndPoint)
-            .del('/api/group/deluser/'+fakeGroupId)
-            .send({userid : userToRemove})
-            .expect(204)
-            .end(function(err, res) {
-                if (err) return done(err);
-                
                 done();
             });
         });
@@ -382,12 +356,7 @@ describe('message API', function() {
             supertest(apiEndPoint)
             .del('/api/group/deluser/'+groupId)
             .send({userid : userToRemove})
-            .expect(200)
-            .end(function(err, res) {
-                if (err) return done(err);
-
-                done();
-            });
+            .expect(200,done());
         });
 
     });

@@ -1,6 +1,6 @@
 'use strict';
 
-var fixture = require('./fixture.js'),
+var fixture = require('./fixtures.js'),
 /*jshint unused:false */
     should = fixture.should,
     supertest = fixture.supertest,
@@ -56,9 +56,9 @@ describe('message API', function() {
         }
 
         console.log('test config ',config);
-        crudHandler = new MongoHandler(config);
+        crudHandler = MongoHandler(config);
         
-        helper = new TestHelper(crudHandler,config.port,true);
+        helper = TestHelper(crudHandler,config.port,true);
         testDbInstance = helper.mongoTestInstance();
         apiEndPoint = helper.armadaServiceEndpoint();
 

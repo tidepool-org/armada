@@ -64,16 +64,14 @@ function isValidGroup(group){
 
 //is the id valid given we are using mongo?
 function isValidId(idString){
-    if(isIntegration){
-        try{
-            mongojs.ObjectId(idString);
-            return true;
-        }
-        catch(error){
-            return false;
-        }
+    try{
+        mongojs.ObjectId(String(idString));
+        return true;
     }
-    return false;
+    catch(error){
+        console.log('error with id string ',error);
+        return false;
+    }
 }
 
 function getMongoInstance(){

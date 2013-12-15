@@ -79,7 +79,7 @@ module.exports = function(grunt) {
                 options: {
                     reporter: 'spec'
                 },
-                src: ['test/groups_api_integration_tests.js']  
+                src: ['test/groups_api_integration_tests.js','test/mongoHandler_integration_tests.js']  
             }
         }
     });

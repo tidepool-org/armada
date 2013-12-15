@@ -4,9 +4,8 @@ var fixture = require('./fixtures.js'),
 /*jshint unused:false */
     should = fixture.should,
     supertest = fixture.supertest,
-    testHelper = fixture.testingHelper,
+    helper = fixture.testingHelper(true),
     apiEndPoint,
-    helper,
     testDbInstance,
     testGroups;
 
@@ -58,7 +57,7 @@ describe('message API', function() {
 
         mongoHandler = require('../lib/handler/MongoHandler')(config.mongoDbConnectionString);
         
-        helper = testHelper(mongoHandler,config.port,true);
+        helper.initArmadaService(mongoHandler,config.port);
         testDbInstance = helper.mongoTestInstance();
         apiEndPoint = helper.armadaServiceEndpoint();
 

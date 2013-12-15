@@ -10,19 +10,16 @@ var ArmadaService = require('../lib/ArmadaService'),
 /*
     Setup for testing
 */
-var TestingHelper = function(crudHandler,port,integrationTest) {
+var testingHelper = function(integrationTest) {
 
     isIntegration = integrationTest;
 
     if(isIntegration){
         testDbInstance = mongojs('mongodb://localhost/tidepool-platform', ['groups']);
     }
-    servicePort = port;
-
-    service = new ArmadaService(crudHandler,servicePort);
-    service.start();
 
     return {
+        initArmadaService : initArmadaService,
         stopArmadaService : stopTestService,
         mongoTestInstance : getMongoInstance,
         createMongoId : getMongoId,
@@ -32,6 +29,12 @@ var TestingHelper = function(crudHandler,port,integrationTest) {
     };
     
 };
+
+function initArmadaService(crudHandler,port){
+    servicePort = port;
+    service = new ArmadaService(crudHandler,servicePort);
+    service.start();
+}
 
 function stopTestService(){
     service.stop();
@@ -84,4 +87,4 @@ function getLocalhostEndpoint(){
     return 'http://localhost:'+servicePort;
 }
 
-module.exports = TestingHelper;
+module.exports = testingHelper;

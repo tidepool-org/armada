@@ -3,8 +3,7 @@ var fixture = require('./fixtures.js'),
 /*jshint unused:false */
     should = fixture.should,
     supertest = fixture.supertest,
-    testingHelper = fixture.testingHelper,
-    fakeMongoHandler = require('./handler/FakeMongoHandler');
+    testingHelper = fixture.testingHelper;
 
 describe('message API', function() {
 
@@ -14,18 +13,22 @@ describe('message API', function() {
 
         before(function(){
 
-            var fakeCrudHandler,
-            port;
+            var fakeMongoHandler,
+                port,
+                testConfig;
 
+            // for testing     
             port = 3400;
             
-            var testConfig  = {
+            // just a  way of seeting the path that the fake 
+            testConfig  = {
                 throwErrors : false,
                 returnNone : false
             };
+
+            fakeMongoHandler = require('./handler/FakeMongoHandler')(testConfig);
         
-            fakeCrudHandler = fakeMongoHandler(testConfig);
-            helper = testingHelper(fakeCrudHandler,port,false);
+            helper = testingHelper(fakeMongoHandler,port,false);
         
         });
 
@@ -123,18 +126,20 @@ describe('message API', function() {
 
         before(function(){
 
-            var fakeCrudHandler,
-            port;
+            var fakeMongoHandler,
+                port,
+                testConfig;
 
             port = 3400;
         
-            var testConfig  = {
+            testConfig  = {
                 throwErrors : false,
                 returnNone : true
             };
         
-            fakeCrudHandler = fakeMongoHandler(testConfig);
-            noDataHelper = testingHelper(fakeCrudHandler,port,false);
+            fakeMongoHandler = require('./handler/FakeMongoHandler')(testConfig);
+
+            noDataHelper = testingHelper(fakeMongoHandler,port,false);
         
         });
 
@@ -193,18 +198,19 @@ describe('message API', function() {
 
         before(function(){
 
-            var fakeCrudHandler,
-            port;
+            var fakeMongoHandler,
+                port,
+                testConfig;
 
             port = 3400;
         
-            var testConfig  = {
+            testConfig  = {
                 throwErrors : true,
                 returnNone : false
             };
         
-            fakeCrudHandler = fakeMongoHandler(testConfig);
-            errorsFoundHelper = testingHelper(fakeCrudHandler,port,false);
+            fakeMongoHandler = require('./handler/FakeMongoHandler')(testConfig);
+            errorsFoundHelper = testingHelper(fakeMongoHandler,port,false);
         
         });
 

@@ -4,12 +4,19 @@ var log,
 settings;
 
 /*
-    Handler CRUD opertaions via Mongo instance
+    Handler CRUD opertaions via Mongo instance, 
+    takes testing config that allows the hadler to follow
+    different paths.
+
+    1) settings.throwErrors will throw errors so we can test that path
+    2) settings.returnNone will return nothing so we can test nothing found
+    3) other wise we just return dummy data
+
 */
-var fakeMongoHandler = function(config) {
+var fakeMongoHandler = function(testingConfig) {
 
     log = require('../../lib/log.js')('FakeMongoHandler.js');
-    settings = config;
+    settings = testingConfig;
 
     return {
         createGroup : handleCreateGroup,

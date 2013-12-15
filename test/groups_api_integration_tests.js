@@ -5,7 +5,6 @@ var fixture = require('./fixtures.js'),
     should = fixture.should,
     supertest = fixture.supertest,
     testHelper = fixture.testingHelper,
-    mongoHandler = require('../lib/handler/MongoHandler'),
     apiEndPoint,
     helper,
     testDbInstance,
@@ -47,18 +46,19 @@ describe('message API', function() {
         Setup
         */
         var config,
-        crudHandler;
+            mongoHandler;
 
         config = require('../env');
         
-        if(config.mongodb_connection_string == null){
-            config.mongodb_connection_string = 'mongodb://localhost/tidepool-platform';
+        if(config.mongoDbConnectionString == null){
+            config.mongoDbConnectionString = 'mongodb://localhost/tidepool-platform';
         }
 
-        console.log('test config ',config);
-        crudHandler = mongoHandler(config);
+        console.log('testing connection ',config.mongoDbConnectionString);
+
+        mongoHandler = require('../lib/handler/MongoHandler')(config.mongoDbConnectionString);
         
-        helper = testHelper(crudHandler,config.port,true);
+        helper = testHelper(mongoHandler,config.port,true);
         testDbInstance = helper.mongoTestInstance();
         apiEndPoint = helper.armadaServiceEndpoint();
 

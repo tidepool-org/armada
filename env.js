@@ -6,7 +6,7 @@ module.exports = (function(){
     env.port = process.env.PORT || 3002;
 
     //connection to mongo
-    env.mongodb_connection_string = process.env.MONGO_CONNECTION_STRING || null;
+    env.mongoDbConnectionString = process.env.MONGO_CONNECTION_STRING || null;
 
     return env;
 })();

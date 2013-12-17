@@ -71,7 +71,7 @@ describe('message API', function() {
         });
     });
 
-    describe('post /api/group/create', function() {
+    describe('post /api/group', function() {
 
         it('returns 400 when given an invalid group to create', function(done) {
 
@@ -80,7 +80,7 @@ describe('message API', function() {
             };
 
             supertest(apiEndPoint)
-            .post('/api/group/create')
+            .post('/api/group')
             .send({group:testGroup})
             .expect(400)
             .end(function(err, res) {
@@ -92,7 +92,7 @@ describe('message API', function() {
         it('returns 400 when no data is sent', function(done) {
 
             supertest(apiEndPoint)
-            .post('/api/group/create')
+            .post('/api/group')
             .expect(400)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -110,7 +110,7 @@ describe('message API', function() {
             };
 
             supertest(apiEndPoint)
-            .post('/api/group/create')
+            .post('/api/group')
             .send({group:testGroup})
             .expect(201)
             .end(function(err, res) {
@@ -131,7 +131,7 @@ describe('message API', function() {
             };
 
             supertest(apiEndPoint)
-            .post('/api/group/create')
+            .post('/api/group')
             .send({group:testGroup})
             .expect(201)
             .end(function(err, res) {

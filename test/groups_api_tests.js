@@ -36,7 +36,7 @@ describe('message API', function() {
             helper.stopArmadaService();
         });
 
-        it('/api/group/create 201 when all good', function(done) {
+        it('post /api/group 201 when all good', function(done) {
 
             var testGroup = {
                 name : 'test create for 201',
@@ -46,13 +46,13 @@ describe('message API', function() {
             };
 
             supertest(helper.armadaServiceEndpoint())
-            .post('/api/group/create')
+            .post('/api/group')
             .send({group:testGroup})
             .expect(201,done);
 
         });
 
-        it('/api/group/create 200 when all good', function(done) {
+        it('post /api/group 200 when all good', function(done) {
 
             var testGroup = {
                 name : 'test create for 201',
@@ -62,7 +62,7 @@ describe('message API', function() {
             };
 
             supertest(helper.armadaServiceEndpoint())
-            .post('/api/group/create')
+            .post('/api/group')
             .send({group:testGroup})
             .expect(201,done);
             
@@ -220,7 +220,7 @@ describe('message API', function() {
             errorsFoundHelper.stopArmadaService();
         });
 
-        it('/api/group/create returns 500 and does not return error so we do not leak implemention details', function(done) {
+        it('post /api/group returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             var testGroup =
             {
@@ -231,7 +231,7 @@ describe('message API', function() {
             };
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
-            .post('/api/group/create')
+            .post('/api/group')
             .send({group:testGroup})
             .expect(500)
             .end(function(err, res) {

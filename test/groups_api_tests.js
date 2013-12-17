@@ -68,10 +68,10 @@ describe('message API', function() {
             
         });
 
-        it('/api/group/memberof returns 200 when all good', function(done) {
+        it('/api/group/membership returns 200 when all good', function(done) {
 
             supertest(helper.armadaServiceEndpoint())
-            .get('/api/group/memberof/33333')
+            .get('/api/group/membership/33333/member')
             .expect(200,done);
         });
 
@@ -105,10 +105,10 @@ describe('message API', function() {
             .expect(200,done);
         });
 
-        it('/api/group/member returns 501 as not yet implemented', function(done) {
+        it('get /api/group/:groupid/members returns 501 as not yet implemented', function(done) {
 
             supertest(helper.armadaServiceEndpoint())
-            .get('/api/group/members/34444444')
+            .get('/api/group/34444444/members')
             .expect(501,done);
         });
 
@@ -148,10 +148,10 @@ describe('message API', function() {
             noDataHelper.stopArmadaService();
         });
 
-        it('/api/group/memberof returns 204 when no data', function(done) {
+        it('/api/group/membership returns 204 when no data', function(done) {
 
             supertest(noDataHelper.armadaServiceEndpoint())
-            .get('/api/group/memberof/33333')
+            .get('/api/group/membership/33333/member')
             .expect(204,done);
         });
 
@@ -241,10 +241,10 @@ describe('message API', function() {
             });
         });
 
-        it('/api/group/memberof returns 500 and does not return error so we do not leak implemention details', function(done) {
+        it('/api/group/membership returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
-            .get('/api/group/memberof/33333')
+            .get('/api/group/membership/33333/member')
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);

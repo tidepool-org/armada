@@ -143,12 +143,12 @@ describe('message API', function() {
         
     });
 
-    describe('get /api/group/memberof', function() {
+    describe('get /api/group/membership/:userid/member', function() {
 
         it('returns 200 and two groups when I ask for 12345', function(done) {
 
             supertest(apiEndPoint)
-            .get('/api/group/memberof/12345')
+            .get('/api/group/membership/12345/member')
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -162,7 +162,7 @@ describe('message API', function() {
         it('the groups should be valid', function(done) {
 
             supertest(apiEndPoint)
-            .get('/api/group/memberof/12345')
+            .get('/api/group/membership/12345/member')
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);

@@ -178,12 +178,12 @@ describe('message API', function() {
         });
     });
 
-    describe('get /api/group/ownerof', function() {
+    describe('get /api/group/membership/:userid/owner', function() {
 
         it('returns 200 and two groups', function(done) {
 
             supertest(apiEndPoint)
-            .get('/api/group/ownerof/3343')
+            .get('/api/group/membership/3343/owner')
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -196,7 +196,7 @@ describe('message API', function() {
         it('the two groups should be valid', function(done) {
 
             supertest(apiEndPoint)
-            .get('/api/group/ownerof/3343')
+            .get('/api/group/membership/3343/owner')
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);

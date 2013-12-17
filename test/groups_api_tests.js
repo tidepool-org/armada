@@ -155,10 +155,10 @@ describe('message API', function() {
             .expect(204,done);
         });
 
-        it('/api/group/ownerof returns 204 when no data', function(done) {
+        it('/api/group/membership/:userid/owner returns 204 when no data', function(done) {
 
             supertest(noDataHelper.armadaServiceEndpoint())
-            .get('/api/group/ownerof/33333')
+            .get('/api/group/membership/33333/owner')
             .expect(204,done);
         });
 
@@ -254,10 +254,10 @@ describe('message API', function() {
 
         });
 
-        it('/api/group/ownerof returns 500 and does not return error so we do not leak implemention details', function(done) {
+        it('/api/group/membership/:userid/owner returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
-            .get('/api/group/ownerof/33333')
+            .get('/api/group/membership/33333/owner')
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);

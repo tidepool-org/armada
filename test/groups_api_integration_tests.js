@@ -299,7 +299,7 @@ describe('message API', function() {
 
     });
 
-    describe('put /api/group/deluser/:groupid', function() {
+    describe('delete /api/group/:groupid/user', function() {
 
         var testdelUserGroup;
 
@@ -317,7 +317,7 @@ describe('message API', function() {
             var userToRemove = testdelUserGroup.members[1];
 
             supertest(apiEndPoint)
-            .del('/api/group/deluser/'+groupId)
+            .del('/api/group/'+groupId+'/user')
             .send({userid : userToRemove})
             .expect(200)
             .end(function(err, res) {
@@ -333,7 +333,7 @@ describe('message API', function() {
             var userToRemove = testdelUserGroup.members[1];
 
             supertest(apiEndPoint)
-            .del('/api/group/deluser/'+groupId)
+            .del('/api/group/'+groupId+'/user')
             .send({userid : userToRemove})
             .expect(200)
             .end(function(err, res) {

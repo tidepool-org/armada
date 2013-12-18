@@ -90,10 +90,10 @@ describe('message API', function() {
             .expect(200,done);
         });
 
-        it('/api/group/deluser returns 200 when all good', function(done) {
+        it('delete /api/group/:groupid/user returns 200 when all good', function(done) {
 
             supertest(helper.armadaServiceEndpoint())
-            .del('/api/group/deluser/34444444')
+            .del('/api/group/34444444/user')
             .send({userid:'12345997'})
             .expect(200,done);
         });
@@ -177,10 +177,10 @@ describe('message API', function() {
             .expect(204,done);
         });
 
-        it('/api/group/deluser returns 204 when no match', function(done) {
+        it('delete /api/group/:groupid/user returns 204 when no match', function(done) {
 
             supertest(noDataHelper.armadaServiceEndpoint())
-            .del('/api/group/deluser/99999775')
+            .del('/api/group/99999775/user')
             .send({userid:'12345997'})
             .expect(204,done);
         });
@@ -292,10 +292,10 @@ describe('message API', function() {
             });
         });
 
-        it('/api/group/deluser returns 500 and does not return error so we do not leak implemention details', function(done) {
+        it('delete /api/group/:groupid/user returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
-            .del('/api/group/deluser/33333')
+            .del('/api/group/33333/user')
             .send({userid:'12345997'})
             .expect(500)
             .end(function(err, res) {

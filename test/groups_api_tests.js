@@ -112,10 +112,10 @@ describe('message API', function() {
             .expect(501,done);
         });
 
-        it('/api/group/allusers returns 501 as not yet implemented', function(done) {
+        it('/api/group/:groupid/allusers returns 501 as not yet implemented', function(done) {
 
             supertest(helper.armadaServiceEndpoint())
-            .get('/api/group/allusers/34444444')
+            .get('/api/group/34444444/allusers')
             .expect(501,done);
         });
     });

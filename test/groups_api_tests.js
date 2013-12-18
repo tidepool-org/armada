@@ -82,10 +82,10 @@ describe('message API', function() {
             .expect(200,done);
         });
 
-        it('/api/group/adduser returns 200 when all good', function(done) {
+        it('/api/group/:groupid/user returns 200 when all good', function(done) {
 
             supertest(helper.armadaServiceEndpoint())
-            .post('/api/group/adduser/34444444')
+            .post('/api/group/34444444/user')
             .send({userid:'12345997'})
             .expect(200,done);
         });
@@ -169,10 +169,10 @@ describe('message API', function() {
             .expect(204,done);
         });
 
-        it('/api/group/adduser returns 204 when no match', function(done) {
+        it('/api/group/:groupid/user returns 204 when no match', function(done) {
 
             supertest(noDataHelper.armadaServiceEndpoint())
-            .post('/api/group/adduser/88888888')
+            .post('/api/group/88888888/user')
             .send({userid:'12345997'})
             .expect(204,done);
         });
@@ -279,10 +279,10 @@ describe('message API', function() {
             });
         });
 
-        it('/api/group/adduser returns 500 and does not return error so we do not leak implemention details', function(done) {
+        it('/api/group/:groupid/user returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
-            .post('/api/group/adduser/33333')
+            .post('/api/group/33333/user')
             .send({userid:'12345997'})
             .expect(500)
             .end(function(err, res) {

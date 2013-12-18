@@ -247,7 +247,7 @@ describe('message API', function() {
         });
     });
 
-    describe('put /api/group/adduser/:groupid', function() {
+    describe('post /api/group/:groupid/user', function() {
 
         var testGroupContent;
 
@@ -265,7 +265,7 @@ describe('message API', function() {
             var userToAdd = '12345997';
 
             supertest(apiEndPoint)
-            .post('/api/group/adduser/'+groupId)
+            .post('/api/group/'+groupId+'/user')
             .send({userid : userToAdd})
             .expect(200)
             .end(function(err, res) {
@@ -283,7 +283,7 @@ describe('message API', function() {
             var userToAdd = '12345997';
 
             supertest(apiEndPoint)
-            .post('/api/group/adduser/'+groupId)
+            .post('/api/group/'+groupId+'/user')
             .send({userid : userToAdd})
             .expect(200)
             .end(function(err, res) {

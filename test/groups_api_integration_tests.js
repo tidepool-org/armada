@@ -212,12 +212,12 @@ describe('message API', function() {
         });
     });
 
-    describe('get /api/group/patient', function() {
+    describe('get /api/group/:groupid/patient', function() {
 
         it('returns 200 and one groups when I ask for patient 8876', function(done) {
 
             supertest(apiEndPoint)
-            .get('/api/group/patient/8876')
+            .get('/api/group/membership/8876/patient')
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -231,7 +231,7 @@ describe('message API', function() {
         it('the one group for patient is valid', function(done) {
 
             supertest(apiEndPoint)
-            .get('/api/group/patient/8876')
+            .get('/api/group/membership/8876/patient')
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -362,7 +362,7 @@ describe('message API', function() {
 
     });
 
-    describe('get /api/group/getpatient/:groupid', function() {
+    describe('get /api/group/:groupid/patient', function() {
 
         var testGroup;
 
@@ -380,7 +380,7 @@ describe('message API', function() {
             var patientId = testGroup.patient;
 
             supertest(apiEndPoint)
-            .get('/api/group/getpatient/'+groupId)
+            .get('/api/group/'+groupId+'/patient')
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);

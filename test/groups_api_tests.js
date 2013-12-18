@@ -75,10 +75,10 @@ describe('message API', function() {
             .expect(200,done);
         });
 
-        it('/api/group/patient returns 200 when all good', function(done) {
+        it('/api/group/membership/:userid/patient returns 200 when all good', function(done) {
 
             supertest(helper.armadaServiceEndpoint())
-            .get('/api/group/patient/33333')
+            .get('/api/group/membership/33333/patient')
             .expect(200,done);
         });
 
@@ -98,10 +98,10 @@ describe('message API', function() {
             .expect(200,done);
         });
 
-        it('/api/group/patient returns 200 when all good', function(done) {
+        it('/api/group/:groupid/patient returns 200 when all good', function(done) {
 
             supertest(helper.armadaServiceEndpoint())
-            .get('/api/group/patient/34444444')
+            .get('/api/group/34444444/patient')
             .expect(200,done);
         });
 
@@ -162,10 +162,10 @@ describe('message API', function() {
             .expect(204,done);
         });
 
-        it('/api/group/patient returns 204 when no data', function(done) {
+        it('/api/group/membership/:userid/patient returns 204 when no data', function(done) {
 
             supertest(noDataHelper.armadaServiceEndpoint())
-            .get('/api/group/patient/33333')
+            .get('/api/group/membership/33333/patient')
             .expect(204,done);
         });
 
@@ -185,10 +185,10 @@ describe('message API', function() {
             .expect(204,done);
         });
 
-        it('/api/group/getpatient returns error when one has been raised', function(done) {
+        it('/api/group/membership/:userid/patient returns error when one has been raised', function(done) {
 
             supertest(noDataHelper.armadaServiceEndpoint())
-            .get('/api/group/getpatient/33333')
+            .get('/api/group/membership/33333/patient')
             .expect(204,done);
         });
     });
@@ -267,10 +267,10 @@ describe('message API', function() {
 
         });
 
-        it('/api/group/patient returns 500 and does not return error so we do not leak implemention details', function(done) {
+        it('/api/group/membership/:userid/patient returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
-            .get('/api/group/patient/33333')
+            .get('/api/group/membership/33333/patient')
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -305,10 +305,10 @@ describe('message API', function() {
             });
         });
 
-        it('/api/group/getpatient 500 and does not return error so we do not leak implemention details', function(done) {
+        it('/api/group/:groupid/patient 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
-            .get('/api/group/getpatient/33333')
+            .get('/api/group/33333/patient')
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);

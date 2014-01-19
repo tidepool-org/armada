@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>MongoHandler.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          <h1>MongoHandler.js</h1>
+        
+
+        
+      </div>
+
+      
+        
+        
+        
+          <div class='highlight'><pre><span class="comment">/*
+== BSD2 LICENSE ==
+Copyright (c) 2014, Tidepool Project
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the associated License, which is identical to the BSD 2-Clause
+License as published by the Open Source Initiative at opensource.org.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the License for more details.
+
+You should have received a copy of the License along with this program; if
+not, you can obtain one from Tidepool Project at tidepool.org.
+== BSD2 LICENSE ==
+ */</span>
+
+<span class="string">'use strict'</span>;
+
+<span class="keyword">var</span> mongojs = require(<span class="string">'mongojs'</span>),
+    groupsCollection,
+    groupsCollectionName = <span class="string">'groups'</span>,
+    log = require(<span class="string">'../log.js'</span>)(<span class="string">'MongoHandler.js'</span>);
+
+<span class="comment">/*
+    Handler CRUD opertaions via Mongo instance
+*/</span>
+<span class="keyword">var</span> mongoHandler = <span class="function"><span class="keyword">function</span><span class="params">(connectionString)</span> {</span>
+
+    <span class="keyword">var</span> dbInstance = mongojs(connectionString, [groupsCollectionName]);
+    groupsCollection = dbInstance.collection(groupsCollectionName);
+
+    <span class="keyword">return</span> {
+        createGroup : handleCreateGroup,
+        findGroupsPatientIn : handleFindGroupsPatientIn,
+        findGroupsMemberOf : handleFindGroupsMemberOf,
+        findGroupsOwnerOf : handleFindGroupsOwnerOf,
+        addUserToGroup : handleAddUserToGroup,
+        removeUserFromGroup : handleRemoveUserFromGroup,
+        findPatientForGroup : handleFindPatientForGroup
+    };
+};
+
+<span class="comment">/*
+    With mongo we change to use the if field
+*/</span>
+<span class="function"><span class="keyword">function</span> <span class="title">setGroup</span><span class="params">(doc)</span>{</span>
+    <span class="keyword">var</span> group = {};
+    group.id = doc._id;
+    group.owners = doc.owners;
+    group.members = doc.members;
+    group.patient = doc.patient;
+    group.name = doc.name;
+    <span class="keyword">return</span> group;
+}
+
+<span class="function"><span class="keyword">function</span> <span class="title">handleCreateGroup</span> <span class="params">(group,callback)</span> {</span>
+    log.debug(<span class="string">'Create in mongo group[%j]'</span>, group);
+
+    groupsCollection.save(group, <span class="function"><span class="keyword">function</span><span class="params">(error, doc)</span> {</span>
+        <span class="keyword">if</span> (error) {
+            <span class="keyword">return</span> callback(error,<span class="literal">null</span>);
+        } <span class="keyword">else</span> {
+            <span class="keyword">return</span> callback(<span class="literal">null</span>, doc._id);
+        }
+    });
+}
+
+<span class="function"><span class="keyword">function</span> <span class="title">handleFindGroupsMemberOf</span><span class="params">(userId,callback)</span> {</span>
+    
+    log.debug(<span class="string">'Finding groups member of userid[%s]'</span>, userId);
+    groupsCollection.find({ $or: [
+        { owners : userId },
+        { members : userId },
+        { patient : userId }
+    ]},
+    <span class="function"><span class="keyword">function</span><span class="params">(error,doc)</span>{</span>
+        <span class="keyword">if</span> (error) {
+            <span class="keyword">return</span> callback(error,<span class="literal">null</span>);
+        } <span class="keyword">else</span> {
+            <span class="keyword">var</span> groups = [];
+            doc.forEach(<span class="function"><span class="keyword">function</span><span class="params">(item)</span>{</span>
+                groups.push(setGroup(item));
+            });
+            <span class="keyword">return</span> callback(<span class="literal">null</span>,groups);
+        }
+    });
+}
+
+<span class="function"><span class="keyword">function</span> <span class="title">handleFindGroupsOwnerOf</span><span class="params">(userId,callback)</span> {</span>
+    log.debug(<span class="string">'Finding groups owned by userid[%s]'</span>, userId);
+    groupsCollection.find(
+        { owners : userId }
+    , <span class="function"><span class="keyword">function</span><span class="params">(error,doc)</span>{</span>
+        <span class="keyword">if</span> (error) {
+            <span class="keyword">return</span> callback(error,<span class="literal">null</span>);
+        } <span class="keyword">else</span> {
+            <span class="keyword">var</span> groups = [];
+            doc.forEach(<span class="function"><span class="keyword">function</span><span class="params">(item)</span>{</span>
+                groups.push(setGroup(item));
+            });
+            <span class="keyword">return</span> callback(<span class="literal">null</span>,groups);
+        }
+    });
+}
+
+<span class="function"><span class="keyword">function</span> <span class="title">handleFindGroupsPatientIn</span><span class="params">(userId,callback)</span> {</span>
+    log.debug(<span class="string">'Finding groups patient[%s] is in'</span>, userId);
+    groupsCollection.find(
+        { patient :userId },
+        <span class="function"><span class="keyword">function</span><span class="params">(error,doc)</span>{</span>
+            <span class="keyword">if</span> (error) {
+                <span class="keyword">return</span> callback(error,<span class="literal">null</span>);
+            }
+
+            <span class="keyword">var</span> groups = [];
+            doc.forEach(<span class="function"><span class="keyword">function</span><span class="params">(item)</span>{</span>
+                groups.push(setGroup(item));
+            });
+            <span class="keyword">return</span> callback(<span class="literal">null</span>,groups);
+        }
+    );
+}
+
+<span class="function"><span class="keyword">function</span> <span class="title">handleAddUserToGroup</span><span class="params">(groupId, userId, callback)</span> {</span>
+    log.debug(<span class="string">'Adding user[%s] to group[%s]'</span>, userId, groupId);
+
+    groupsCollection.findAndModify({
+        query: { _id : mongojs.ObjectId(groupId) },
+        update: { $push : { members : userId } }, <span class="comment">//add the user to the members array </span>
+        <span class="keyword">new</span> : <span class="literal">true</span> <span class="comment">//we are using new : true to return the updated group</span>
+    },
+    <span class="function"><span class="keyword">function</span><span class="params">(error, doc)</span> {</span>
+        <span class="keyword">if</span> (error) {
+            <span class="keyword">return</span> callback(error,<span class="literal">null</span>);
+        }
+
+        log.debug(<span class="string">'Update [%j] groups by adding user[%s]'</span>, doc, userId);
+        <span class="keyword">return</span> callback(<span class="literal">null</span>,setGroup(doc));
+    });
+}
+
+<span class="function"><span class="keyword">function</span> <span class="title">handleRemoveUserFromGroup</span><span class="params">(groupId, userId, callback)</span> {</span>
+    log.debug(<span class="string">'Removing user[%s] from group[%s]'</span>, userId, groupId);
+
+    groupsCollection.findAndModify({
+        query: { _id : mongojs.ObjectId(groupId) },
+        update: { $pull : { members : userId , owners : userId } }, <span class="comment">//remove user from these</span>
+        <span class="keyword">new</span> : <span class="literal">true</span> <span class="comment">//using new : true to return the updated group</span>
+    },
+    <span class="function"><span class="keyword">function</span><span class="params">(error, doc)</span> {</span>
+        <span class="keyword">if</span> (error) {
+            <span class="keyword">return</span> callback(error,<span class="literal">null</span>);
+        }
+             
+        log.debug(<span class="string">'Update [%j] groups by removing user[%s]'</span>, doc, userId);
+            
+        <span class="keyword">return</span> callback(<span class="literal">null</span>,setGroup(doc));
+    });
+}
+
+<span class="function"><span class="keyword">function</span> <span class="title">handleFindPatientForGroup</span><span class="params">(groupId, callback)</span> {</span>
+    log.debug(<span class="string">'Finding patient for group[%s]'</span>, groupId);
+
+    groupsCollection.findOne(
+        { _id : mongojs.ObjectId(groupId) },
+        <span class="function"><span class="keyword">function</span><span class="params">(error, doc)</span> {</span>
+            <span class="keyword">if</span> (error) {
+                <span class="keyword">return</span> callback(error,<span class="literal">null</span>);
+            }
+            <span class="keyword">return</span> callback(<span class="literal">null</span>,doc.patient);
+        }
+    );
+}
+
+module.exports = mongoHandler;</pre></div>
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>

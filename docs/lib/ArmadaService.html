@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>ArmadaService.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          <h1>ArmadaService.js</h1>
+        
+
+        
+      </div>
+
+      
+        
+        
+        
+          <div class='highlight'><pre><span class="comment">/*
+== BSD2 LICENSE ==
+Copyright (c) 2014, Tidepool Project
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the associated License, which is identical to the BSD 2-Clause
+License as published by the Open Source Initiative at opensource.org.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the License for more details.
+
+You should have received a copy of the License along with this program; if
+not, you can obtain one from Tidepool Project at tidepool.org.
+== BSD2 LICENSE ==
+ */</span>
+
+<span class="string">'use strict'</span>;
+
+<span class="keyword">var</span> restify,
+    server,
+    log,
+    crud,
+    servicePort;
+
+restify = require(<span class="string">'restify'</span>);
+
+log = require(<span class="string">'./log.js'</span>)(<span class="string">'ArmadaService.js'</span>);
+
+<span class="keyword">var</span> armadaService = <span class="function"><span class="keyword">function</span><span class="params">(crudHandler,port)</span> {</span>
+
+    crud = crudHandler;
+    servicePort = port;
+
+    server = restify.createServer({
+        name: <span class="string">'TidepoolGroups'</span>
+    });
+
+    server.use(restify.fullResponse());
+    server.use(restify.bodyParser());
+    server.use(restify.queryParser());
+
+    <span class="keyword">return</span> {
+        stop : stopService,
+        start : startService
+    };
+
+};
+
+<span class="function"><span class="keyword">function</span> <span class="title">stopService</span><span class="params">()</span> {</span>
+    log.info(<span class="string">'Stopping the Groups API server'</span>);
+    server.close();
+}
+
+<span class="function"><span class="keyword">function</span> <span class="title">startService</span><span class="params">()</span> {</span>
+    <span class="keyword">var</span> groups = require(<span class="string">'./routes/groupsRoute'</span>)(crud);</pre></div>
+        
+      
+        
+        <p>membership</p>
+
+        
+          <div class='highlight'><pre>    server.get(<span class="string">'/api/group/membership/:userid/member'</span>,groups.memberOf);
+    server.get(<span class="string">'/api/group/membership/:userid/owner'</span>,groups.ownerOf);
+    server.get(<span class="string">'/api/group/membership/:userid/patient'</span>,groups.patientIn);</pre></div>
+        
+      
+        
+        <p>updating</p>
+
+        
+          <div class='highlight'><pre>    server.post(<span class="string">'/api/group'</span>, groups.addGroup);
+    server.post(<span class="string">'/api/group/:groupid/user'</span>,groups.addToGroup);
+    server.del(<span class="string">'/api/group/:groupid/user'</span>,groups.removeFromGroup);</pre></div>
+        
+      
+        
+        <p>group</p>
+
+        
+          <div class='highlight'><pre>    server.get(<span class="string">'/api/group/:groupid/patient'</span>,groups.patientForGroup);
+    server.get(<span class="string">'/api/group/:groupid/members'</span>,groups.getAllInGroup);
+    server.get(<span class="string">'/api/group/:groupid/allusers'</span>,groups.getAllUsers);
+
+    
+    log.info(<span class="string">'Groups API server serving on port[%s]'</span>, servicePort);
+    server.listen(servicePort);
+}
+
+module.exports = armadaService;</pre></div>
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>

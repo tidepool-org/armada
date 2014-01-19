@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>armada</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          
+          <h1 id="armada">armada</h1>
+
+          
+        
+
+        
+      </div>
+
+      
+        
+        <p>The Groups API</p>
+<h2 id="install">Install</h2>
+<p>Requirements:</p>
+<ul>
+<li><a href="http://nodejs.org/">Node.js</a></li>
+<li><a href="http://www.mongodb.org/">MongoDB</a></li>
+</ul>
+<p>Clone this repo then install dependencies:</p>
+<pre><code class="lang-bash">build.sh</code></pre>
+<h2 id="quick-start">Quick start</h2>
+<p>Assuming you have a set of config values (see <strong>“Config”</strong> below), load them with:</p>
+<pre><code class="lang-bash"><span class="built_in">source</span> config/dev.sh</code></pre>
+<p>If running locally, you will need to start a local instance of MongoDB:</p>
+<pre><code class="lang-bash">grunt start-mongo</code></pre>
+<p>Start the server for the API with:</p>
+<pre><code class="lang-bash">grunt start-api</code></pre>
+<h2 id="running-tests">Running Tests</h2>
+<h3 id="unit">Unit</h3>
+<pre><code class="lang-bash">grunt unit-test</code></pre>
+<h3 id="integration">Integration</h3>
+<p>To run the integration tests in two seperate terminal windows do the following</p>
+<pre><code class="lang-bash">grunt start-mongo</code></pre>
+<pre><code class="lang-bash">grunt integration-test</code></pre>
+<h2 id="config">Config</h2>
+<p>By default, the groups-api runs on port <strong>3002</strong>. You can change this by setting the <code>PORT</code> environment variable.</p>
+<p>Configuration is handled by <code>env.js</code> and loads environment variables. Check the file for defaults and documentatio.</p>
+<p>You can set environment variables manually, or use a bash script. For example:</p>
+<pre><code class="lang-bash"><span class="built_in">source</span> config/dev.sh</code></pre>
+<p>Ask the project owners to provide you with config scripts for different environments, or you can create one of your own. It is recommended to put them in the <code>config/</code> directory, where they will be ignored by Git.</p>
+
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>

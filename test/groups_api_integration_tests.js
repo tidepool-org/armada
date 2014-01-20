@@ -26,35 +26,6 @@ var fixture = require('./helpers/fixtures.js'),
     apiEndPoint,
     testDbInstance;
 
-/*
-    Dummy groups that we load for tests
-
-testGroups = [{
-        name : 'family',
-        owners: ['99999','222222'],
-        members: ['99999','222222','4982883'],
-        patient : '12345'
-    },
-    {
-        name : 'medical',
-        owners: ['3343','5555'],
-        members: ['3343','5555','4982883'],
-        patient : '12345'
-    },
-    {
-        name : 'careteam',
-        owners: ['3343','8898'],
-        members: ['3343','8898','4982883'],
-        patient : '8876'
-    },
-    {
-        name : 'test_deluser',
-        owners: ['111'],
-        members: ['111','88sjjs88'],
-        patient : '99'
-    }];
-    */
-
 describe('Groups API', function() {
 
     before(function(){

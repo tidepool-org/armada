@@ -36,6 +36,7 @@ var fakeMongoHandler = function(testingConfig) {
     settings = testingConfig;
 
     return {
+        status : status,
         createGroup : handleCreateGroup,
         findGroupsPatientIn : handleFindGroupsPatientIn,
         findGroupsMemberOf : handleFindGroupsMemberOf,
@@ -46,6 +47,20 @@ var fakeMongoHandler = function(testingConfig) {
     };
 
 };
+
+function status(callback){
+
+    var dependencyStatus = { running: false, deps: { up: [], down: [] } };
+    
+    if (settings.throwErrors){
+        dependencyStatus.deps.down = ['mongo'];
+    }
+
+    dependencyStatus.running = (dependencyStatus.deps.down.length === 0);
+    dependencyStatus.statuscode = dependencyStatus.running ? 200 : 500;
+
+    return callback(null,dependencyStatus);
+}
 
 function resolveCallbackValues(callback,data){
     

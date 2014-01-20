@@ -57,7 +57,23 @@ describe('Groups API', function() {
             helper.stopArmadaService();
         });
 
-        it('post /api/group 201 when all good', function(done) {
+        it('GET /status returns 200 when all good', function(done) {
+
+            supertest(helper.armadaServiceEndpoint())
+            .get('/api/group/status')
+            .expect(200,done);
+            
+        });
+
+        it('GET /status returns 403 when status is passed as 403', function(done) {
+
+            supertest(helper.armadaServiceEndpoint())
+            .get('/api/group/status?status=403')
+            .expect(403,done);
+            
+        });
+
+        it('POST /api/group 201 when all good', function(done) {
 
             var testGroup = {
                 name : 'test create for 201',
@@ -73,7 +89,7 @@ describe('Groups API', function() {
 
         });
 
-        it('post /api/group 200 when all good', function(done) {
+        it('POST /api/group 200 when all good', function(done) {
 
             var testGroup = {
                 name : 'test create for 201',
@@ -89,29 +105,29 @@ describe('Groups API', function() {
             
         });
 
-        it('/api/group/membership returns 200 when all good', function(done) {
+        it('GET /api/group/membership returns 200 when all good', function(done) {
 
             supertest(helper.armadaServiceEndpoint())
             .get('/api/group/membership/33333/member')
             .expect(200,done);
         });
 
-        it('/api/group/membership/:userid/patient returns 200 when all good', function(done) {
+        it('GET /api/group/membership/:userid/patient returns 200 when all good', function(done) {
 
             supertest(helper.armadaServiceEndpoint())
             .get('/api/group/membership/33333/patient')
             .expect(200,done);
         });
 
-        it('/api/group/:groupid/user returns 200 when all good', function(done) {
-
+        it('POST /api/group/:groupid/user returns 200 when all good', function(done) {
+ 
             supertest(helper.armadaServiceEndpoint())
             .post('/api/group/34444444/user')
             .send({userid:'12345997'})
             .expect(200,done);
         });
 
-        it('delete /api/group/:groupid/user returns 200 when all good', function(done) {
+        it('DELETE /api/group/:groupid/user returns 200 when all good', function(done) {
 
             supertest(helper.armadaServiceEndpoint())
             .del('/api/group/34444444/user')
@@ -119,21 +135,21 @@ describe('Groups API', function() {
             .expect(200,done);
         });
 
-        it('/api/group/:groupid/patient returns 200 when all good', function(done) {
+        it('GET /api/group/:groupid/patient returns 200 when all good', function(done) {
 
             supertest(helper.armadaServiceEndpoint())
             .get('/api/group/34444444/patient')
             .expect(200,done);
         });
 
-        it('get /api/group/:groupid/members returns 501 as not yet implemented', function(done) {
+        it('GET /api/group/:groupid/members returns 501 as not yet implemented', function(done) {
 
             supertest(helper.armadaServiceEndpoint())
             .get('/api/group/34444444/members')
             .expect(501,done);
         });
 
-        it('/api/group/:groupid/allusers returns 501 as not yet implemented', function(done) {
+        it('GET /api/group/:groupid/allusers returns 501 as not yet implemented', function(done) {
 
             supertest(helper.armadaServiceEndpoint())
             .get('/api/group/34444444/allusers')

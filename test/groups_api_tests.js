@@ -16,12 +16,12 @@ not, you can obtain one from Tidepool Project at tidepool.org.
  */
 
 'use strict';
-var fixture = require('./fixtures.js'),
+var fixture = require('./helpers/fixtures.js'),
 /*jshint unused:false */
     should = fixture.should,
     supertest = fixture.supertest;
 
-describe('message API', function() {
+describe('Groups API', function() {
 
     describe('test normal route ', function() {
 
@@ -42,7 +42,7 @@ describe('message API', function() {
                 returnNone : false
             };
 
-            fakeMongoHandler = require('./handler/FakeMongoHandler')(testConfig);
+            fakeMongoHandler = require('./helpers/fakeMongoHandler')(testConfig);
 
             helper = fixture.testingHelper(false);
             helper.initArmadaService(fakeMongoHandler,port);
@@ -154,7 +154,7 @@ describe('message API', function() {
                 returnNone : true
             };
         
-            fakeMongoHandler = require('./handler/FakeMongoHandler')(testConfig);
+            fakeMongoHandler = require('./helpers/fakeMongoHandler')(testConfig);
 
             noDataHelper = fixture.testingHelper(false);
             noDataHelper.initArmadaService(fakeMongoHandler,port);
@@ -227,7 +227,7 @@ describe('message API', function() {
                 returnNone : false
             };
         
-            fakeMongoHandler = require('./handler/FakeMongoHandler')(testConfig);
+            fakeMongoHandler = require('./helpers/fakeMongoHandler')(testConfig);
             errorsFoundHelper = fixture.testingHelper(false);
             errorsFoundHelper.initArmadaService(fakeMongoHandler,port);
         

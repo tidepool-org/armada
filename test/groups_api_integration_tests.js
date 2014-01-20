@@ -17,18 +17,18 @@ not, you can obtain one from Tidepool Project at tidepool.org.
 
 'use strict';
 
-var fixture = require('./fixtures.js'),
+var fixture = require('./helpers/fixtures.js'),
 /*jshint unused:false */
     should = fixture.should,
     supertest = fixture.supertest,
     helper = fixture.testingHelper(true),
+    testGroups = fixture.testData.relatedSet,
     apiEndPoint,
-    testDbInstance,
-    testGroups;
+    testDbInstance;
 
 /*
     Dummy groups that we load for tests
-*/
+
 testGroups = [{
         name : 'family',
         owners: ['99999','222222'],
@@ -53,8 +53,9 @@ testGroups = [{
         members: ['111','88sjjs88'],
         patient : '99'
     }];
+    */
 
-describe('message API', function() {
+describe('Groups API', function() {
 
     before(function(){
 

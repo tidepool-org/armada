@@ -32,7 +32,7 @@ settings;
 */
 var fakeMongoHandler = function(testingConfig) {
 
-    log = require('../../lib/log.js')('FakeMongoHandler.js');
+    log = require('../../lib/log.js')('fakeMongoHandler.js');
     settings = testingConfig;
 
     return {

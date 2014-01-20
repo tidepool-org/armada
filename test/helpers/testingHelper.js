@@ -17,7 +17,7 @@ not, you can obtain one from Tidepool Project at tidepool.org.
 
 'use strict';
 
-var ArmadaService = require('../lib/ArmadaService'),
+var ArmadaService = require('../../lib/armadaService'),
     mongojs = require('mongojs'),
     testDbInstance,
     servicePort,

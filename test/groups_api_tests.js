@@ -334,7 +334,6 @@ describe('Groups API', function() {
                 if (err) return done(err);
                 res.body.should.not.property('error');
                 res.body.should.have.property('down').with.length.greaterThan(0);
-                console.log('## STATUS ##: ',res.body);
                 done();
             });
             

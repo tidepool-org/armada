@@ -23,6 +23,10 @@ var fixture = require('./helpers/fixtures.js'),
 
 describe('Groups API', function() {
 
+    /*
+    Testing the return codes are as expected when things go as expected when calling an endpoint 
+    for the groups API. 
+    */
     describe('test normal route ', function() {
 
         var helper;
@@ -137,6 +141,10 @@ describe('Groups API', function() {
         });
     });
 
+    /*
+    Testing the return codes are as expected there is no information to return for the
+    given request.
+    */
     describe('test no data returned', function() {
 
         var noDataHelper;
@@ -210,6 +218,10 @@ describe('Groups API', function() {
         });
     });
 
+    /*
+    Testing the return codes are as expected when excpetions are raised when an 
+    end-point is called
+    */
     describe('test errors returned', function() {
 
         var errorsFoundHelper;

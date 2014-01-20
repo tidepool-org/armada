@@ -73,7 +73,7 @@ describe('Groups API', function() {
             
         });
 
-        it('GET /echo what it was given', function(done) {
+        it('GET /echo works and tells params given', function(done) {
 
             supertest(helper.armadaServiceEndpoint())
             .get('/api/group/echo?givenparam=1234')
@@ -90,21 +90,47 @@ describe('Groups API', function() {
             
         });
 
-        it('GET /echo what it was given', function(done) {
-
-            supertest(helper.armadaServiceEndpoint())
-            .get('/api/group/echo')
-            .expect(200,done);
-            
-        });
-
-        /*it('POST /echo what it was given', function(done) {
+        it('POST /echo works', function(done) {
 
             supertest(helper.armadaServiceEndpoint())
             .post('/api/group/echo')
-            .expect(200,done);
+            .expect(200)
+            .end(function(err, res) {
+                if (err) return done(err);
+                var method = res.body[1].method;
+                method.should.equal('POST');
+                done();
+            });
             
-        });*/
+        });
+
+        it('PUT /echo works', function(done) {
+
+            supertest(helper.armadaServiceEndpoint())
+            .put('/api/group/echo')
+            .expect(200)
+            .end(function(err, res) {
+                if (err) return done(err);
+                var method = res.body[1].method;
+                method.should.equal('PUT');
+                done();
+            });
+            
+        });
+
+        it('DELETE /echo works', function(done) {
+
+            supertest(helper.armadaServiceEndpoint())
+            .del('/api/group/echo')
+            .expect(200)
+            .end(function(err, res) {
+                if (err) return done(err);
+                var method = res.body[1].method;
+                method.should.equal('DELETE');
+                done();
+            });
+            
+        });
 
         it('POST /api/group 201 when all good', function(done) {
 

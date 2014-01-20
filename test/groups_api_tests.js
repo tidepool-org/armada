@@ -189,28 +189,28 @@ describe('Groups API', function() {
             noDataHelper.stopArmadaService();
         });
 
-        it('/api/group/membership returns 204 when no data', function(done) {
+        it('GET /api/group/membership returns 204 when no data', function(done) {
 
             supertest(noDataHelper.armadaServiceEndpoint())
             .get('/api/group/membership/33333/member')
             .expect(204,done);
         });
 
-        it('/api/group/membership/:userid/owner returns 204 when no data', function(done) {
+        it('GET /api/group/membership/:userid/owner returns 204 when no data', function(done) {
 
             supertest(noDataHelper.armadaServiceEndpoint())
             .get('/api/group/membership/33333/owner')
             .expect(204,done);
         });
 
-        it('/api/group/membership/:userid/patient returns 204 when no data', function(done) {
+        it('GET /api/group/membership/:userid/patient returns 204 when no data', function(done) {
 
             supertest(noDataHelper.armadaServiceEndpoint())
             .get('/api/group/membership/33333/patient')
             .expect(204,done);
         });
 
-        it('/api/group/:groupid/user returns 204 when no match', function(done) {
+        it('POST /api/group/:groupid/user returns 204 when no match', function(done) {
 
             supertest(noDataHelper.armadaServiceEndpoint())
             .post('/api/group/88888888/user')
@@ -218,7 +218,7 @@ describe('Groups API', function() {
             .expect(204,done);
         });
 
-        it('delete /api/group/:groupid/user returns 204 when no match', function(done) {
+        it('DELETE /api/group/:groupid/user returns 204 when no match', function(done) {
 
             supertest(noDataHelper.armadaServiceEndpoint())
             .del('/api/group/99999775/user')
@@ -226,7 +226,7 @@ describe('Groups API', function() {
             .expect(204,done);
         });
 
-        it('/api/group/membership/:userid/patient returns error when one has been raised', function(done) {
+        it('GET /api/group/membership/:userid/patient returns error when one has been raised', function(done) {
 
             supertest(noDataHelper.armadaServiceEndpoint())
             .get('/api/group/membership/33333/patient')
@@ -265,7 +265,7 @@ describe('Groups API', function() {
             errorsFoundHelper.stopArmadaService();
         });
 
-        it('post /api/group returns 500 and does not return error so we do not leak implemention details', function(done) {
+        it('POST /api/group returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             var testGroup =
             {
@@ -286,7 +286,7 @@ describe('Groups API', function() {
             });
         });
 
-        it('/api/group/membership returns 500 and does not return error so we do not leak implemention details', function(done) {
+        it('GET /api/group/membership returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
             .get('/api/group/membership/33333/member')
@@ -299,7 +299,7 @@ describe('Groups API', function() {
 
         });
 
-        it('/api/group/membership/:userid/owner returns 500 and does not return error so we do not leak implemention details', function(done) {
+        it('GET /api/group/membership/:userid/owner returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
             .get('/api/group/membership/33333/owner')
@@ -312,7 +312,7 @@ describe('Groups API', function() {
 
         });
 
-        it('/api/group/membership/:userid/patient returns 500 and does not return error so we do not leak implemention details', function(done) {
+        it('GET /api/group/membership/:userid/patient returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
             .get('/api/group/membership/33333/patient')
@@ -324,7 +324,7 @@ describe('Groups API', function() {
             });
         });
 
-        it('/api/group/:groupid/user returns 500 and does not return error so we do not leak implemention details', function(done) {
+        it('POST /api/group/:groupid/user returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
             .post('/api/group/33333/user')
@@ -337,7 +337,7 @@ describe('Groups API', function() {
             });
         });
 
-        it('delete /api/group/:groupid/user returns 500 and does not return error so we do not leak implemention details', function(done) {
+        it('DELETE /api/group/:groupid/user returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
             .del('/api/group/33333/user')
@@ -350,7 +350,7 @@ describe('Groups API', function() {
             });
         });
 
-        it('/api/group/:groupid/patient 500 and does not return error so we do not leak implemention details', function(done) {
+        it('GET /api/group/:groupid/patient 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
             .get('/api/group/33333/patient')

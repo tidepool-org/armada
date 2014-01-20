@@ -23,6 +23,7 @@ var fixture = require('./helpers/fixtures.js'),
     supertest = fixture.supertest,
     helper = fixture.testingHelper(true),
     testGroups = fixture.testData.relatedSet,
+    testGroup = fixture.testData.individual,
     apiEndPoint,
     testDbInstance;
 
@@ -64,13 +65,13 @@ describe('Groups API', function() {
 
         it('returns 400 when given an invalid group to create', function(done) {
 
-            var testGroup = {
+            var badGroup = {
                 nothing : ''
             };
 
             supertest(apiEndPoint)
             .post('/api/group')
-            .send({group:testGroup})
+            .send({group:badGroup})
             .expect(400)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -91,16 +92,11 @@ describe('Groups API', function() {
 
         it('returns id with 201 response', function(done) {
 
-            var testGroup = {
-                name : 'test create to get id',
-                owners: ['99999','222222'],
-                members: ['99999','222222'],
-                patient : '99999'
-            };
+            var testGroupFor201 = testGroup;
 
             supertest(apiEndPoint)
             .post('/api/group')
-            .send({group:testGroup})
+            .send({group:testGroupFor201})
             .expect(201)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -112,16 +108,11 @@ describe('Groups API', function() {
 
         it('id is valid', function(done) {
 
-            var testGroup = {
-                name : 'test create to get id',
-                owners: ['99999','222222'],
-                members: ['99999','222222'],
-                patient : '99999'
-            };
+            var groupToAdd = testGroup;
 
             supertest(apiEndPoint)
             .post('/api/group')
-            .send({group:testGroup})
+            .send({group:groupToAdd})
             .expect(201)
             .end(function(err, res) {
                 if (err) return done(err);

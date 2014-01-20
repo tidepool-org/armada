@@ -19,7 +19,8 @@ not, you can obtain one from Tidepool Project at tidepool.org.
 var fixture = require('./helpers/fixtures.js'),
 /*jshint unused:false */
     should = fixture.should,
-    supertest = fixture.supertest;
+    supertest = fixture.supertest,
+    testGroup = fixture.testData.individual;
 
 describe('Groups API', function() {
 
@@ -324,19 +325,29 @@ describe('Groups API', function() {
             errorsFoundHelper.stopArmadaService();
         });
 
+        it('GET /status returns 500 when there is an issue and tell me what is down', function(done) {
+
+            supertest(errorsFoundHelper.armadaServiceEndpoint())
+            .get('/api/group/status')
+            .expect(500)
+            .end(function(err, res) {
+                if (err) return done(err);
+                res.body.should.not.property('error');
+                res.body.should.have.property('down').with.length.greaterThan(0);
+                console.log('## STATUS ##: ',res.body);
+                done();
+            });
+            
+        });
+
         it('POST /api/group returns 500 and does not return error so we do not leak implemention details', function(done) {
 
-            var testGroup =
-            {
-                name : 'test create for 201',
-                owners: ['99999','222222'],
-                members: ['99999','222222','33333212'],
-                patient : '444444'
-            };
+            var groupToAdd = testGroup;
+
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
             .post('/api/group')
-            .send({group:testGroup})
+            .send({group:groupToAdd})
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);

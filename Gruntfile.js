@@ -47,17 +47,6 @@ module.exports = function(grunt) {
             }
         },
         shell: {
-            addlicense: {
-            // this may not be the best way to do this dependency, but this isn't
-            // a task we're going to run that often.
-                command: 'python ../central/tools/addLicense.py "*/*.js"',
-                options: {
-                    async: false,
-                    execOptions: {
-                        cwd: './lib/'
-                    }
-                }
-            },
             startMongo: {
                 command: [
                     'mongod',

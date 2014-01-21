@@ -17,12 +17,13 @@ not, you can obtain one from Tidepool Project at tidepool.org.
 
 'use strict';
 
-var ArmadaService = require('../../lib/armadaService'),
+var armadaService = require('../../lib/armadaService'),
     mongojs = require('mongojs'),
     testDbInstance,
     servicePort,
     isIntegration,
-    service;
+    service,
+    testConfig;
 
 /*
     Setup for testing
@@ -31,8 +32,15 @@ var testingHelper = function(integrationTest) {
 
     isIntegration = integrationTest;
 
+    testConfig = {
+        httpPort : 10000,
+        mongoDbConnectionString : 'mongodb://localhost/tidepool-platform' 
+    };
+
+    servicePort = testConfig.httpPort;
+
     if(isIntegration){
-        testDbInstance = mongojs('mongodb://localhost/tidepool-platform', ['groups']);
+        testDbInstance = mongojs(testConfig.mongoDbConnectionString, ['groups']);
     }
 
     return {
@@ -47,9 +55,8 @@ var testingHelper = function(integrationTest) {
     
 };
 
-function initArmadaService(crudHandler,port){
-    servicePort = port;
-    service = new ArmadaService(crudHandler,servicePort);
+function initArmadaService(crudHandler){
+    service = new armadaService(crudHandler,testConfig);
     service.start();
 }
 

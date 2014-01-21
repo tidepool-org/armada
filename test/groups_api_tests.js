@@ -35,22 +35,18 @@ describe('Groups API', function() {
         before(function(){
 
             var fakeMongoHandler,
-                port,
-                testConfig;
-
-            // for testing     
-            port = 3400;
+                testHandlerConfig;
             
             // just a  way of seeting the path that the fake 
-            testConfig  = {
+            testHandlerConfig  = {
                 throwErrors : false,
                 returnNone : false
             };
 
-            fakeMongoHandler = require('./helpers/fakeMongoHandler')(testConfig);
+            fakeMongoHandler = require('./helpers/fakeMongoHandler')(testHandlerConfig);
 
             helper = fixture.testingHelper(false);
-            helper.initArmadaService(fakeMongoHandler,port);
+            helper.initArmadaService(fakeMongoHandler);
         
         });
 
@@ -228,20 +224,17 @@ describe('Groups API', function() {
         before(function(){
 
             var fakeMongoHandler,
-                port,
-                testConfig;
-
-            port = 3400;
+                testHandlerConfig;
         
-            testConfig  = {
+            testHandlerConfig  = {
                 throwErrors : false,
                 returnNone : true
             };
         
-            fakeMongoHandler = require('./helpers/fakeMongoHandler')(testConfig);
+            fakeMongoHandler = require('./helpers/fakeMongoHandler')(testHandlerConfig);
 
             noDataHelper = fixture.testingHelper(false);
-            noDataHelper.initArmadaService(fakeMongoHandler,port);
+            noDataHelper.initArmadaService(fakeMongoHandler);
         
         });
 
@@ -305,19 +298,16 @@ describe('Groups API', function() {
         before(function(){
 
             var fakeMongoHandler,
-                port,
-                testConfig;
-
-            port = 3400;
+                testHandlerConfig;
         
-            testConfig  = {
+            testHandlerConfig  = {
                 throwErrors : true,
                 returnNone : false
             };
         
-            fakeMongoHandler = require('./helpers/fakeMongoHandler')(testConfig);
+            fakeMongoHandler = require('./helpers/fakeMongoHandler')(testHandlerConfig);
             errorsFoundHelper = fixture.testingHelper(false);
-            errorsFoundHelper.initArmadaService(fakeMongoHandler,port);
+            errorsFoundHelper.initArmadaService(fakeMongoHandler);
         
         });
 

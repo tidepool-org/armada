@@ -19,9 +19,6 @@ not, you can obtain one from Tidepool Project at tidepool.org.
 module.exports = (function(){
     var env = {};
 
-    // The port for the server to listen on.
-    env.port = process.env.PORT || 3002;
-
     // The port to attach an HTTP listener, if null, no HTTP listener will be attached
   	env.httpPort = process.env.PORT || null;
 
@@ -57,15 +54,6 @@ module.exports = (function(){
 	}
 
 	env.mongoDbConnectionString = process.env.MONGO_CONNECTION_STRING || 'mongodb://localhost/groups';
-	env.userAdminKey = process.env.ADMIN_KEY || ''; // if the admin key isn't specified, disable admin mode.
-	env.logName = process.env.LOG_NAME || 'groupapi';
-
-
-	// Encryption secret, keep it safe!
-	env.apiSecret = process.env.API_SECRET;
-	if (env.apiSecret == null) {
-		throw new Error('Must specify an API_SECRET in your environment.');
-	}
 
 	// The host to contact for discovery
 	if (process.env.DISCOVERY_HOST != null) {

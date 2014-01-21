@@ -47,7 +47,7 @@ describe('Groups API', function() {
 
         mongoHandler = require('../lib/handler/MongoHandler')(config.mongoDbConnectionString);
         
-        helper.initArmadaService(mongoHandler,config.port);
+        helper.initArmadaService(mongoHandler,config);
         testDbInstance = helper.mongoTestInstance();
         apiEndPoint = helper.armadaServiceEndpoint();
 

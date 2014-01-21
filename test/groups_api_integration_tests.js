@@ -37,17 +37,11 @@ describe('Groups API', function() {
         var config,
             mongoHandler;
 
-        config = require('../env');
-        
-        if(config.mongoDbConnectionString == null){
-            config.mongoDbConnectionString = 'mongodb://localhost/tidepool-platform';
-        }
-
-        console.log('testing connection ',config.mongoDbConnectionString);
-
+        config = helper.testConfig();    
+    
         mongoHandler = require('../lib/handler/MongoHandler')(config.mongoDbConnectionString);
         
-        helper.initArmadaService(mongoHandler,config);
+        helper.initArmadaService(mongoHandler);
         testDbInstance = helper.mongoTestInstance();
         apiEndPoint = helper.armadaServiceEndpoint();
 
@@ -61,7 +55,7 @@ describe('Groups API', function() {
         });
     });
 
-    describe('post /api/group', function() {
+    describe('POST /api/group', function() {
 
         it('returns 400 when given an invalid group to create', function(done) {
 
@@ -123,7 +117,7 @@ describe('Groups API', function() {
         
     });
 
-    describe('get /api/group/membership/:userid/member', function() {
+    describe('GET /api/group/membership/:userid/member', function() {
 
         it('returns 200 and two groups when I ask for 12345', function(done) {
 
@@ -158,7 +152,7 @@ describe('Groups API', function() {
         });
     });
 
-    describe('get /api/group/membership/:userid/owner', function() {
+    describe('GET /api/group/membership/:userid/owner', function() {
 
         it('returns 200 and two groups', function(done) {
 
@@ -192,7 +186,7 @@ describe('Groups API', function() {
         });
     });
 
-    describe('get /api/group/:groupid/patient', function() {
+    describe('GET /api/group/:groupid/patient', function() {
 
         it('returns 200 and one groups when I ask for patient 8876', function(done) {
 
@@ -227,7 +221,7 @@ describe('Groups API', function() {
         });
     });
 
-    describe('post /api/group/:groupid/user', function() {
+    describe('POST /api/group/:groupid/user', function() {
 
         var testGroupContent;
 
@@ -279,7 +273,7 @@ describe('Groups API', function() {
 
     });
 
-    describe('delete /api/group/:groupid/user', function() {
+    describe('DELETE /api/group/:groupid/user', function() {
 
         var testdelUserGroup;
 
@@ -342,7 +336,7 @@ describe('Groups API', function() {
 
     });
 
-    describe('get /api/group/:groupid/patient', function() {
+    describe('GET /api/group/:groupid/patient', function() {
 
         var testGroup;
 

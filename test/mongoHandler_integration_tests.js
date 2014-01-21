@@ -29,22 +29,9 @@ var fixture = require('./helpers/fixtures.js'),
 describe('handleMongo', function() {
 
     before(function(){
-
-        /*
-        Setup
-        */
-        var config;
-
-        config = require('../env');
         
-        if(config.mongoDbConnectionString == null){
-            config.mongoDbConnectionString = 'mongodb://localhost/tidepool-platform';
-        }
-
-        console.log('testing connection ',config.mongoDbConnectionString);
-
-        mongoHandler = require('../lib/handler/mongoHandler')(config.mongoDbConnectionString);
-        
+        var testConfig = helper.testConfig();
+        mongoHandler = require('../lib/handler/mongoHandler')(testConfig.mongoDbConnectionString);
         testDbInstance = helper.mongoTestInstance();
         
     });

@@ -47,6 +47,7 @@ var testingHelper = function(integrationTest) {
         initArmadaService : initArmadaService,
         stopArmadaService : stopTestService,
         mongoTestInstance : getMongoInstance,
+        testConfig: getTestConfig,
         createMongoId : getMongoId,
         validateId : isValidId,
         validateGroup : isValidGroup,
@@ -54,6 +55,10 @@ var testingHelper = function(integrationTest) {
     };
     
 };
+
+function getTestConfig(){
+    return testConfig;
+}
 
 function initArmadaService(crudHandler){
     service = new armadaService(crudHandler,testConfig);

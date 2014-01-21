@@ -14,8 +14,18 @@ You should have received a copy of the License along with this program; if
 not, you can obtain one from Tidepool Project at tidepool.org.
 == BSD2 LICENSE ==
  */
-
 'use strict';
+
+var fs = require('fs');
+
+function maybeReplaceWithContentsOfFile(obj, field)
+{
+  var potentialFile = obj[field];
+  if (potentialFile != null && fs.existsSync(potentialFile)) {
+    obj[field] = fs.readFileSync(potentialFile).toString();
+  }
+}
+
 module.exports = (function(){
     var env = {};
 
@@ -24,15 +34,6 @@ module.exports = (function(){
 
   	// The port to attach an HTTPS listener, if null, no HTTPS listener will be attached
   	env.httpsPort = process.env.HTTPS_PORT || null;
-
-  	//check config
-  	if (env.httpsPort != null && env.httpsConfig == null) {
-    	throw new Error('No https config provided, please set HTTPS_CONFIG with at least the certificate to use.');
-  	}
-
-  	if (env.httpPort == null && env.httpsPort == null) {
-    	throw new Error('Must specify either PORT or HTTPS_PORT in your environment.');
-  	}
 
   	// The https config to pass along to https.createServer.
 	var theConfig = process.env.HTTPS_CONFIG || null;
@@ -45,6 +46,7 @@ module.exports = (function(){
 		maybeReplaceWithContentsOfFile(env.httpsConfig, 'cert');
 		maybeReplaceWithContentsOfFile(env.httpsConfig, 'pfx');
 	}
+	
 	if (env.httpsPort != null && env.httpsConfig == null) {
 		throw new Error('No https config provided, please set HTTPS_CONFIG with at least the certificate to use.');
 	}

@@ -114,4 +114,6 @@ function getLocalhostEndpoint(){
     return 'http://localhost:'+servicePort;
 }
 
+testingHelper.sessiontoken = '99406ced-8052-49c5-97ee-547cc3347da6';
+
 module.exports = testingHelper;

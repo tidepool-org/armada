@@ -30,9 +30,9 @@ settings;
     3) other wise we just return dummy data
 
 */
-var fakeMongoHandler = function(testingConfig) {
+var mockMongoHandler = function(testingConfig) {
 
-    log = require('../../lib/log.js')('fakeMongoHandler.js');
+    log = require('../../lib/log.js')('mockMongoHandler.js');
     settings = testingConfig;
 
     return {
@@ -175,4 +175,4 @@ function handleFindPatientForGroup(groupId,callback){
     return resolveCallbackValues(callback,'99999999');
 }
 
-module.exports = fakeMongoHandler;
+module.exports = mockMongoHandler;

@@ -34,7 +34,7 @@ describe('Groups API', function() {
 
         before(function(){
 
-            var fakeMongoHandler,
+            var mockMongoHandler,
                 testHandlerConfig;
             
             // just a  way of seeting the path that the fake 
@@ -43,10 +43,10 @@ describe('Groups API', function() {
                 returnNone : false
             };
 
-            fakeMongoHandler = require('./helpers/fakeMongoHandler')(testHandlerConfig);
+            mockMongoHandler = require('./helpers/mockMongoHandler')(testHandlerConfig);
 
             helper = fixture.testingHelper({integrationTest:false});
-            helper.initArmadaService(fakeMongoHandler);
+            helper.initArmadaService(mockMongoHandler);
         
         });
 
@@ -223,7 +223,7 @@ describe('Groups API', function() {
 
         before(function(){
 
-            var fakeMongoHandler,
+            var mockMongoHandler,
                 testHandlerConfig;
         
             testHandlerConfig  = {
@@ -231,10 +231,10 @@ describe('Groups API', function() {
                 returnNone : true
             };
         
-            fakeMongoHandler = require('./helpers/fakeMongoHandler')(testHandlerConfig);
+            mockMongoHandler = require('./helpers/mockMongoHandler')(testHandlerConfig);
 
             noDataHelper = fixture.testingHelper({integrationTest:false});
-            noDataHelper.initArmadaService(fakeMongoHandler);
+            noDataHelper.initArmadaService(mockMongoHandler);
         
         });
 
@@ -297,7 +297,7 @@ describe('Groups API', function() {
 
         before(function(){
 
-            var fakeMongoHandler,
+            var mockMongoHandler,
                 testHandlerConfig;
         
             testHandlerConfig  = {
@@ -305,9 +305,9 @@ describe('Groups API', function() {
                 returnNone : false
             };
         
-            fakeMongoHandler = require('./helpers/fakeMongoHandler')(testHandlerConfig);
+            mockMongoHandler = require('./helpers/mockMongoHandler')(testHandlerConfig);
             errorsFoundHelper = fixture.testingHelper({integrationTest:false});
-            errorsFoundHelper.initArmadaService(fakeMongoHandler);
+            errorsFoundHelper.initArmadaService(mockMongoHandler);
         
         });
 

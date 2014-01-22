@@ -45,7 +45,7 @@ describe('Groups API', function() {
 
             fakeMongoHandler = require('./helpers/fakeMongoHandler')(testHandlerConfig);
 
-            helper = fixture.testingHelper(false);
+            helper = fixture.testingHelper({integrationTest:false});
             helper.initArmadaService(fakeMongoHandler);
         
         });
@@ -233,7 +233,7 @@ describe('Groups API', function() {
         
             fakeMongoHandler = require('./helpers/fakeMongoHandler')(testHandlerConfig);
 
-            noDataHelper = fixture.testingHelper(false);
+            noDataHelper = fixture.testingHelper({integrationTest:false});
             noDataHelper.initArmadaService(fakeMongoHandler);
         
         });
@@ -306,7 +306,7 @@ describe('Groups API', function() {
             };
         
             fakeMongoHandler = require('./helpers/fakeMongoHandler')(testHandlerConfig);
-            errorsFoundHelper = fixture.testingHelper(false);
+            errorsFoundHelper = fixture.testingHelper({integrationTest:false});
             errorsFoundHelper.initArmadaService(fakeMongoHandler);
         
         });

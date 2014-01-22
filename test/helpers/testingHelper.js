@@ -28,9 +28,9 @@ var armadaService = require('../../lib/armadaService'),
 /*
     Setup for testing
 */
-var testingHelper = function(integrationTest) {
+var testingHelper = function(settings) {
 
-    isIntegration = integrationTest;
+    isIntegration = settings.integrationTest;
 
     testConfig = {
         httpPort : 10000,

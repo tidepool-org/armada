@@ -20,7 +20,7 @@ not, you can obtain one from Tidepool Project at tidepool.org.
 var fixture = require('./helpers/fixtures.js'),
 /*jshint unused:false */
     should = fixture.should,
-    helper = fixture.testingHelper(true),
+    helper = fixture.testingHelper({integrationTest:true}),
     testGroups = fixture.testData.relatedSet,
     testDbInstance,
     testGroups,
@@ -29,7 +29,7 @@ var fixture = require('./helpers/fixtures.js'),
 describe('handleMongo', function() {
 
     before(function(){
-        
+
         var testConfig = helper.testConfig();
         mongoHandler = require('../lib/handler/mongoHandler')(testConfig.mongoDbConnectionString);
         testDbInstance = helper.mongoTestInstance();

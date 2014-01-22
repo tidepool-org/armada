@@ -21,7 +21,7 @@ var fixture = require('./helpers/fixtures.js'),
 /*jshint unused:false */
     should = fixture.should,
     supertest = fixture.supertest,
-    helper = fixture.testingHelper(true),
+    helper = fixture.testingHelper({integrationTest:true}),
     testGroups = fixture.testData.relatedSet,
     testGroup = fixture.testData.individual,
     apiEndPoint,

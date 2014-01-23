@@ -12,7 +12,7 @@ user = {
 };
 
 //basic setup
-mockUserApi = restify.createServer({name: 'TidepoolUserMock'}});
+mockUserApi = restify.createServer({name: 'TidepoolUserMock'});
 mockUserApi.use(restify.queryParser());
 mockUserApi.use(restify.bodyParser());
 
@@ -37,7 +37,7 @@ mockUserApi.get('/user/:id', function(req, res, next) {
 
 	var token = req.headers['x-tidepool-session-token'];
 
-	if(token === sessiontoken){
+	if(token){
 		res.send(200,user);
 		return next();
 	}

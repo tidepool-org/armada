@@ -24,6 +24,7 @@ var fixture = require('./helpers/fixtures.js'),
     helper = fixture.testingHelper({integrationTest:true}),
     testGroups = fixture.testData.relatedSet,
     testGroup = fixture.testData.individual,
+    sessionToken = helper.sessiontoken,
     apiEndPoint,
     testDbInstance;
 
@@ -66,6 +67,7 @@ describe('Groups API', function() {
             supertest(apiEndPoint)
             .post('/api/group')
             .send({group:badGroup})
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(400)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -77,6 +79,7 @@ describe('Groups API', function() {
 
             supertest(apiEndPoint)
             .post('/api/group')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(400)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -91,6 +94,7 @@ describe('Groups API', function() {
             supertest(apiEndPoint)
             .post('/api/group')
             .send({group:testGroupFor201})
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(201)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -107,6 +111,7 @@ describe('Groups API', function() {
             supertest(apiEndPoint)
             .post('/api/group')
             .send({group:groupToAdd})
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(201)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -123,6 +128,7 @@ describe('Groups API', function() {
 
             supertest(apiEndPoint)
             .get('/api/group/membership/12345/member')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -137,6 +143,7 @@ describe('Groups API', function() {
 
             supertest(apiEndPoint)
             .get('/api/group/membership/12345/member')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -158,6 +165,7 @@ describe('Groups API', function() {
 
             supertest(apiEndPoint)
             .get('/api/group/membership/3343/owner')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -171,6 +179,7 @@ describe('Groups API', function() {
 
             supertest(apiEndPoint)
             .get('/api/group/membership/3343/owner')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -192,6 +201,7 @@ describe('Groups API', function() {
 
             supertest(apiEndPoint)
             .get('/api/group/membership/8876/patient')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -206,6 +216,7 @@ describe('Groups API', function() {
 
             supertest(apiEndPoint)
             .get('/api/group/membership/8876/patient')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -240,6 +251,7 @@ describe('Groups API', function() {
 
             supertest(apiEndPoint)
             .post('/api/group/'+groupId+'/user')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid : userToAdd})
             .expect(200)
             .end(function(err, res) {
@@ -258,6 +270,7 @@ describe('Groups API', function() {
 
             supertest(apiEndPoint)
             .post('/api/group/'+groupId+'/user')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid : userToAdd})
             .expect(200)
             .end(function(err, res) {
@@ -292,6 +305,7 @@ describe('Groups API', function() {
 
             supertest(apiEndPoint)
             .del('/api/group/'+groupId+'/user')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid : userToRemove})
             .expect(200)
             .end(function(err, res) {
@@ -308,6 +322,7 @@ describe('Groups API', function() {
 
             supertest(apiEndPoint)
             .del('/api/group/'+groupId+'/user')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid : userToRemove})
             .expect(200)
             .end(function(err, res) {
@@ -330,6 +345,7 @@ describe('Groups API', function() {
 
             supertest(apiEndPoint)
             .del('/api/group/deluser/'+groupId)
+            .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid : userToRemove})
             .expect(200,done());
         });
@@ -355,6 +371,7 @@ describe('Groups API', function() {
 
             supertest(apiEndPoint)
             .get('/api/group/'+groupId+'/patient')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);

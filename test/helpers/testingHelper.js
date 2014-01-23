@@ -34,7 +34,9 @@ var testingHelper = function(settings) {
 
     testConfig = {
         httpPort : 10000,
-        mongoDbConnectionString : 'mongodb://localhost/tidepool-platform' 
+        mongoDbConnectionString : 'mongodb://localhost/tidepool-platform',
+        serverName: 'armadaService',
+        serverSecret: 'sharedMachineSecret'
     };
 
     servicePort = testConfig.httpPort;

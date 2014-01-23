@@ -33,51 +33,34 @@ armadaTestHelper.testConfig = {
 //session
 armadaTestHelper.sessiontoken = '99406ced-8052-49c5-97ee-547cc3347da6';
 
-armadaTestHelper.makeMongoHelper = function(){
-
+armadaTestHelper.createMongoInstance = function(){
     var mongojs = require('mongojs'),
-    testDbInstance = mongojs(armadaTestHelper.mongoDbConnectionString, ['groups']);
+    testDbInstance = mongojs(armadaTestHelper.testConfig.mongoDbConnectionString, ['groups']);
+    return testDbInstance;
+};
 
-    return {
-
-        getMongoId : function (){
-
-            return mongojs.ObjectId().toString();
-        },
-
-        isValidId : function(idString){
-            try{
-                mongojs.ObjectId(String(idString));
-                return true;
-            }
-            catch(error){
-                console.log('error with id string ',error);
-                return false;
-            }
-        },
-
-        getMongoInstance : function (){
-            return testDbInstance;
-        }
-
-    }
-}
-
-function initArmadaService(crudHandler){
+armadaTestHelper.initArmadaService = function(crudHandler){
     service = new armadaService(crudHandler,armadaTestHelper.testConfig);
     service.start();
 }
 
-function stopTestService(){
+armadaTestHelper.stopTestService = function(){
     service.stop();
 }
 
-function getLocalhostEndpoint(){
+armadaTestHelper.testServiceEndpoint = function(){
     return 'http://localhost:'+armadaTestHelper.testConfig.httpPort;
 }
 
+armadaTestHelper.isValidId = function(id){
+    if(id){
+        return true;
+    }
+    return false;
+}
+
 armadaTestHelper.validateGroup = function(group){
-    if (('id' in group && isValidId(group.id)) &&
+    if (('id' in group && armadaTestHelper.isValidId(group.id)) &&
         ('name' in group && group.name !== '') &&
         ('owners' in group && group.owners.length > 0) &&
         ('members' in group && group.members.length > 0) &&

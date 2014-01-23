@@ -21,7 +21,7 @@ var fixture = require('./helpers/fixtures.js'),
     should = fixture.should,
     supertest = fixture.supertest,
     testGroup = fixture.testData.individual, 
-    sessionToken = fixture.testingHelper.sessiontoken;
+    sessionToken = fixture.armadaTestHelper.sessiontoken;
 
 describe('Groups API', function() {
 
@@ -44,20 +44,20 @@ describe('Groups API', function() {
                 returnNone : false
             };
 
-            mockMongoHandler = require('./helpers/mockMongoHandler')(testHandlerConfig);
+            mockMongoHandler = require('./mocks/mockMongoHandler')(testHandlerConfig);
 
-            helper = fixture.testingHelper({integrationTest:false});
+            helper = fixture.armadaTestHelper;
             helper.initArmadaService(mockMongoHandler);
         
         });
 
         after(function(){
-            helper.stopArmadaService();
+            helper.stopTestService();
         });
 
         it('GET /status returns 401 when no token given', function(done) {
 
-            supertest(helper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .get('/api/group/status?status=403')
             .expect(401,done);
             
@@ -65,7 +65,7 @@ describe('Groups API', function() {
 
         it('GET /status returns 200 when all good', function(done) {
 
-            supertest(helper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .get('/api/group/status')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200,done);
@@ -74,7 +74,7 @@ describe('Groups API', function() {
 
         it('GET /status returns 403 when status is passed as 403', function(done) {
 
-            supertest(helper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .get('/api/group/status?status=403')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(403,done);
@@ -90,7 +90,7 @@ describe('Groups API', function() {
                 patient : '444444'
             };
 
-            supertest(helper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .post('/api/group')
             .send({group:testGroup})
             .expect(401,done);
@@ -106,7 +106,7 @@ describe('Groups API', function() {
                 patient : '444444'
             };
 
-            supertest(helper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .post('/api/group')
             .set('X-Tidepool-Session-Token', sessionToken)
             .send({group:testGroup})
@@ -123,7 +123,7 @@ describe('Groups API', function() {
                 patient : '444444'
             };
 
-            supertest(helper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .post('/api/group')
             .set('X-Tidepool-Session-Token', sessionToken)
             .send({group:testGroup})
@@ -133,14 +133,14 @@ describe('Groups API', function() {
 
         it('GET /api/group/membership returns 401 when no token', function(done) {
 
-            supertest(helper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .get('/api/group/membership/33333/member')
             .expect(401,done);
         });
 
         it('GET /api/group/membership returns 200 when all good', function(done) {
 
-            supertest(helper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .get('/api/group/membership/33333/member')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200,done);
@@ -148,7 +148,7 @@ describe('Groups API', function() {
 
         it('GET /api/group/membership/:userid/patient returns 200 when all good', function(done) {
 
-            supertest(helper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .get('/api/group/membership/33333/patient')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200,done);
@@ -156,7 +156,7 @@ describe('Groups API', function() {
 
         it('POST /api/group/:groupid/user returns 401 when no token', function(done) {
  
-            supertest(helper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .post('/api/group/34444444/user')
             .send({userid:'12345997'})
             .expect(401,done);
@@ -164,7 +164,7 @@ describe('Groups API', function() {
 
         it('POST /api/group/:groupid/user returns 200 when all good', function(done) {
  
-            supertest(helper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .post('/api/group/34444444/user')
             .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid:'12345997'})
@@ -173,7 +173,7 @@ describe('Groups API', function() {
 
         it('DELETE /api/group/:groupid/user returns 401 when no token', function(done) {
 
-            supertest(helper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .del('/api/group/34444444/user')
             .send({userid:'12345997'})
             .expect(401,done);
@@ -181,7 +181,7 @@ describe('Groups API', function() {
 
         it('DELETE /api/group/:groupid/user returns 200 when all good', function(done) {
 
-            supertest(helper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .del('/api/group/34444444/user')
             .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid:'12345997'})
@@ -190,14 +190,14 @@ describe('Groups API', function() {
 
         it('GET /api/group/:groupid/patient returns 401 when no token', function(done) {
 
-            supertest(helper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .get('/api/group/34444444/patient')
             .expect(401,done);
         });
 
         it('GET /api/group/:groupid/patient returns 200 when all good', function(done) {
 
-            supertest(helper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .get('/api/group/34444444/patient')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200,done);
@@ -205,14 +205,14 @@ describe('Groups API', function() {
 
         it('GET /api/group/:groupid/members returns 401 when no token', function(done) {
 
-            supertest(helper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .get('/api/group/34444444/members')
             .expect(401,done);
         });
 
         it('GET /api/group/:groupid/members returns 501 as not yet implemented', function(done) {
 
-            supertest(helper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .get('/api/group/34444444/members')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(501,done);
@@ -220,14 +220,14 @@ describe('Groups API', function() {
 
         it('GET /api/group/:groupid/allusers returns 401 when no token', function(done) {
 
-            supertest(helper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .get('/api/group/34444444/allusers')
             .expect(401,done);
         });
 
         it('GET /api/group/:groupid/allusers returns 501 as not yet implemented', function(done) {
 
-            supertest(helper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .get('/api/group/34444444/allusers')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(501,done);
@@ -240,9 +240,9 @@ describe('Groups API', function() {
     */
     describe('test no data returned', function() {
 
-        var noDataHelper;
+        var helper;
 
-        before(function(){
+        before(function(done){
 
             var mockMongoHandler,
                 testHandlerConfig;
@@ -252,20 +252,21 @@ describe('Groups API', function() {
                 returnNone : true
             };
         
-            mockMongoHandler = require('./helpers/mockMongoHandler')(testHandlerConfig);
+            mockMongoHandler = require('./mocks/mockMongoHandler')(testHandlerConfig);
 
-            noDataHelper = fixture.testingHelper({integrationTest:false});
-            noDataHelper.initArmadaService(mockMongoHandler);
-        
+            helper = fixture.armadaTestHelper;
+            helper.initArmadaService(mockMongoHandler);
+            done();
         });
 
-        after(function(){
-            noDataHelper.stopArmadaService();
+        after(function(done){
+            helper.stopTestService();
+            done();
         });
 
         it('GET /api/group/membership returns 204 when no data', function(done) {
 
-            supertest(noDataHelper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .get('/api/group/membership/33333/member')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(204,done);
@@ -273,7 +274,7 @@ describe('Groups API', function() {
 
         it('GET /api/group/membership/:userid/owner returns 204 when no data', function(done) {
 
-            supertest(noDataHelper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .get('/api/group/membership/33333/owner')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(204,done);
@@ -281,7 +282,7 @@ describe('Groups API', function() {
 
         it('GET /api/group/membership/:userid/patient returns 204 when no data', function(done) {
 
-            supertest(noDataHelper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .get('/api/group/membership/33333/patient')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(204,done);
@@ -289,7 +290,7 @@ describe('Groups API', function() {
 
         it('POST /api/group/:groupid/user returns 204 when no match', function(done) {
 
-            supertest(noDataHelper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .post('/api/group/88888888/user')
             .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid:'12345997'})
@@ -298,7 +299,7 @@ describe('Groups API', function() {
 
         it('DELETE /api/group/:groupid/user returns 204 when no match', function(done) {
 
-            supertest(noDataHelper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .del('/api/group/99999775/user')
             .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid:'12345997'})
@@ -307,7 +308,7 @@ describe('Groups API', function() {
 
         it('GET /api/group/membership/:userid/patient returns error when one has been raised', function(done) {
 
-            supertest(noDataHelper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .get('/api/group/membership/33333/patient')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(204,done);
@@ -320,7 +321,7 @@ describe('Groups API', function() {
     */
     describe('test errors returned', function() {
 
-        var errorsFoundHelper;
+        var helper;
 
         before(function(){
 
@@ -332,19 +333,19 @@ describe('Groups API', function() {
                 returnNone : false
             };
         
-            mockMongoHandler = require('./helpers/mockMongoHandler')(testHandlerConfig);
-            errorsFoundHelper = fixture.testingHelper({integrationTest:false});
-            errorsFoundHelper.initArmadaService(mockMongoHandler);
+            mockMongoHandler = require('./mocks/mockMongoHandler')(testHandlerConfig);
+            helper = fixture.armadaTestHelper;
+            helper.initArmadaService(mockMongoHandler);
         
         });
 
         after(function(){
-            errorsFoundHelper.stopArmadaService();
+            helper.stopTestService();
         });
 
         it('GET /status returns 500 when there is an issue and tell me what is down', function(done) {
 
-            supertest(errorsFoundHelper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .get('/api/group/status')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(500)
@@ -362,7 +363,7 @@ describe('Groups API', function() {
             var groupToAdd = testGroup;
 
 
-            supertest(errorsFoundHelper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .post('/api/group')
             .set('X-Tidepool-Session-Token', sessionToken)
             .send({group:groupToAdd})
@@ -376,7 +377,7 @@ describe('Groups API', function() {
 
         it('GET /api/group/membership returns 500 and does not return error so we do not leak implemention details', function(done) {
 
-            supertest(errorsFoundHelper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .get('/api/group/membership/33333/member')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(500)
@@ -390,7 +391,7 @@ describe('Groups API', function() {
 
         it('GET /api/group/membership/:userid/owner returns 500 and does not return error so we do not leak implemention details', function(done) {
 
-            supertest(errorsFoundHelper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .get('/api/group/membership/33333/owner')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(500)
@@ -404,7 +405,7 @@ describe('Groups API', function() {
 
         it('GET /api/group/membership/:userid/patient returns 500 and does not return error so we do not leak implemention details', function(done) {
 
-            supertest(errorsFoundHelper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .get('/api/group/membership/33333/patient')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(500)
@@ -417,7 +418,7 @@ describe('Groups API', function() {
 
         it('POST /api/group/:groupid/user returns 500 and does not return error so we do not leak implemention details', function(done) {
 
-            supertest(errorsFoundHelper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .post('/api/group/33333/user')
             .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid:'12345997'})
@@ -431,7 +432,7 @@ describe('Groups API', function() {
 
         it('DELETE /api/group/:groupid/user returns 500 and does not return error so we do not leak implemention details', function(done) {
 
-            supertest(errorsFoundHelper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .del('/api/group/33333/user')
             .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid:'12345997'})
@@ -445,7 +446,7 @@ describe('Groups API', function() {
 
         it('GET /api/group/:groupid/patient 500 and does not return error so we do not leak implemention details', function(done) {
 
-            supertest(errorsFoundHelper.armadaServiceEndpoint())
+            supertest(helper.testServiceEndpoint())
             .get('/api/group/33333/patient')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(500)

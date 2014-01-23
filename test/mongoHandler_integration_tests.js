@@ -17,10 +17,10 @@ not, you can obtain one from Tidepool Project at tidepool.org.
 
 'use strict';
 
-var fixture = require('./helpers/fixtures.js'),
+var fixture = require('./helpers/fixtures'),
 /*jshint unused:false */
     should = fixture.should,
-    helper = fixture.testingHelper({integrationTest:true}),
+    helper = fixture.armadaTestHelper,
     testGroups = fixture.testData.relatedSet,
     testDbInstance,
     testGroups,
@@ -30,9 +30,9 @@ describe('handleMongo', function() {
 
     before(function(){
 
-        var testConfig = helper.testConfig();
+        var testConfig = helper.testConfig;
         mongoHandler = require('../lib/handler/mongoHandler')(testConfig.mongoDbConnectionString);
-        testDbInstance = helper.mongoTestInstance();
+        testDbInstance = helper.createMongoInstance();
         
     });
 
@@ -61,7 +61,7 @@ describe('handleMongo', function() {
                 return done(error);
             }
             id.should.not.equal('');
-            helper.validateId(id).should.be.true;
+            helper.isValidId(id).should.be.true;
             done();
         });
 

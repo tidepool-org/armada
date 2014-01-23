@@ -17,8 +17,8 @@ not, you can obtain one from Tidepool Project at tidepool.org.
 
 'use strict';
 
-var fixture = require('./helpers/fixtures.js'),
-    userApi = require('./helpers/mockUserApi'),
+var fixture = require('./helpers/fixtures'),
+    userApi = require('./mocks/mockUserApi'),
     should = fixture.should,
     helper = fixture.armadaTestHelper,
     userHandler;

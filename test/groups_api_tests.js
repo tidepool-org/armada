@@ -20,7 +20,8 @@ var fixture = require('./helpers/fixtures.js'),
 /*jshint unused:false */
     should = fixture.should,
     supertest = fixture.supertest,
-    testGroup = fixture.testData.individual;
+    testGroup = fixture.testData.individual, 
+    sessionToken = fixture.testingHelper.sessiontoken;
 
 describe('Groups API', function() {
 
@@ -54,10 +55,19 @@ describe('Groups API', function() {
             helper.stopArmadaService();
         });
 
+        it('GET /status returns 401 when no token given', function(done) {
+
+            supertest(helper.armadaServiceEndpoint())
+            .get('/api/group/status?status=403')
+            .expect(401,done);
+            
+        });
+
         it('GET /status returns 200 when all good', function(done) {
 
             supertest(helper.armadaServiceEndpoint())
             .get('/api/group/status')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200,done);
             
         });
@@ -66,8 +76,25 @@ describe('Groups API', function() {
 
             supertest(helper.armadaServiceEndpoint())
             .get('/api/group/status?status=403')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(403,done);
             
+        });
+
+        it('POST /api/group 401 no token given', function(done) {
+
+            var testGroup = {
+                name : 'test create for 201',
+                owners: ['99999','222222'],
+                members: ['99999','222222','33333212'],
+                patient : '444444'
+            };
+
+            supertest(helper.armadaServiceEndpoint())
+            .post('/api/group')
+            .send({group:testGroup})
+            .expect(401,done);
+
         });
 
         it('POST /api/group 201 when all good', function(done) {
@@ -81,6 +108,7 @@ describe('Groups API', function() {
 
             supertest(helper.armadaServiceEndpoint())
             .post('/api/group')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .send({group:testGroup})
             .expect(201,done);
 
@@ -97,15 +125,24 @@ describe('Groups API', function() {
 
             supertest(helper.armadaServiceEndpoint())
             .post('/api/group')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .send({group:testGroup})
             .expect(201,done);
             
+        });
+
+        it('GET /api/group/membership returns 401 when no token', function(done) {
+
+            supertest(helper.armadaServiceEndpoint())
+            .get('/api/group/membership/33333/member')
+            .expect(401,done);
         });
 
         it('GET /api/group/membership returns 200 when all good', function(done) {
 
             supertest(helper.armadaServiceEndpoint())
             .get('/api/group/membership/33333/member')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200,done);
         });
 
@@ -113,43 +150,86 @@ describe('Groups API', function() {
 
             supertest(helper.armadaServiceEndpoint())
             .get('/api/group/membership/33333/patient')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200,done);
+        });
+
+        it('POST /api/group/:groupid/user returns 401 when no token', function(done) {
+ 
+            supertest(helper.armadaServiceEndpoint())
+            .post('/api/group/34444444/user')
+            .send({userid:'12345997'})
+            .expect(401,done);
         });
 
         it('POST /api/group/:groupid/user returns 200 when all good', function(done) {
  
             supertest(helper.armadaServiceEndpoint())
             .post('/api/group/34444444/user')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid:'12345997'})
             .expect(200,done);
+        });
+
+        it('DELETE /api/group/:groupid/user returns 401 when no token', function(done) {
+
+            supertest(helper.armadaServiceEndpoint())
+            .del('/api/group/34444444/user')
+            .send({userid:'12345997'})
+            .expect(401,done);
         });
 
         it('DELETE /api/group/:groupid/user returns 200 when all good', function(done) {
 
             supertest(helper.armadaServiceEndpoint())
             .del('/api/group/34444444/user')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid:'12345997'})
             .expect(200,done);
+        });
+
+        it('GET /api/group/:groupid/patient returns 401 when no token', function(done) {
+
+            supertest(helper.armadaServiceEndpoint())
+            .get('/api/group/34444444/patient')
+            .expect(401,done);
         });
 
         it('GET /api/group/:groupid/patient returns 200 when all good', function(done) {
 
             supertest(helper.armadaServiceEndpoint())
             .get('/api/group/34444444/patient')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200,done);
+        });
+
+        it('GET /api/group/:groupid/members returns 401 when no token', function(done) {
+
+            supertest(helper.armadaServiceEndpoint())
+            .get('/api/group/34444444/members')
+            .expect(401,done);
         });
 
         it('GET /api/group/:groupid/members returns 501 as not yet implemented', function(done) {
 
             supertest(helper.armadaServiceEndpoint())
             .get('/api/group/34444444/members')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(501,done);
+        });
+
+        it('GET /api/group/:groupid/allusers returns 401 when no token', function(done) {
+
+            supertest(helper.armadaServiceEndpoint())
+            .get('/api/group/34444444/allusers')
+            .expect(401,done);
         });
 
         it('GET /api/group/:groupid/allusers returns 501 as not yet implemented', function(done) {
 
             supertest(helper.armadaServiceEndpoint())
             .get('/api/group/34444444/allusers')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(501,done);
         });
     });
@@ -187,6 +267,7 @@ describe('Groups API', function() {
 
             supertest(noDataHelper.armadaServiceEndpoint())
             .get('/api/group/membership/33333/member')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(204,done);
         });
 
@@ -194,6 +275,7 @@ describe('Groups API', function() {
 
             supertest(noDataHelper.armadaServiceEndpoint())
             .get('/api/group/membership/33333/owner')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(204,done);
         });
 
@@ -201,6 +283,7 @@ describe('Groups API', function() {
 
             supertest(noDataHelper.armadaServiceEndpoint())
             .get('/api/group/membership/33333/patient')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(204,done);
         });
 
@@ -208,6 +291,7 @@ describe('Groups API', function() {
 
             supertest(noDataHelper.armadaServiceEndpoint())
             .post('/api/group/88888888/user')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid:'12345997'})
             .expect(204,done);
         });
@@ -216,6 +300,7 @@ describe('Groups API', function() {
 
             supertest(noDataHelper.armadaServiceEndpoint())
             .del('/api/group/99999775/user')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid:'12345997'})
             .expect(204,done);
         });
@@ -224,6 +309,7 @@ describe('Groups API', function() {
 
             supertest(noDataHelper.armadaServiceEndpoint())
             .get('/api/group/membership/33333/patient')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(204,done);
         });
     });
@@ -260,6 +346,7 @@ describe('Groups API', function() {
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
             .get('/api/group/status')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -277,6 +364,7 @@ describe('Groups API', function() {
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
             .post('/api/group')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .send({group:groupToAdd})
             .expect(500)
             .end(function(err, res) {
@@ -290,6 +378,7 @@ describe('Groups API', function() {
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
             .get('/api/group/membership/33333/member')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -303,6 +392,7 @@ describe('Groups API', function() {
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
             .get('/api/group/membership/33333/owner')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -316,6 +406,7 @@ describe('Groups API', function() {
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
             .get('/api/group/membership/33333/patient')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -328,6 +419,7 @@ describe('Groups API', function() {
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
             .post('/api/group/33333/user')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid:'12345997'})
             .expect(500)
             .end(function(err, res) {
@@ -341,6 +433,7 @@ describe('Groups API', function() {
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
             .del('/api/group/33333/user')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid:'12345997'})
             .expect(500)
             .end(function(err, res) {
@@ -354,6 +447,7 @@ describe('Groups API', function() {
 
             supertest(errorsFoundHelper.armadaServiceEndpoint())
             .get('/api/group/33333/patient')
+            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);

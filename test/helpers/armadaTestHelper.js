@@ -18,6 +18,7 @@ not, you can obtain one from Tidepool Project at tidepool.org.
 'use strict';
 
 var armadaService = require('../../lib/armadaService'),
+    userApi = require('../mocks/mockUserApi'),
     service;
 
 var armadaTestHelper = {};
@@ -42,10 +43,12 @@ armadaTestHelper.createMongoInstance = function(){
 armadaTestHelper.initArmadaService = function(crudHandler){
     service = new armadaService(crudHandler,armadaTestHelper.testConfig);
     service.start();
+    userApi.listen(10004);
 }
 
 armadaTestHelper.stopTestService = function(){
     service.stop();
+    userApi.close();
 }
 
 armadaTestHelper.testServiceEndpoint = function(){

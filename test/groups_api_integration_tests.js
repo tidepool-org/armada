@@ -281,4 +281,33 @@ describe('Groups API', function() {
 
     });
 
+    describe('GET /api/group/:groupid/members', function() {
+
+        var groupToGetMembersFor;
+
+        before(function(done){
+            //Get existing group to use in tests 
+            testDbInstance.groups.findOne(function(err, doc) {
+                groupToGetMembersFor = doc;
+                done();
+            });
+        });
+
+        it('returns 200 and the updated group when user is removed from the group', function(done) {
+
+            var groupId = groupToGetMembersFor._id;
+
+            supertest(apiEndPoint)
+            .get('/api/group/'+groupId+'/members')
+            .set('X-Tidepool-Session-Token', sessionToken)
+            .expect(200)
+            .end(function(err, res) {
+                if (err) return done(err);
+                res.body.should.have.property('members');
+                done();
+            });
+        });
+
+    });
+
 });

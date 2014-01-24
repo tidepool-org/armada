@@ -47,4 +47,18 @@ mockUserApi.get('/user/:id', function(req, res, next) {
   
 });
 
+mockUserApi.get('/token/:id', function(req, res, next) {
+
+	var token = req.headers['x-tidepool-session-token'];
+
+	if(token){
+		res.send(200,{userid: user.userid});
+		return next();
+	}
+
+	res.send(401, 'Unauthorized');
+	return next();
+  
+});
+
 module.exports = mockUserApi;

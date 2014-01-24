@@ -84,10 +84,7 @@ describe('Groups API', function() {
         it('POST /api/group 401 no token given', function(done) {
 
             var testGroup = {
-                name : 'test create for 201',
-                owners: ['99999','222222'],
-                members: ['99999','222222','33333212'],
-                patient : '444444'
+                members: ['99999','222222','33333212']
             };
 
             supertest(helper.testServiceEndpoint())
@@ -100,10 +97,7 @@ describe('Groups API', function() {
         it('POST /api/group 201 when all good', function(done) {
 
             var testGroup = {
-                name : 'test create for 201',
-                owners: ['99999','222222'],
-                members: ['99999','222222','33333212'],
-                patient : '444444'
+                members: ['99999','222222','33333212']
             };
 
             supertest(helper.testServiceEndpoint())
@@ -117,10 +111,7 @@ describe('Groups API', function() {
         it('POST /api/group 200 when all good', function(done) {
 
             var testGroup = {
-                name : 'test create for 201',
-                owners: ['99999'],
-                members: ['99999','222222','33333212'],
-                patient : '444444'
+                members: ['99999','222222','33333212']
             };
 
             supertest(helper.testServiceEndpoint())
@@ -142,14 +133,6 @@ describe('Groups API', function() {
 
             supertest(helper.testServiceEndpoint())
             .get('/api/group/membership/33333/member')
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .expect(200,done);
-        });
-
-        it('GET /api/group/membership/:userid/patient returns 200 when all good', function(done) {
-
-            supertest(helper.testServiceEndpoint())
-            .get('/api/group/membership/33333/patient')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200,done);
         });
@@ -188,21 +171,6 @@ describe('Groups API', function() {
             .expect(200,done);
         });
 
-        it('GET /api/group/:groupid/patient returns 401 when no token', function(done) {
-
-            supertest(helper.testServiceEndpoint())
-            .get('/api/group/34444444/patient')
-            .expect(401,done);
-        });
-
-        it('GET /api/group/:groupid/patient returns 200 when all good', function(done) {
-
-            supertest(helper.testServiceEndpoint())
-            .get('/api/group/34444444/patient')
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .expect(200,done);
-        });
-
         it('GET /api/group/:groupid/members returns 401 when no token', function(done) {
 
             supertest(helper.testServiceEndpoint())
@@ -218,20 +186,6 @@ describe('Groups API', function() {
             .expect(501,done);
         });
 
-        it('GET /api/group/:groupid/allusers returns 401 when no token', function(done) {
-
-            supertest(helper.testServiceEndpoint())
-            .get('/api/group/34444444/allusers')
-            .expect(401,done);
-        });
-
-        it('GET /api/group/:groupid/allusers returns 501 as not yet implemented', function(done) {
-
-            supertest(helper.testServiceEndpoint())
-            .get('/api/group/34444444/allusers')
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .expect(501,done);
-        });
     });
 
     /*
@@ -270,23 +224,7 @@ describe('Groups API', function() {
             .get('/api/group/membership/33333/member')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(204,done);
-        });
-
-        it('GET /api/group/membership/:userid/owner returns 204 when no data', function(done) {
-
-            supertest(helper.testServiceEndpoint())
-            .get('/api/group/membership/33333/owner')
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .expect(204,done);
-        });
-
-        it('GET /api/group/membership/:userid/patient returns 204 when no data', function(done) {
-
-            supertest(helper.testServiceEndpoint())
-            .get('/api/group/membership/33333/patient')
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .expect(204,done);
-        });
+        });    
 
         it('POST /api/group/:groupid/user returns 204 when no match', function(done) {
 
@@ -306,13 +244,6 @@ describe('Groups API', function() {
             .expect(204,done);
         });
 
-        it('GET /api/group/membership/:userid/patient returns error when one has been raised', function(done) {
-
-            supertest(helper.testServiceEndpoint())
-            .get('/api/group/membership/33333/patient')
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .expect(204,done);
-        });
     });
 
     /*
@@ -389,33 +320,6 @@ describe('Groups API', function() {
 
         });
 
-        it('GET /api/group/membership/:userid/owner returns 500 and does not return error so we do not leak implemention details', function(done) {
-
-            supertest(helper.testServiceEndpoint())
-            .get('/api/group/membership/33333/owner')
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .expect(500)
-            .end(function(err, res) {
-                if (err) return done(err);
-                res.body.should.not.property('error');
-                done();
-            });
-
-        });
-
-        it('GET /api/group/membership/:userid/patient returns 500 and does not return error so we do not leak implemention details', function(done) {
-
-            supertest(helper.testServiceEndpoint())
-            .get('/api/group/membership/33333/patient')
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .expect(500)
-            .end(function(err, res) {
-                if (err) return done(err);
-                res.body.should.not.property('error');
-                done();
-            });
-        });
-
         it('POST /api/group/:groupid/user returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(helper.testServiceEndpoint())
@@ -436,19 +340,6 @@ describe('Groups API', function() {
             .del('/api/group/33333/user')
             .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid:'12345997'})
-            .expect(500)
-            .end(function(err, res) {
-                if (err) return done(err);
-                res.body.should.not.property('error');
-                done();
-            });
-        });
-
-        it('GET /api/group/:groupid/patient 500 and does not return error so we do not leak implemention details', function(done) {
-
-            supertest(helper.testServiceEndpoint())
-            .get('/api/group/33333/patient')
-            .set('X-Tidepool-Session-Token', sessionToken)
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);

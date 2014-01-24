@@ -40,8 +40,7 @@ var mockMongoHandler = function(testingConfig) {
         createGroup : handleCreateGroup,
         findGroupsMemberOf : handleFindGroupsMemberOf,
         addUserToGroup : handleAddUserToGroup,
-        removeUserFromGroup : handleRemoveUserFromGroup,
-        findPatientForGroup : handleFindPatientForGroup
+        removeUserFromGroup : handleRemoveUserFromGroup
     };
 
 };

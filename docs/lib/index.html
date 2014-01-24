@@ -47,9 +47,9 @@ not, you can obtain one from Tidepool Project at tidepool.org.
     mongoHandler;
 
     config = require(<span class="string">'../env'</span>);
-    mongoHandler = require(<span class="string">'./handler/MongoHandler'</span>)(config.mongoDbConnectionString);
+    mongoHandler = require(<span class="string">'./handler/mongoHandler'</span>)(config.mongoDbConnectionString);
 
-    service = require(<span class="string">'./ArmadaService'</span>)(mongoHandler,config.port);</pre></div>
+    service = require(<span class="string">'./armadaService'</span>)(mongoHandler,config);</pre></div>
         
       
         

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>userHandler.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          <h1>userHandler.js</h1>
+        
+
+        
+      </div>
+
+      
+        
+        
+        
+          <div class='highlight'><pre><span class="comment">/*
+== BSD2 LICENSE ==
+Copyright (c) 2014, Tidepool Project
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the associated License, which is identical to the BSD 2-Clause
+License as published by the Open Source Initiative at opensource.org.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the License for more details.
+
+You should have received a copy of the License along with this program; if
+not, you can obtain one from Tidepool Project at tidepool.org.
+== BSD2 LICENSE ==
+ */</span>
+
+<span class="string">'use strict'</span>;
+
+<span class="keyword">var</span> log = require(<span class="string">'../log.js'</span>)(<span class="string">'usersHandler.js'</span>),
+	request = require(<span class="string">'request'</span>),
+	userApiHost,
+	config;
+
+<span class="keyword">var</span> userHandler = <span class="function"><span class="keyword">function</span><span class="params">(envConfig, host)</span> {</span>
+
+	config = envConfig;
+	userApiHost = host;
+
+    <span class="keyword">return</span> {
+        loginServerAndGetToken : loginServerAndGetToken,
+        getUser : getUser
+    };
+};
+
+<span class="function"><span class="keyword">function</span> <span class="title">loginServerAndGetToken</span><span class="params">(callback)</span>{</span>
+
+	<span class="keyword">var</span> userAPILogin = userApiHost+<span class="string">'/serverlogin'</span>;
+	<span class="keyword">var</span> options = {
+    	url: userAPILogin,
+        method:<span class="string">'POST'</span>,
+    	headers: {
+        	<span class="string">'X-Tidepool-Server-Name'</span>: config.serverName,
+        	<span class="string">'X-Tidepool-Server-Secret'</span>: config.serverSecret
+    	}
+    };
+
+    request(options, <span class="function"><span class="keyword">function</span> <span class="params">(error, response, body)</span> {</span>
+        <span class="keyword">if</span>(error){
+            <span class="keyword">return</span> callback(error,<span class="literal">null</span>);
+        }
+        <span class="keyword">var</span> token = response.headers[<span class="string">'x-tidepool-session-token'</span>];
+        <span class="keyword">return</span> callback(<span class="literal">null</span>,token);
+    });
+
+};
+
+<span class="function"><span class="keyword">function</span> <span class="title">getUser</span><span class="params">(userId, token, callback)</span>{</span>
+
+	<span class="keyword">var</span> userAPIGetUser = userApiHost+<span class="string">'/user/'</span>+userId;
+
+	<span class="keyword">var</span> options = {
+    	url: userAPIGetUser,
+        method:<span class="string">'GET'</span>,
+    	headers: {
+        	<span class="string">'X-Tidepool-Session-Token'</span>: token
+    	}
+    };
+
+    request(options, <span class="function"><span class="keyword">function</span> <span class="params">(error, response, body)</span> {</span>
+        <span class="keyword">if</span>(error){
+            callback(error,<span class="literal">null</span>);
+        }
+        callback(<span class="literal">null</span>,body);
+    });
+};
+
+module.exports = userHandler;</pre></div>
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>

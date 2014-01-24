@@ -4,8 +4,7 @@ var testGroupsData = {
     individual : {}
 };
 
-// A related set of careteams / groups
-
+// A related becuse they have a member in common
 testGroupsData.relatedSet = [{
     members: ['99999','222222','4982883']
 },
@@ -20,7 +19,6 @@ testGroupsData.relatedSet = [{
 }];
 
 // One off group with no other related groups
-
 testGroupsData.individual = {
     members: ['99999','222222','33333212']
 };

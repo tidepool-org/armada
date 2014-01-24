@@ -61,10 +61,7 @@ armadaTestHelper.isValidId = function(id){
 
 armadaTestHelper.validateGroup = function(group){
     if (('id' in group && armadaTestHelper.isValidId(group.id)) &&
-        ('name' in group && group.name !== '') &&
-        ('owners' in group && group.owners.length > 0) &&
-        ('members' in group && group.members.length > 0) &&
-        ('patient' in group && group.patient !== ''))
+        ('members' in group && group.members.length > 0))
         {
             return true;
         } else {

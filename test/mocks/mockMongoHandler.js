@@ -38,9 +38,7 @@ var mockMongoHandler = function(testingConfig) {
     return {
         status : status,
         createGroup : handleCreateGroup,
-        findGroupsPatientIn : handleFindGroupsPatientIn,
         findGroupsMemberOf : handleFindGroupsMemberOf,
-        findGroupsOwnerOf : handleFindGroupsOwnerOf,
         addUserToGroup : handleAddUserToGroup,
         removeUserFromGroup : handleRemoveUserFromGroup,
         findPatientForGroup : handleFindPatientForGroup
@@ -88,55 +86,14 @@ function handleFindGroupsMemberOf(userId,callback) {
 
     var memberGroups = [{
         id: '65587876679870098',
-        name : 'medical',
-        owners: [userId,'5555'],
-        members: [userId,'5555'],
-        patient : '12345'
+        members: [userId,'5555']
     },
     {
         id: '87987987987897987987',
-        name : 'careteam',
-        owners: ['3343','8898'],
-        members: ['3343','8898'],
-        patient : userId
+        members: ['3343',userId]
     }];
 
     return resolveCallbackValues(callback,memberGroups);
-}
-
-function handleFindGroupsOwnerOf(userId,callback) {
-    log.debug('Finding groups owned by userid[%s]', userId);
-
-    var ownerGroups = [{
-        id: '65587876679870098',
-        name : 'medical',
-        owners: [userId,'5555'],
-        members: [userId,'5555'],
-        patient : '12345'
-    },
-    {
-        id: '87987987987897987987',
-        name : 'careteam',
-        owners: [userId,'8898'],
-        members: [userId,'8898'],
-        patient : '9999999'
-    }];
-
-    return resolveCallbackValues(callback,ownerGroups);
-}
-
-function handleFindGroupsPatientIn(userId,callback) {
-    log.debug('Finding groups patient[%s] is in', userId);
-
-    var patientInGroups = [{
-        id: '65587876679870098',
-        name : 'medical',
-        owners: ['88665','5555'],
-        members: ['88665','5555'],
-        patient : userId
-    }];
-
-    return resolveCallbackValues(callback,patientInGroups);
 }
 
 function handleAddUserToGroup(groupId, userId, callback) {
@@ -145,10 +102,7 @@ function handleAddUserToGroup(groupId, userId, callback) {
     var addUserToGroups =
     {
         id: '65587876679870098',
-        name : 'medical',
-        owners: ['88665','5555'],
-        members: ['88665','5555',userId],
-        patient : '9999999'
+        members: ['88665','5555',userId]
     };
 
     return resolveCallbackValues(callback,addUserToGroups);
@@ -158,21 +112,12 @@ function handleRemoveUserFromGroup(groupId, userId,callback){
     log.debug('Removing user[%s] from group[%s]', userId, groupId);
 
     var removeFromGroups = {
-
         id: '65587876679870098',
-        name : 'medical',
-        owners: ['88665','5555'],
-        members: ['88665','5555'],
-        patient : '9999999'
+        members: ['88665','5555']
     };
 
     return resolveCallbackValues(callback,removeFromGroups);
 }
 
-function handleFindPatientForGroup(groupId,callback){
-    log.debug('Find paitient for group[%s]', groupId);
-
-    return resolveCallbackValues(callback,'99999999');
-}
 
 module.exports = mockMongoHandler;

@@ -50,10 +50,7 @@ describe('handleMongo', function() {
     it('createGroup ', function(done) {
 
         var dummyGroup = {
-            name : 'createGroup test',
-            owners: ['XX888S22'],
-            members: ['XX888S22','DD55550'],
-            patient : '1234XD5'
+            members: ['XX888S22','DD55550']
         };
 
         mongoHandler.createGroup(dummyGroup,function(error,id){
@@ -67,22 +64,6 @@ describe('handleMongo', function() {
 
     });
 
-    it('findGroupsPatientIn find one group valid for patient 99', function(done) {
-
-        var patientId ='99';
-
-        mongoHandler.findGroupsPatientIn(patientId,function(error,groups){
-            if(error){
-                return done(error);
-            }
-            groups.length.should.equal(1);
-            var theGroup = groups[0];
-            helper.validateGroup(theGroup).should.be.true;
-            done();
-        });
-
-    });
-
     it('findGroupsMemberOf for user 3343 should return two valid groups', function(done) {
 
         var userId ='3343';
@@ -90,26 +71,8 @@ describe('handleMongo', function() {
         mongoHandler.findGroupsMemberOf(userId,function(error,groups){
             if(error){
                 return done(error);
-            }
+            }      
             groups.length.should.equal(2);
-            groups.forEach(function(theGroup){
-                helper.validateGroup(theGroup).should.be.true;
-            });
-            
-            done();
-        });
-
-    });
-
-    it('findGroupsOwnerOf for user 99999 should return one valid group', function(done) {
-
-        var userId ='99999';
-
-        mongoHandler.findGroupsOwnerOf(userId,function(error,groups){
-            if(error){
-                return done(error);
-            }
-            groups.length.should.equal(1);
             groups.forEach(function(theGroup){
                 helper.validateGroup(theGroup).should.be.true;
             });
@@ -124,10 +87,7 @@ describe('handleMongo', function() {
         var userId ='002JHB77';
 
         var dummyGroup = {
-            name : 'addUserToGroup test',
-            owners: ['XX888S22'],
-            members: ['XX888S22'],
-            patient : '1234XD5'
+            members: ['XX888S22']
         };
 
         mongoHandler.createGroup(dummyGroup,function(error,id){
@@ -140,7 +100,7 @@ describe('handleMongo', function() {
             mongoHandler.addUserToGroup(groupId,userId,function(error,group){
                 if(error){
                     return done(error);
-                }
+                }           
                 helper.validateGroup(group).should.be.true;
                 group.members.should.contain(userId);
             
@@ -155,10 +115,7 @@ describe('handleMongo', function() {
         var userId ='002JHB77';
 
         var dummyGroup = {
-            name : 'removeUserFromGroup test',
-            owners: ['XX888S22','007722B77DF'],
-            members: ['XX888S22','007722B77DF'],
-            patient : '1234XD5'
+            members: ['XX888S22','007722B77DF']
         };
 
         mongoHandler.createGroup(dummyGroup,function(error,id){
@@ -171,42 +128,10 @@ describe('handleMongo', function() {
             mongoHandler.removeUserFromGroup(groupId,userId,function(error,group){
                 if(error){
                     return done(error);
-                }
+                }       
                 helper.validateGroup(group).should.be.true;
                 group.members.should.not.contain(userId);
-                group.owners.should.not.contain(userId);
             
-                done();
-            });
-        });
-
-    });
-
-    it('findPatientForGroup for group will return the patientId 002JHB77', function(done) {
-
-        var patientId ='002JHB77';
-
-        var dummyGroup = {
-            name : 'findPatientForGroup test',
-            owners: ['XX888S22','007722B77DF'],
-            members: ['XX888S22','007722B77DF'],
-            patient : patientId
-        };
-
-        mongoHandler.createGroup(dummyGroup,function(error,id){
-            if(error){
-                return done(error);
-            }
-            
-            var groupId = String(id);
-
-            mongoHandler.findPatientForGroup(groupId,function(error,patientId){
-                if(error){
-                    return done(error);
-                }
-
-                patientId.should.equal(patientId);
-        
                 done();
             });
         });

@@ -126,10 +126,10 @@ describe('Groups API', function() {
 
     describe('GET /api/group/membership/:userid/member', function() {
 
-        it('returns 200 and two groups when I ask for 12345', function(done) {
+        it('returns 200 and two groups when I ask for 3343', function(done) {
 
             supertest(apiEndPoint)
-            .get('/api/group/membership/12345/member')
+            .get('/api/group/membership/3343/member')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200)
             .end(function(err, res) {
@@ -144,80 +144,7 @@ describe('Groups API', function() {
         it('the groups should be valid', function(done) {
 
             supertest(apiEndPoint)
-            .get('/api/group/membership/12345/member')
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .expect(200)
-            .end(function(err, res) {
-                if (err) return done(err);
-
-                var foundGroups = res.body.groups;
-
-                foundGroups.forEach(function(group){
-                    armadaTestHelper.validateGroup(group).should.equal(true);
-                });
-
-                done();
-            });
-        });
-    });
-
-    describe('GET /api/group/membership/:userid/owner', function() {
-
-        it('returns 200 and two groups', function(done) {
-
-            supertest(apiEndPoint)
-            .get('/api/group/membership/3343/owner')
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .expect(200)
-            .end(function(err, res) {
-                if (err) return done(err);
-
-                res.body.groups.length.should.equal(2);
-                done();
-            });
-        });
-
-        it('the two groups should be valid', function(done) {
-
-            supertest(apiEndPoint)
-            .get('/api/group/membership/3343/owner')
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .expect(200)
-            .end(function(err, res) {
-                if (err) return done(err);
-
-                var foundGroups = res.body.groups;
-
-                foundGroups.forEach(function(group){
-                    armadaTestHelper.validateGroup(group).should.equal(true);
-                });
-
-                done();
-            });
-        });
-    });
-
-    describe('GET /api/group/:groupid/patient', function() {
-
-        it('returns 200 and one groups when I ask for patient 8876', function(done) {
-
-            supertest(apiEndPoint)
-            .get('/api/group/membership/8876/patient')
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .expect(200)
-            .end(function(err, res) {
-                if (err) return done(err);
-
-                res.body.groups.length.should.equal(1);
-
-                done();
-            });
-        });
-
-        it('the one group for patient is valid', function(done) {
-
-            supertest(apiEndPoint)
-            .get('/api/group/membership/8876/patient')
+            .get('/api/group/membership/3343/member')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200)
             .end(function(err, res) {
@@ -294,7 +221,7 @@ describe('Groups API', function() {
 
         before(function(done){
             //Get existing group to use in tests 
-            testDbInstance.groups.findOne({name:'test_deluser'},function(err, doc) {
+            testDbInstance.groups.findOne(function(err, doc) {
                 testdelUserGroup = doc;
                 done();
             });
@@ -350,37 +277,6 @@ describe('Groups API', function() {
             .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid : userToRemove})
             .expect(200,done());
-        });
-
-    });
-
-    describe('GET /api/group/:groupid/patient', function() {
-
-        var testGroup;
-
-        before(function(done){
-            //Get existing group to use in tests 
-            testDbInstance.groups.findOne({},function(err, doc) {
-                testGroup = doc;
-                done();
-            });
-        });
-
-        it('returns 200 and the patient id when found', function(done) {
-
-            var groupId = testGroup._id;
-            var patientId = testGroup.patient;
-
-            supertest(apiEndPoint)
-            .get('/api/group/'+groupId+'/patient')
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .expect(200)
-            .end(function(err, res) {
-                if (err) return done(err);
-                //get the group and check
-                res.body.patient.should.equal(patientId);
-                done();
-            });
         });
 
     });

@@ -40,7 +40,8 @@ var mockMongoHandler = function(testingConfig) {
         createGroup : handleCreateGroup,
         findGroupsMemberOf : handleFindGroupsMemberOf,
         addUserToGroup : handleAddUserToGroup,
-        removeUserFromGroup : handleRemoveUserFromGroup
+        removeUserFromGroup : handleRemoveUserFromGroup,
+        findGroup : handleFindGroup
     };
 
 };
@@ -72,6 +73,18 @@ function resolveCallbackValues(callback,data){
     }
 
     return callback(null,data);
+}
+
+function handleFindGroup (groupId,callback) {
+    log.debug('Find group[%j]', groupId);
+
+    var foundGroup =
+    {
+        id: groupId,
+        members: ['88665','5555','334555']
+    };
+
+    return resolveCallbackValues(callback,foundGroup);
 }
 
 function handleCreateGroup (group,callback) {

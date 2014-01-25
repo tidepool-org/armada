@@ -50,6 +50,7 @@ describe('Groups API', function() {
         server.post('/api/group', groups.addGroup);
         server.post('/api/group/:groupid/user', groups.addToGroup);
         server.del('/api/group/:groupid/user', groups.removeFromGroup);
+        server.get('/api/group/:groupid', groups.getGroup);
 
         return server;
     }
@@ -137,6 +138,24 @@ describe('Groups API', function() {
             .expect(200,done);
         });
 
+        it('GET /api/group/:groupid returns 200 when all good', function(done) {
+
+            supertest(groupsAPI)
+            .get('/api/group/34444444')
+            .expect(200,done);
+        });
+
+        it('GET /api/group/:groupid returns the found group when all good', function(done) {
+
+            supertest(groupsAPI)
+            .get('/api/group/34444444')
+            .expect(200)
+            .end(function(err, res) {
+                if (err) return done(err);
+                res.body.should.property('group');
+                done();
+            });
+        });    
     });
 
     /*
@@ -178,6 +197,13 @@ describe('Groups API', function() {
             supertest(groupsAPI)
             .del('/api/group/99999775/user')
             .send({userid:'12345997'})
+            .expect(204,done);
+        });
+
+        it('GET /api/group/:groupid returns 204 when no match', function(done) {
+
+            supertest(groupsAPI)
+            .get('/api/group/88888888888888')
             .expect(204,done);
         });
 
@@ -270,6 +296,20 @@ describe('Groups API', function() {
                 done();
             });
         });
+
+        it('GET /api/group/:groupid returns 500 and does not return error so we do not leak implemention details', function(done) {
+
+            supertest(groupsAPI)
+            .get('/api/group/88888888888888')
+            .expect(500)
+            .end(function(err, res) {
+                if (err) return done(err);
+                res.body.should.not.property('error');
+                done();
+            });
+        });
+
+
     });
 
 });

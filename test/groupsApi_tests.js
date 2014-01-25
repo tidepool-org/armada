@@ -144,6 +144,8 @@ describe('Groups API', function() {
             .end(function(err, res) {
                 if (err) return done(err);
                 res.body.should.property('groups');
+                var groups = res.body.groups;
+                groups.should.be.instanceof(Array);
                 done();
             });
         });
@@ -166,8 +168,8 @@ describe('Groups API', function() {
                 if (err) return done(err);
                 res.body.should.property('group');
                 var group = res.body.group;
-
-
+                group.should.property('id');
+                group.should.property('members');
                 done();
             });
         });
@@ -189,6 +191,9 @@ describe('Groups API', function() {
             .end(function(err, res) {
                 if (err) return done(err);
                 res.body.should.property('group');
+                var group = res.body.group;
+                group.should.property('id');
+                group.should.property('members');
                 done();
             });
         });
@@ -208,6 +213,9 @@ describe('Groups API', function() {
             .end(function(err, res) {
                 if (err) return done(err);
                 res.body.should.property('group');
+                var group = res.body.group;
+                group.should.property('id');
+                group.should.property('members');
                 done();
             });
         });    

@@ -73,7 +73,7 @@ describe('Groups API', function() {
         
         });
 
-        it('GET /status returns 200 when all good', function(done) {
+        it('GET /status returns 200', function(done) {
 
             supertest(groupsAPI)
             .get('/api/group/status')
@@ -89,7 +89,7 @@ describe('Groups API', function() {
             
         });
 
-        it('POST /api/group 201 when all good', function(done) {
+        it('POST /api/group 201', function(done) {
 
             var testGroup = {
                 members: ['99999','222222','33333212']
@@ -120,27 +120,35 @@ describe('Groups API', function() {
 
         });
 
-        it('POST /api/group 200 when all good', function(done) {
-
-            var testGroup = {
-                members: ['99999','222222','33333212']
-            };
+        it('POST /api/group 400 when group is not sent', function(done) {
 
             supertest(groupsAPI)
             .post('/api/group')
-            .send({group:testGroup})
-            .expect(201,done);
+            .send({group:null})
+            .expect(400,done);
             
         });
 
-        it('GET /api/group/membership returns 200 when all good', function(done) {
+        it('GET /api/group/membership returns 200', function(done) {
 
             supertest(groupsAPI)
             .get('/api/group/membership/33333/member')
             .expect(200,done);
         });
 
-        it('POST /api/group/:groupid/user returns 200 when all good', function(done) {
+        it('GET /api/group/membership returns an array of groups', function(done) {
+
+            supertest(groupsAPI)
+            .get('/api/group/membership/33333/member')
+            .expect(200)
+            .end(function(err, res) {
+                if (err) return done(err);
+                res.body.should.property('groups');
+                done();
+            });
+        });
+
+        it('POST /api/group/:groupid/user returns 200', function(done) {
  
             supertest(groupsAPI)
             .post('/api/group/34444444/user')
@@ -148,7 +156,23 @@ describe('Groups API', function() {
             .expect(200,done);
         });
 
-        it('DELETE /api/group/:groupid/user returns 200 when all good', function(done) {
+        it('POST /api/group/:groupid/user returns the updated group', function(done) {
+ 
+            supertest(groupsAPI)
+            .post('/api/group/34444444/user')
+            .send({userid:'12345997'})
+            .expect(200)
+            .end(function(err, res) {
+                if (err) return done(err);
+                res.body.should.property('group');
+                var group = res.body.group;
+
+
+                done();
+            });
+        });
+
+        it('DELETE /api/group/:groupid/user returns 200', function(done) {
 
             supertest(groupsAPI)
             .del('/api/group/34444444/user')
@@ -156,14 +180,27 @@ describe('Groups API', function() {
             .expect(200,done);
         });
 
-        it('GET /api/group/:groupid returns 200 when all good', function(done) {
+        it('DELETE /api/group/:groupid/user returns the updated group', function(done) {
+
+            supertest(groupsAPI)
+            .del('/api/group/34444444/user')
+            .send({userid:'12345997'})
+            .expect(200)
+            .end(function(err, res) {
+                if (err) return done(err);
+                res.body.should.property('group');
+                done();
+            });
+        });
+
+        it('GET /api/group/:groupid returns 200', function(done) {
 
             supertest(groupsAPI)
             .get('/api/group/34444444')
             .expect(200,done);
         });
 
-        it('GET /api/group/:groupid returns the found group when all good', function(done) {
+        it('GET /api/group/:groupid returns the found group', function(done) {
 
             supertest(groupsAPI)
             .get('/api/group/34444444')

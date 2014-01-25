@@ -102,6 +102,24 @@ describe('Groups API', function() {
 
         });
 
+         it('POST /api/group returns id when created', function(done) {
+
+            var testGroup = {
+                members: ['99999','222222','33333212']
+            };
+
+            supertest(groupsAPI)
+            .post('/api/group')
+            .send({group:testGroup})
+            .expect(201)
+            .end(function(err, res) {
+                if (err) return done(err);
+                res.body.should.property('id');
+                done();
+            });
+
+        });
+
         it('POST /api/group 200 when all good', function(done) {
 
             var testGroup = {

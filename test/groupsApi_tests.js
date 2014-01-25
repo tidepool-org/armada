@@ -21,8 +21,7 @@ var fixture = require('./helpers/fixtures.js'),
     should = fixture.should,
     supertest = fixture.supertest,
     restify = require('restify'),
-    testGroup = fixture.testData.individual,
-    sessionToken = fixture.armadaTestHelper.sessiontoken;
+    testGroup = fixture.testData.individual;
 /*
     ============
 
@@ -44,7 +43,7 @@ describe('Groups API', function() {
         server.use(restify.queryParser());
         server.use(restify.bodyParser());
 
-        var groups = require('../lib/routes/groupsAPI')(crudHandler);
+        var groups = require('../lib/routes/groupApi')(crudHandler);
 
         server.get('/api/group/status',groups.status);
         server.get('/api/group/membership/:userid/member', groups.memberOf);

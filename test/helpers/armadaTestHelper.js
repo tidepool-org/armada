@@ -26,6 +26,7 @@ var armadaTestHelper = {};
 //config
 armadaTestHelper.testConfig = {
     httpPort : 10000,
+    userApiPort: 10004,
     mongoDbConnectionString : 'mongodb://localhost/tidepool-platform',
     serverName: 'armadaService',
     serverSecret: 'sharedMachineSecret'
@@ -40,10 +41,10 @@ armadaTestHelper.createMongoInstance = function(){
     return testDbInstance;
 };
 
-armadaTestHelper.initArmadaService = function(crudHandler){
-    service = new armadaService(crudHandler,armadaTestHelper.testConfig);
+armadaTestHelper.initArmadaService = function(crudHandler, hostGetter){
+    service = new armadaService(crudHandler, hostGetter ,armadaTestHelper.testConfig);
     service.start();
-    userApi.listen(10004);
+    userApi.listen(armadaTestHelper.testConfig.userApiPort);
 }
 
 armadaTestHelper.stopTestService = function(){

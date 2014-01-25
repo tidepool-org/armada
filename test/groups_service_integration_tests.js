@@ -28,6 +28,9 @@ var fixture = require('./helpers/fixtures.js'),
     apiEndPoint,
     testDbInstance;
 
+/*
+    Running the groups API using the mongo backend via the handler 
+*/
 describe('Groups API', function() {
 
     before(function(){
@@ -41,8 +44,14 @@ describe('Groups API', function() {
         config = armadaTestHelper.testConfig;    
     
         mongoHandler = require('../lib/handler/MongoHandler')(config.mongoDbConnectionString);
-       
-        armadaTestHelper.initArmadaService(mongoHandler);
+
+        //fake hakken functionality 
+        var fakeHostGetter = {};
+        fakeHostGetter.get = function(){
+            return [{host:'http://localhost:'+config.userApiPort}];
+        };
+        
+        armadaTestHelper.initArmadaService(mongoHandler,fakeHostGetter);
         testDbInstance = armadaTestHelper.createMongoInstance();
         apiEndPoint = armadaTestHelper.testServiceEndpoint();
 

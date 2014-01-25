@@ -57,6 +57,9 @@ module.exports = (function(){
 
 	env.mongoDbConnectionString = process.env.MONGO_CONNECTION_STRING || 'mongodb://localhost/groups';
 
+	//discovery via hakken the user Api host
+	env.userApiHost = process.env.USER_API_HOST || null;
+
 	// The host to contact for discovery
 	if (process.env.DISCOVERY_HOST != null) {
 		env.discovery = {};

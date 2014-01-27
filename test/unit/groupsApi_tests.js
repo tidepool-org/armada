@@ -16,7 +16,7 @@ not, you can obtain one from Tidepool Project at tidepool.org.
  */
 
 'use strict';
-var fixture = require('./helpers/fixtures.js'),
+var fixture = require('./../helpers/fixtures.js'),
 /*jshint unused:false */
     should = fixture.should,
     supertest = fixture.supertest,
@@ -43,14 +43,14 @@ describe('Groups API', function() {
         server.use(restify.queryParser());
         server.use(restify.bodyParser());
 
-        var groups = require('../lib/routes/groupApi')(crudHandler);
+        var groups = require('../../lib/routes/groupApi')(crudHandler);
 
-        server.get('/api/group/status',groups.status);
-        server.get('/api/group/membership/:userid/member', groups.memberOf);
-        server.post('/api/group', groups.addGroup);
-        server.post('/api/group/:groupid/user', groups.addToGroup);
-        server.del('/api/group/:groupid/user', groups.removeFromGroup);
-        server.get('/api/group/:groupid', groups.getGroup);
+        server.get('/status',groups.status);
+        server.get('/membership/:userid/member', groups.memberOf);
+        server.post('/', groups.addGroup);
+        server.post('/:groupid/user', groups.addToGroup);
+        server.del('/:groupid/user', groups.removeFromGroup);
+        server.get('/:groupid', groups.getGroup);
 
         return server;
     }
@@ -64,7 +64,7 @@ describe('Groups API', function() {
 
         before(function(){
 
-            var mockMongoHandler = require('./mocks/mockMongoHandler')({
+            var mockMongoHandler = require('./../mocks/mockMongoHandler')({
                 throwErrors : false,
                 returnNone : false
             });
@@ -74,42 +74,38 @@ describe('Groups API', function() {
         });
 
         it('GET /status returns 200', function(done) {
-
             supertest(groupsAPI)
-            .get('/api/group/status')
+            .get('/status')
             .expect(200,done);
-            
         });
 
         it('GET /status returns 403 when status is passed as 403', function(done) {
-
             supertest(groupsAPI)
-            .get('/api/group/status?status=403')
+            .get('/status?status=403')
             .expect(403,done);
-            
         });
 
-        it('POST /api/group 201', function(done) {
+        it('POST / 201', function(done) {
 
             var testGroup = {
                 members: ['99999','222222','33333212']
             };
 
             supertest(groupsAPI)
-            .post('/api/group')
+            .post('/')
             .send({group:testGroup})
             .expect(201,done);
 
         });
 
-         it('POST /api/group returns id when created', function(done) {
+         it('POST / returns id when created', function(done) {
 
             var testGroup = {
                 members: ['99999','222222','33333212']
             };
 
             supertest(groupsAPI)
-            .post('/api/group')
+            .post('/')
             .send({group:testGroup})
             .expect(201)
             .end(function(err, res) {
@@ -120,26 +116,26 @@ describe('Groups API', function() {
 
         });
 
-        it('POST /api/group 400 when group is not sent', function(done) {
+        it('POST / 400 when group is not sent', function(done) {
 
             supertest(groupsAPI)
-            .post('/api/group')
+            .post('/')
             .send({group:null})
             .expect(400,done);
             
         });
 
-        it('GET /api/group/membership returns 200', function(done) {
+        it('GET /membership returns 200', function(done) {
 
             supertest(groupsAPI)
-            .get('/api/group/membership/33333/member')
+            .get('/membership/33333/member')
             .expect(200,done);
         });
 
-        it('GET /api/group/membership returns an array of groups', function(done) {
+        it('GET /membership returns an array of groups', function(done) {
 
             supertest(groupsAPI)
-            .get('/api/group/membership/33333/member')
+            .get('/membership/33333/member')
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -150,18 +146,17 @@ describe('Groups API', function() {
             });
         });
 
-        it('POST /api/group/:groupid/user returns 200', function(done) {
- 
+        it('POST /:groupid/user returns 200', function(done) {
             supertest(groupsAPI)
-            .post('/api/group/34444444/user')
+            .post('/34444444/user')
             .send({userid:'12345997'})
             .expect(200,done);
         });
 
-        it('POST /api/group/:groupid/user returns the updated group', function(done) {
+        it('POST /:groupid/user returns the updated group', function(done) {
  
             supertest(groupsAPI)
-            .post('/api/group/34444444/user')
+            .post('/34444444/user')
             .send({userid:'12345997'})
             .expect(200)
             .end(function(err, res) {
@@ -174,18 +169,18 @@ describe('Groups API', function() {
             });
         });
 
-        it('DELETE /api/group/:groupid/user returns 200', function(done) {
+        it('DELETE /:groupid/user returns 200', function(done) {
 
             supertest(groupsAPI)
-            .del('/api/group/34444444/user')
+            .del('/34444444/user')
             .send({userid:'12345997'})
             .expect(200,done);
         });
 
-        it('DELETE /api/group/:groupid/user returns the updated group', function(done) {
+        it('DELETE /:groupid/user returns the updated group', function(done) {
 
             supertest(groupsAPI)
-            .del('/api/group/34444444/user')
+            .del('/34444444/user')
             .send({userid:'12345997'})
             .expect(200)
             .end(function(err, res) {
@@ -198,17 +193,17 @@ describe('Groups API', function() {
             });
         });
 
-        it('GET /api/group/:groupid returns 200', function(done) {
+        it('GET /:groupid returns 200', function(done) {
 
             supertest(groupsAPI)
-            .get('/api/group/34444444')
+            .get('/34444444')
             .expect(200,done);
         });
 
-        it('GET /api/group/:groupid returns the found group', function(done) {
+        it('GET /:groupid returns the found group', function(done) {
 
             supertest(groupsAPI)
-            .get('/api/group/34444444')
+            .get('/34444444')
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -231,7 +226,7 @@ describe('Groups API', function() {
 
         before(function(){
 
-            var mockMongoHandler = require('./mocks/mockMongoHandler')({
+            var mockMongoHandler = require('./../mocks/mockMongoHandler')({
                 throwErrors : false,
                 returnNone : true
             });
@@ -240,33 +235,33 @@ describe('Groups API', function() {
 
         });
 
-        it('GET /api/group/membership returns 204 when no data', function(done) {
+        it('GET /membership returns 204 when no data', function(done) {
 
             supertest(groupsAPI)
-            .get('/api/group/membership/33333/member')
+            .get('/membership/33333/member')
             .expect(204,done);
         });    
 
-        it('POST /api/group/:groupid/user returns 204 when no match', function(done) {
+        it('POST /:groupid/user returns 204 when no match', function(done) {
 
             supertest(groupsAPI)
-            .post('/api/group/88888888/user')
+            .post('/88888888/user')
             .send({userid:'12345997'})
             .expect(204,done);
         });
 
-        it('DELETE /api/group/:groupid/user returns 204 when no match', function(done) {
+        it('DELETE /:groupid/user returns 204 when no match', function(done) {
 
             supertest(groupsAPI)
-            .del('/api/group/99999775/user')
+            .del('/99999775/user')
             .send({userid:'12345997'})
             .expect(204,done);
         });
 
-        it('GET /api/group/:groupid returns 204 when no match', function(done) {
+        it('GET /:groupid returns 204 when no match', function(done) {
 
             supertest(groupsAPI)
-            .get('/api/group/88888888888888')
+            .get('/88888888888888')
             .expect(204,done);
         });
 
@@ -282,7 +277,7 @@ describe('Groups API', function() {
 
         before(function(){
 
-            var mockHandler = require('./mocks/mockMongoHandler')({
+            var mockHandler = require('./../mocks/mockMongoHandler')({
                 throwErrors : true,
                 returnNone : false
             });
@@ -294,7 +289,7 @@ describe('Groups API', function() {
         it('GET /status returns 500 when there is an issue and tell me what is down', function(done) {
 
             supertest(groupsAPI)
-            .get('/api/group/status')
+            .get('/status')
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -305,13 +300,13 @@ describe('Groups API', function() {
             
         });
 
-        it('POST /api/group returns 500 and does not return error so we do not leak implemention details', function(done) {
+        it('POST  returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             var groupToAdd = testGroup;
 
 
             supertest(groupsAPI)
-            .post('/api/group')
+            .post('/')
             .send({group:groupToAdd})
             .expect(500)
             .end(function(err, res) {
@@ -321,10 +316,10 @@ describe('Groups API', function() {
             });
         });
 
-        it('GET /api/group/membership returns 500 and does not return error so we do not leak implemention details', function(done) {
+        it('GET /membership returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(groupsAPI)
-            .get('/api/group/membership/33333/member')
+            .get('/membership/33333/member')
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -334,10 +329,10 @@ describe('Groups API', function() {
 
         });
 
-        it('POST /api/group/:groupid/user returns 500 and does not return error so we do not leak implemention details', function(done) {
+        it('POST /:groupid/user returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(groupsAPI)
-            .post('/api/group/33333/user')
+            .post('/33333/user')
             .send({userid:'12345997'})
             .expect(500)
             .end(function(err, res) {
@@ -347,10 +342,10 @@ describe('Groups API', function() {
             });
         });
 
-        it('DELETE /api/group/:groupid/user returns 500 and does not return error so we do not leak implemention details', function(done) {
+        it('DELETE /:groupid/user returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(groupsAPI)
-            .del('/api/group/33333/user')
+            .del('/33333/user')
             .send({userid:'12345997'})
             .expect(500)
             .end(function(err, res) {
@@ -360,10 +355,10 @@ describe('Groups API', function() {
             });
         });
 
-        it('GET /api/group/:groupid returns 500 and does not return error so we do not leak implemention details', function(done) {
+        it('GET /:groupid returns 500 and does not return error so we do not leak implemention details', function(done) {
 
             supertest(groupsAPI)
-            .get('/api/group/88888888888888')
+            .get('/88888888888888')
             .expect(500)
             .end(function(err, res) {
                 if (err) return done(err);

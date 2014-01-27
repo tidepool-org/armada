@@ -17,7 +17,7 @@ not, you can obtain one from Tidepool Project at tidepool.org.
 
 'use strict';
 
-var fixture = require('./helpers/fixtures.js'),
+var fixture = require('./../helpers/fixtures.js'),
 /*jshint unused:false */
     should = fixture.should,
     supertest = fixture.supertest,
@@ -43,7 +43,7 @@ describe('Groups API', function() {
 
         config = armadaTestHelper.testConfig;    
     
-        mongoHandler = require('../lib/handler/MongoHandler')(config.mongoDbConnectionString);
+        mongoHandler = require('../../lib/handler/MongoHandler')(config.mongoDbConnectionString);
 
         //fake hakken functionality 
         var fakeHostGetter = {};
@@ -65,7 +65,7 @@ describe('Groups API', function() {
         });
     });
 
-    describe('POST /api/group', function() {
+    describe('POST /', function() {
 
         it('returns 400 when given an invalid group to create', function(done) {
 
@@ -74,7 +74,7 @@ describe('Groups API', function() {
             };
 
             supertest(apiEndPoint)
-            .post('/api/group')
+            .post('/')
             .send({group:badGroup})
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(400)
@@ -87,7 +87,7 @@ describe('Groups API', function() {
         it('returns 400 when no data is sent', function(done) {
 
             supertest(apiEndPoint)
-            .post('/api/group')
+            .post('/')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(400)
             .end(function(err, res) {
@@ -101,7 +101,7 @@ describe('Groups API', function() {
             var testGroupFor201 = testGroup;
 
             supertest(apiEndPoint)
-            .post('/api/group')
+            .post('/')
             .send({group:testGroupFor201})
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(201)
@@ -118,7 +118,7 @@ describe('Groups API', function() {
             var groupToAdd = testGroup;
 
             supertest(apiEndPoint)
-            .post('/api/group')
+            .post('/')
             .send({group:groupToAdd})
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(201)
@@ -133,12 +133,12 @@ describe('Groups API', function() {
         
     });
 
-    describe('GET /api/group/membership/:userid/member', function() {
+    describe('GET /membership/:userid/member', function() {
 
         it('returns 200 and two groups when I ask for 3343', function(done) {
 
             supertest(apiEndPoint)
-            .get('/api/group/membership/3343/member')
+            .get('/membership/3343/member')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200)
             .end(function(err, res) {
@@ -153,7 +153,7 @@ describe('Groups API', function() {
         it('the groups should be valid', function(done) {
 
             supertest(apiEndPoint)
-            .get('/api/group/membership/3343/member')
+            .get('/membership/3343/member')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200)
             .end(function(err, res) {
@@ -170,7 +170,7 @@ describe('Groups API', function() {
         });
     });
 
-    describe('POST /api/group/:groupid/user', function() {
+    describe('POST /:groupid/user', function() {
 
         var testGroupContent;
 
@@ -188,7 +188,7 @@ describe('Groups API', function() {
             var userToAdd = '12345997';
 
             supertest(apiEndPoint)
-            .post('/api/group/'+groupId+'/user')
+            .post('/'+groupId+'/user')
             .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid : userToAdd})
             .expect(200)
@@ -207,7 +207,7 @@ describe('Groups API', function() {
             var userToAdd = '12345997';
 
             supertest(apiEndPoint)
-            .post('/api/group/'+groupId+'/user')
+            .post('/'+groupId+'/user')
             .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid : userToAdd})
             .expect(200)
@@ -224,7 +224,7 @@ describe('Groups API', function() {
 
     });
 
-    describe('DELETE /api/group/:groupid/user', function() {
+    describe('DELETE /:groupid/user', function() {
 
         var testdelUserGroup;
 
@@ -242,7 +242,7 @@ describe('Groups API', function() {
             var userToRemove = testdelUserGroup.members[1];
 
             supertest(apiEndPoint)
-            .del('/api/group/'+groupId+'/user')
+            .del('/'+groupId+'/user')
             .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid : userToRemove})
             .expect(200)
@@ -259,7 +259,7 @@ describe('Groups API', function() {
             var userToRemove = testdelUserGroup.members[1];
 
             supertest(apiEndPoint)
-            .del('/api/group/'+groupId+'/user')
+            .del('/'+groupId+'/user')
             .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid : userToRemove})
             .expect(200)
@@ -282,7 +282,7 @@ describe('Groups API', function() {
             var userToRemove = '123xx45997';
 
             supertest(apiEndPoint)
-            .del('/api/group/deluser/'+groupId)
+            .del('/deluser/'+groupId)
             .set('X-Tidepool-Session-Token', sessionToken)
             .send({userid : userToRemove})
             .expect(200,done());
@@ -290,7 +290,7 @@ describe('Groups API', function() {
 
     });
 
-    describe('GET /api/group/:groupid/members', function() {
+    describe('GET /:groupid/members', function() {
 
         var groupToGetMembersFor;
 
@@ -307,7 +307,7 @@ describe('Groups API', function() {
             var groupId = groupToGetMembersFor._id;
 
             supertest(apiEndPoint)
-            .get('/api/group/'+groupId+'/members')
+            .get('/'+groupId+'/members')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200)
             .end(function(err, res) {

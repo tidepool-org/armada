@@ -18,7 +18,7 @@ not, you can obtain one from Tidepool Project at tidepool.org.
 var chai = require('chai');
 
 exports.should = chai.should();
-exports.expect = chai.expect();
+exports.expect = chai.expect;
 exports.supertest = require('supertest');
 exports.armadaTestHelper = require('./armadaTestHelper');
 exports.testData = require('../data/testGroupsData');

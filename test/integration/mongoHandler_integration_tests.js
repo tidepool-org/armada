@@ -17,7 +17,7 @@ not, you can obtain one from Tidepool Project at tidepool.org.
 
 'use strict';
 
-var fixture = require('./helpers/fixtures'),
+var fixture = require('./../helpers/fixtures'),
 /*jshint unused:false */
     should = fixture.should,
     helper = fixture.armadaTestHelper,
@@ -31,7 +31,7 @@ describe('handleMongo', function() {
     before(function(){
 
         var testConfig = helper.testConfig;
-        mongoHandler = require('../lib/handler/mongoHandler')(testConfig.mongoDbConnectionString);
+        mongoHandler = require('../../lib/handler/MongoHandler')(testConfig.mongoDbConnectionString);
         testDbInstance = helper.createMongoInstance();
         
     });

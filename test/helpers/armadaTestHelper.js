@@ -17,7 +17,7 @@ not, you can obtain one from Tidepool Project at tidepool.org.
 
 'use strict';
 
-var armadaService = require('../../lib/armadaService'),
+var armadaService = require('../../lib/armadaServiceRenameForCaseSensitivity'),
     userApi = require('../mocks/mockUserApi'),
     service;
 
@@ -41,7 +41,7 @@ armadaTestHelper.createMongoInstance = function(){
 };
 
 armadaTestHelper.initArmadaService = function(crudHandler, hostGetter){
-    service = new armadaService(crudHandler, hostGetter ,armadaTestHelper.testConfig);
+    service = new armadaServiceRenameForCaseSensitivity(crudHandler, hostGetter ,armadaTestHelper.testConfig);
     service.start();
     userApi.listen(armadaTestHelper.testConfig.userApiPort);
 }

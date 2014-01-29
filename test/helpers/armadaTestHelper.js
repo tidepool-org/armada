@@ -17,7 +17,7 @@ not, you can obtain one from Tidepool Project at tidepool.org.
 
 'use strict';
 
-var armadaService = require('../../lib/armadaServiceRenameForCaseSensitivity'),
+var armadaService = require('../../lib/armadaService'),
     userApi = require('../mocks/mockUserApi'),
     service;
 

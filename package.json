@@ -13,24 +13,27 @@
   "author": "Tidepool",
   "license": "Tidepool",
   "dependencies": {
-    "restify": "2.6.0",
-    "request": "2.25.0",
-    "cookies": "0.3.6",
-    "mongojs": "0.9.8",
-    "lodash": "2.4.1",
+    "amoeba": "0.0.3",
     "bunyan": "0.22.1",
-    "hakken": "0.0.9"
+    "cookies": "0.3.6",
+    "hakken": "0.0.9",
+    "lodash": "2.4.1",
+    "mongojs": "0.9.8",
+    "request": "2.25.0",
+    "restify": "2.6.0",
+    "user-api-client": "tidepool-org/user-api-client"
   },
   "devDependencies": {
-    "supertest": "0.8.1",
     "chai": "1.8.1",
-    "mocha": "1.14.0",
     "grunt": "0.4.2",
     "grunt-cli": "0.1.13",
     "grunt-contrib-jshint": "0.7.2",
     "grunt-contrib-uglify": "0.2.7",
     "grunt-docco2": "0.1.5",
     "grunt-shell-spawn": "0.3.0",
-    "grunt-mocha-test": "0.8.1"
+    "grunt-mocha-test": "0.8.1",
+    "mocha": "1.14.0",
+    "superagent": "0.16.0",
+    "supertest": "0.8.1"
   }
 }

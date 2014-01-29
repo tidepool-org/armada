@@ -13,10 +13,12 @@ FOR A PARTICULAR PURPOSE. See the License for more details.
 You should have received a copy of the License along with this program; if
 not, you can obtain one from Tidepool Project at tidepool.org.
 == BSD2 LICENSE ==
- */
+*/
 'use strict';
 
 var fs = require('fs');
+var amoeba = require('amoeba');
+var config = amoeba.config;
 
 function maybeReplaceWithContentsOfFile(obj, field)
 {
@@ -27,56 +29,57 @@ function maybeReplaceWithContentsOfFile(obj, field)
 }
 
 module.exports = (function(){
-    var env = {};
+  var env = {};
 
-    // The port to attach an HTTP listener, if null, no HTTP listener will be attached
-  	env.httpPort = process.env.PORT || null;
+  // The port to attach an HTTP listener, if null, no HTTP listener will be attached
+  env.httpPort = process.env.PORT || null;
 
-  	// The port to attach an HTTPS listener, if null, no HTTPS listener will be attached
-  	env.httpsPort = process.env.HTTPS_PORT || null;
+  // The port to attach an HTTPS listener, if null, no HTTPS listener will be attached
+  env.httpsPort = process.env.HTTPS_PORT || null;
 
-  	// The https config to pass along to https.createServer.
-	var theConfig = process.env.HTTPS_CONFIG || null;
+  // The https config to pass along to https.createServer.
+  var theConfig = process.env.HTTPS_CONFIG || null;
 
-	env.httpsConfig = null;
+  env.httpsConfig = null;
 
-	if (theConfig != null) {
-		env.httpsConfig = JSON.parse(theConfig);
-		maybeReplaceWithContentsOfFile(env.httpsConfig, 'key');
-		maybeReplaceWithContentsOfFile(env.httpsConfig, 'cert');
-		maybeReplaceWithContentsOfFile(env.httpsConfig, 'pfx');
-	}
-	
-	if (env.httpsPort != null && env.httpsConfig == null) {
-		throw new Error('No https config provided, please set HTTPS_CONFIG with at least the certificate to use.');
-	}
+  if (theConfig != null) {
+    env.httpsConfig = JSON.parse(theConfig);
+    maybeReplaceWithContentsOfFile(env.httpsConfig, 'key');
+    maybeReplaceWithContentsOfFile(env.httpsConfig, 'cert');
+    maybeReplaceWithContentsOfFile(env.httpsConfig, 'pfx');
+  }
+    
+  if (env.httpsPort != null && env.httpsConfig == null) {
+    throw new Error('No https config provided, please set HTTPS_CONFIG with at least the certificate to use.');
+  }
 
-	if (env.httpPort == null && env.httpsPort == null) {
-		throw new Error('Must specify either PORT or HTTPS_PORT in your environment.');
-	}
+  if (env.httpPort == null && env.httpsPort == null) {
+    throw new Error('Must specify either PORT or HTTPS_PORT in your environment.');
+  }
 
-	env.mongoDbConnectionString = process.env.MONGO_CONNECTION_STRING || 'mongodb://localhost/groups';
+  env.mongoDbConnectionString = process.env.MONGO_CONNECTION_STRING || 'mongodb://localhost/groups';
 
-	// Name of the hakken service for user-api discovery
-	env.userApiService = process.env.USER_API_SERVICE || null;
+  env.userApi = {};
+  // Name of the hakken service for user-api discovery
+  env.userApi.serviceName = config.fromEnvironment("USER_API_SERVICE");
 
-	// The host to contact for discovery
-	if (process.env.DISCOVERY_HOST != null) {
-		env.discovery = {};
-		env.discovery.host = process.env.DISCOVERY_HOST;
+  // Name of this server to pass to user-api when getting a server token
+  env.userApi.serverName = config.fromEnvironment("SERVER_NAME", "armada");
 
-		env.serviceName = process.env.SERVICE_NAME;
-	
-		if (env.serviceName == null) {
-			throw new Error('Environment variable SERVICE_NAME must be set if DISCOVERY_HOST is set.');
-		}
+  // The secret to use when getting a server token from user-api
+  env.userApi.serverSecret = config.fromEnvironment("SERVER_SECRET");
 
-		// The local host to expose to discovery
-		env.publishHost = process.env.PUBLISH_HOST;
-		if (env.publishHost == null) {
-			throw new Error('Environment variable PUBLISH_HOST must be set if DISCOVERY_HOST is set.');
-		}
-	}
+  // The host to contact for discovery
+  if (process.env.DISCOVERY_HOST != null) {
+    env.discovery = {};
+    env.discovery.host = process.env.DISCOVERY_HOST;
 
-    return env;
+    // The service name to expose to discovery
+    env.serviceName = config.fromEnvironment("SERVICE_NAME");
+
+    // The local host to expose to discovery
+    env.publishHost = config.fromEnvironment("PUBLISH_HOST");
+  }
+
+  return env;
 })();

@@ -1,6 +1,6 @@
 {
   "name": "group-api",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Tidepool Groups API.",
   "main": "lib/index.js",
   "directories": {

@@ -43,7 +43,7 @@ describe('Groups API', function() {
 
         config = armadaTestHelper.testConfig;    
     
-        mongoHandler = require('../../lib/handler/mongoHandlerRenameForCasing')(config.mongoDbConnectionString);
+        mongoHandler = require('../../lib/handler/mongoHandler')(config.mongoDbConnectionString);
 
         //fake hakken functionality 
         var fakeHostGetter = {

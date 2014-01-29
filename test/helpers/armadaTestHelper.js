@@ -28,8 +28,7 @@ armadaTestHelper.testConfig = {
     httpPort : 10000,
     userApiPort: 10004,
     mongoDbConnectionString : 'mongodb://localhost/tidepool-platform',
-    serverName: 'armadaService',
-    serverSecret: 'sharedMachineSecret'
+    userApi: { serverName: 'armadaService', serverSecret: 'sharedMachineSecret' }
 };
 
 //session

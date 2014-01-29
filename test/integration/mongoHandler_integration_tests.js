@@ -31,7 +31,7 @@ describe('handleMongo', function() {
     before(function(){
 
         var testConfig = helper.testConfig;
-        mongoHandler = require('../../lib/handler/MongoHandler')(testConfig.mongoDbConnectionString);
+        mongoHandler = require('../../lib/handler/mongoHandlerRenameForCasing')(testConfig.mongoDbConnectionString);
         testDbInstance = helper.createMongoInstance();
         
     });

@@ -73,13 +73,13 @@ module.exports = function(grunt) {
                 options: {
                     reporter: 'spec'
                 },
-                src: ['test/unit/groupsAPI_tests.js','test/unit/usersAPI_tests.js']
+                src: ['test/unit/*.js']
             },
             integration: {
                 options: {
                     reporter: 'spec'
                 },
-                src: ['test/integration/groups_service_integration_tests.js','test/integration/mongoHandler_integration_tests.js']
+                src: ['test/integration/*.js']
             }
         }
     });

@@ -41,7 +41,7 @@ armadaTestHelper.createMongoInstance = function(){
 };
 
 armadaTestHelper.initArmadaService = function(crudHandler, hostGetter){
-    service = new armadaServiceRenameForCaseSensitivity(crudHandler, hostGetter ,armadaTestHelper.testConfig);
+    service = new armadaService(crudHandler, hostGetter ,armadaTestHelper.testConfig);
     service.start();
     userApi.listen(armadaTestHelper.testConfig.userApiPort);
 }

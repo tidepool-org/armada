@@ -46,13 +46,12 @@ describe('Groups API', function() {
         mongoHandler = require('../../lib/handler/MongoHandler')(config.mongoDbConnectionString);
 
         //fake hakken functionality 
-        var fakeHostGetter = {
-          get: function(){
-            return [{ protocol: 'http', host:'localhost:'+config.userApiPort }];
-          }
+        var fakeHostGetter = {};
+        fakeHostGetter.get = function(){
+            return [{host:'http://localhost:'+config.userApiPort}];
         };
-
-        armadaTestHelper.initArmadaService(mongoHandler, fakeHostGetter);
+        
+        armadaTestHelper.initArmadaService(mongoHandler,fakeHostGetter);
         testDbInstance = armadaTestHelper.createMongoInstance();
         apiEndPoint = armadaTestHelper.testServiceEndpoint();
 
@@ -311,15 +310,11 @@ describe('Groups API', function() {
             .get('/'+groupId+'/members')
             .set('X-Tidepool-Session-Token', sessionToken)
             .expect(200)
-            .end(
-              function(err, res) {
-                if (err) {
-                  return done(err);
-                }
-                console.log('\nyay', res.body);
+            .end(function(err, res) {
+                if (err) return done(err);
                 res.body.should.have.property('members');
                 done();
-              });
+            });
         });
 
     });

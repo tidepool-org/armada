@@ -35,6 +35,7 @@ mockUserApi.use(restify.bodyParser());
 
 //mock the end points we care about
 mockUserApi.post('/serverlogin', function(req, res, next) {
+
 	var server = req.headers['x-tidepool-server-name'];
     var pw = req.headers['x-tidepool-server-secret'];
 
@@ -50,6 +51,7 @@ mockUserApi.post('/serverlogin', function(req, res, next) {
 });
 
 mockUserApi.get('/user/:id', function(req, res, next) {
+
 	var token = req.headers['x-tidepool-session-token'];
 
 	if(token){
@@ -63,6 +65,7 @@ mockUserApi.get('/user/:id', function(req, res, next) {
 });
 
 mockUserApi.get('/token/:usertoken', function(req, res, next) {
+
 	var token = req.params.usertoken;
 
 	if(token){

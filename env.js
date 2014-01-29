@@ -17,6 +17,8 @@ not, you can obtain one from Tidepool Project at tidepool.org.
 'use strict';
 
 var fs = require('fs');
+var amoeba = require('amoeba');
+var config = amoeba.config;
 
 function maybeReplaceWithContentsOfFile(obj, field)
 {
@@ -57,25 +59,26 @@ module.exports = (function(){
 
 	env.mongoDbConnectionString = process.env.MONGO_CONNECTION_STRING || 'mongodb://localhost/groups';
 
-	// Name of the hakken service for user-api discovery
-	env.userApiService = process.env.USER_API_SERVICE || null;
+  env.userApi = {};
+  // Name of the hakken service for user-api discovery
+	env.userApi.serviceName = config.fromEnvironment("USER_API_SERVICE");
+
+  // Name of this server to pass to user-api when getting a server token
+  env.userApi.serverName = config.fromEnvironment("SERVER_NAME", "armada");
+
+  // The secret to use when getting a server token from user-api
+  env.userApi.serverSecret = config.fromEnvironment("SERVER_SECRET");
 
 	// The host to contact for discovery
 	if (process.env.DISCOVERY_HOST != null) {
 		env.discovery = {};
 		env.discovery.host = process.env.DISCOVERY_HOST;
 
-		env.serviceName = process.env.SERVICE_NAME;
-	
-		if (env.serviceName == null) {
-			throw new Error('Environment variable SERVICE_NAME must be set if DISCOVERY_HOST is set.');
-		}
+    // The service name to expose to discovery
+		env.serviceName = config.fromEnvironment("SERVICE_NAME");
 
 		// The local host to expose to discovery
-		env.publishHost = process.env.PUBLISH_HOST;
-		if (env.publishHost == null) {
-			throw new Error('Environment variable PUBLISH_HOST must be set if DISCOVERY_HOST is set.');
-		}
+		env.publishHost = config.fromEnvironment("PUBLISH_HOST");
 	}
 
     return env;

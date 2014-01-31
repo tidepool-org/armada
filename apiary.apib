@@ -37,7 +37,7 @@ list of up and down dependencies.
         }
 
 ## User Membership [/membership/{userid}/member]
-### Fetch group membership information [GET]
+### Fetch the list of a groups a user is in [GET]
 Returns the groups that the given userID is a member of. If found, returns
 an object containing an array of groups. If there are no groups, the response 
 is a 204 (rather than an empty array). 
@@ -86,7 +86,10 @@ Creates a new group object and returns its ID.
 
 ## Managing group members [/{groupid}/user]
 ### Add a user to a group [POST]
-Puts the identified user into a group.
+Puts the identified user into a group. 200 if it succeeds, 204 if the group 
+ID was not valid, 400 if the groupid or userid were not specified.
+
+See issues [#7](https://github.com/tidepool-org/armada/issues/7) and [#8](https://github.com/tidepool-org/armada/issues/8).
 
 + Request
 
@@ -103,12 +106,63 @@ Puts the identified user into a group.
 + Response 200
 
         {
-            id: "12a34f5"
+            group: "12a34f5"
         }
         
 + Response 204
 
 + Response 400
 
+### Remove a user from a group [DELETE]
+Removes the identified user from a group. 200 if it succeeds, 204 if the group 
+ID was not valid, 400 if the groupid or userid were not specified.
 
+See issue [#7](https://github.com/tidepool-org/armada/issues/7).
+
++ Request
+
+    + Headers
+    
+            x-tidepool-session-token : 23sadf87.123840.aasd90JKj
+            
+    + Body
+        
+            {
+                "userid": "12363523"
+            }
+
++ Response 200
+
+        {
+            group: "12a34f5"
+        }
+        
++ Response 204
+
++ Response 400
+
+## Group Members [/{groupid}/members]
+### Fetch the list of members in a group [GET]
+Returns the members of a given group. If found, returns
+an object containing an array of members. If the group was not found, 
+status is a 204. 
+
+See issue [#7](https://github.com/tidepool-org/armada/issues/7).
+
++ Request
+
+    + Headers
+    
+            x-tidepool-session-token : 23sadf87.123840.aasd90JKj
+            
+
++ Response 200
+
+        {
+            groups: [ "12a34f5", "13bdc814" ]
+        }
+        
++ Response 204
+
++ Response 400
 

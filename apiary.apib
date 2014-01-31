@@ -1,47 +1,114 @@
 FORMAT: 1A
-HOST: http://www.google.com
+HOST: http://api.tidepool.io
 
 # Tidepool Armada
-Notes API is a *short texts saving* service similar to its physical paper presence on your table.
+**Armada is an aquatic term for a group of something (in this case, warships). Armada stores and manipulates groups of users for managing permissions and messages.**
 
-# Group Notes
-Notes related resources of the **Notes API**
+## Overview
 
-## Notes Collection [/notes]
-### List all Notes [GET]
-+ Response 200 (application/json)
+Armada stores and manipulates groups of users for managing permissions and messages.
 
-        [{
-          "id": 1, "title": "Jogging in park"
-        }, {
-          "id": 2, "title": "Pick-up posters from post-office"
-        }]
 
-### Create a Note [POST]
-+ Request (application/json)
+# Group Group
 
-        { "title": "Buy cheese and bread for breakfast." }
+## Health Check [/status]
+### Retrieve status information [GET]
+Returns a status health check with a list of status of its dependencies. 
+If the server is operating properly and all dependencies are up and 
+running, returns 200, otherwise 500. In either case, the body contains a 
+list of up and down dependencies.
 
-+ Response 201 (application/json)
 
-        { "id": 3, "title": "Buy cheese and bread for breakfast." }
++ Response 200
 
-## Note [/notes/{id}]
-A single Note object with all its details
+        {
+            "up" : [ "mongo" ],
+            "down" : []
+        }
+    
++ Response 500
 
-+ Parameters
-    + id (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
+        If the server is *not* operating properly and one or more dependencies
+        have failed to start or are no longer running.
 
-### Retrieve a Note [GET]
-+ Response 200 (application/json)
+        {
+            "up" : [],
+            "down" : [ "mongo" ]
+        }
 
-    + Header
+## User Membership [/membership/{userid}/member]
+### Fetch group membership information [GET]
+Returns the groups that the given userID is a member of. If found, returns
+an object containing an array of groups. If there are no groups, the response 
+is a 204 (rather than an empty array). 
 
-            X-My-Header: The Value
++ Request
 
-    + Body
+    + Headers
+    
+            x-tidepool-session-token : 23sadf87.123840.aasd90JKj
+            
 
-            { "id": 2, "title": "Pick-up posters from post-office" }
++ Response 200
 
-### Remove a Note [DELETE]
+        {
+            groups: [ "12a34f5", "13bdc814" ]
+        }
+        
 + Response 204
+
++ Response 400
+
+## Managing groups [/]
+### Create a group [POST]
+Creates a new group object and returns its ID.
+
++ Request
+
+    + Headers
+    
+            x-tidepool-session-token : 23sadf87.123840.aasd90JKj
+            
+    + Body
+        
+            {
+                "members": ["99999", "222222", "33333212"]
+            }
+
++ Response 201
+
+        {
+            id: "12a34f5"
+        }
+        
++ Response 400
+
+
+## Managing group members [/{groupid}/user]
+### Add a user to a group [POST]
+Puts the identified user into a group.
+
++ Request
+
+    + Headers
+    
+            x-tidepool-session-token : 23sadf87.123840.aasd90JKj
+            
+    + Body
+        
+            {
+                "userid": "12363523"
+            }
+
++ Response 200
+
+        {
+            id: "12a34f5"
+        }
+        
++ Response 204
+
++ Response 400
+
+
+

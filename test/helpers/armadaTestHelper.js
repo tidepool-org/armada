@@ -18,7 +18,6 @@ not, you can obtain one from Tidepool Project at tidepool.org.
 'use strict';
 
 var armadaService = require('../../lib/armadaService'),
-    userApi = require('../mocks/mockUserApi'),
     service;
 
 var armadaTestHelper = {};
@@ -26,7 +25,6 @@ var armadaTestHelper = {};
 //config
 armadaTestHelper.testConfig = {
     httpPort : 10000,
-    userApiPort: 10004,
     mongoDbConnectionString : 'mongodb://localhost/tidepool-platform',
     userApi: { serverName: 'armadaService', serverSecret: 'sharedMachineSecret' }
 };
@@ -41,14 +39,13 @@ armadaTestHelper.createMongoInstance = function(){
 };
 
 armadaTestHelper.initArmadaService = function(crudHandler, hostGetter){
-    service = new armadaService(crudHandler, hostGetter ,armadaTestHelper.testConfig);
+    service = new armadaService(armadaTestHelper.testConfig, crudHandler, hostGetter);
     service.start();
-    userApi.listen(armadaTestHelper.testConfig.userApiPort);
+    console.log('setup ...');
 }
 
 armadaTestHelper.stopTestService = function(){
     service.stop();
-    userApi.close();
 }
 
 armadaTestHelper.testServiceEndpoint = function(){

@@ -47,7 +47,7 @@ describe('Groups API', function() {
     server.get('/status',groups.status);
     server.get('/membership/:userid/member', groups.memberOf);
     server.post('/', groups.addGroup);
-    server.post('/:groupid/user', groups.addToGroup);
+    server.put('/:groupid/user', groups.addToGroup);
     server.del('/:groupid/user', groups.removeFromGroup);
     server.get('/:groupid', groups.getGroup);
 
@@ -145,17 +145,17 @@ describe('Groups API', function() {
       });
     });
 
-    it('POST /:groupid/user returns 200', function(done) {
+    it('PUT /:groupid/user returns 200', function(done) {
       supertest(groupsAPI)
-      .post('/34444444/user')
+      .put('/34444444/user')
       .send({userid:'12345997'})
       .expect(200,done);
     });
 
-    it('POST /:groupid/user returns the updated group', function(done) {
+    it('PUT /:groupid/user returns the updated group', function(done) {
 
       supertest(groupsAPI)
-      .post('/34444444/user')
+      .put('/34444444/user')
       .send({userid:'12345997'})
       .expect(200)
       .end(function(err, res) {
@@ -244,7 +244,7 @@ describe('Groups API', function() {
     it('POST /:groupid/user returns 404 when no match', function(done) {
 
       supertest(groupsAPI)
-      .post('/88888888/user')
+      .put('/88888888/user')
       .send({userid:'12345997'})
       .expect(404,done);
     });
@@ -331,7 +331,7 @@ describe('Groups API', function() {
     it('POST /:groupid/user returns 500 and does not return error so we do not leak implemention details', function(done) {
 
       supertest(groupsAPI)
-      .post('/33333/user')
+      .put('/33333/user')
       .send({userid:'12345997'})
       .expect(500)
       .end(function(err, res) {

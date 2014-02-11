@@ -1,6 +1,6 @@
 {
   "name": "group-api",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Tidepool Groups API.",
   "main": "lib/index.js",
   "directories": {
@@ -13,15 +13,15 @@
   "author": "Tidepool",
   "license": "Tidepool",
   "dependencies": {
-    "amoeba": "0.0.3",
     "bunyan": "0.22.1",
     "cookies": "0.3.6",
-    "hakken": "0.0.10",
     "lodash": "2.4.1",
     "mongojs": "0.9.8",
     "request": "2.25.0",
     "restify": "2.6.0",
-    "user-api-client": "0.0.1"
+    "user-api-client": "0.1.4",
+    "amoeba": "0.0.3",
+    "hakken": "0.1.0"
   },
   "devDependencies": {
     "chai": "1.8.1",

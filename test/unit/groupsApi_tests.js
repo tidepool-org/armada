@@ -84,7 +84,7 @@ describe('Groups API', function() {
       .expect(403,done);
     });
 
-    it('POST / 201', function(done) {
+    it('POST / returns 201', function(done) {
 
       var testGroup = {
         members: ['99999','222222','33333212']
@@ -173,7 +173,7 @@ describe('Groups API', function() {
       supertest(groupsAPI)
       .del('/34444444/user')
       .send({userid:'12345997'})
-      .expect(200,done);
+      .expect(204,done);
     });
 
     it('DELETE /:groupid/user returns the updated group', function(done) {
@@ -181,7 +181,7 @@ describe('Groups API', function() {
       supertest(groupsAPI)
       .del('/34444444/user')
       .send({userid:'12345997'})
-      .expect(200)
+      .expect(204)
       .end(function(err, res) {
         if (err) return done(err);
         res.body.should.property('group');

@@ -168,7 +168,7 @@ describe('Groups API', function() {
       });
     });
 
-    it('DELETE /:groupid/user returns 200', function(done) {
+    it('DELETE /:groupid/user returns 204', function(done) {
 
       supertest(groupsAPI)
       .del('/34444444/user')
@@ -249,12 +249,12 @@ describe('Groups API', function() {
       .expect(204,done);
     });
 
-    it('DELETE /:groupid/user returns 204 when no match', function(done) {
+    it('DELETE /:groupid/user returns 404 when no match', function(done) {
 
       supertest(groupsAPI)
       .del('/99999775/user')
       .send({userid:'12345997'})
-      .expect(204,done);
+      .expect(404,done);
     });
 
     it('GET /:groupid returns 204 when no match', function(done) {

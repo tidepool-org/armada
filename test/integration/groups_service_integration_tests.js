@@ -13,315 +13,313 @@ FOR A PARTICULAR PURPOSE. See the License for more details.
 You should have received a copy of the License along with this program; if
 not, you can obtain one from Tidepool Project at tidepool.org.
 == BSD2 LICENSE ==
- */
+*/
 
 'use strict';
 
 var fixture = require('./../helpers/fixtures.js'),
 /*jshint unused:false */
-    should = fixture.should,
-    supertest = fixture.supertest,
-    armadaTestHelper = fixture.armadaTestHelper,
-    testGroups = fixture.testData.relatedSet,
-    testGroup = fixture.testData.individual,
-    sessionToken = armadaTestHelper.sessiontoken,
-    apiEndPoint,
-    testDbInstance;
+should = fixture.should,
+supertest = fixture.supertest,
+armadaTestHelper = fixture.armadaTestHelper,
+testGroups = fixture.testData.relatedSet,
+testGroup = fixture.testData.individual,
+sessionToken = armadaTestHelper.sessiontoken,
+apiEndPoint,
+testDbInstance;
 
 /*
-    Running the groups API using the mongo backend via the handler 
+Running the groups API using the mongo backend via the handler
 */
 describe('Groups API', function() {
 
-    before(function(){
+  before(function(){
 
-        /*
-        Setup
-        */
-        var config,
-            mongoHandler;
+    /*
+    Setup
+    */
+    var config,
+    mongoHandler;
 
-        config = armadaTestHelper.testConfig;    
-    
-        mongoHandler = require('../../lib/handler/mongoHandler')(config.mongoDbConnectionString);
+    config = armadaTestHelper.testConfig;
 
-        //fake hakken functionality 
-        var fakeHostGetter = {
-          get: function(){
-            return [{ protocol: 'http', host:'localhost:'+config.userApiPort }];
-          }
-        };
+    mongoHandler = require('../../lib/handler/mongoHandler')(config.mongoDbConnectionString);
 
-        armadaTestHelper.initArmadaService(mongoHandler, fakeHostGetter);
-        testDbInstance = armadaTestHelper.createMongoInstance();
-        apiEndPoint = armadaTestHelper.testServiceEndpoint();
+    //fake hakken functionality
+    var fakeHostGetter = {
+      get: function(){
+        return [{ protocol: 'http', host:'localhost:'+config.userApiPort }];
+      }
+    };
 
-        /*
-        Clean and then load our test data
-        */
-        testDbInstance.groups.remove();
+    armadaTestHelper.initArmadaService(mongoHandler, fakeHostGetter);
+    testDbInstance = armadaTestHelper.createMongoInstance();
+    apiEndPoint = armadaTestHelper.testServiceEndpoint();
 
-        testGroups.forEach(function(group) {
-            testDbInstance.groups.save(group);
-        });
+    /*
+    Clean and then load our test data
+    */
+    testDbInstance.groups.remove();
+
+    testGroups.forEach(function(group) {
+      testDbInstance.groups.save(group);
+    });
+  });
+
+  describe('POST /', function() {
+
+    it('returns 400 when given an invalid group to create', function(done) {
+
+      var badGroup = {
+        nothing : ''
+      };
+
+      supertest(apiEndPoint)
+      .post('/')
+      .send({group:badGroup})
+      .set('X-Tidepool-Session-Token', sessionToken)
+      .expect(400)
+      .end(function(err, res) {
+        if (err) return done(err);
+        done();
+      });
     });
 
-    describe('POST /', function() {
+    it('returns 400 when no data is sent', function(done) {
 
-        it('returns 400 when given an invalid group to create', function(done) {
-
-            var badGroup = {
-                nothing : ''
-            };
-
-            supertest(apiEndPoint)
-            .post('/')
-            .send({group:badGroup})
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .expect(400)
-            .end(function(err, res) {
-                if (err) return done(err);
-                done();
-            });
-        });
-
-        it('returns 400 when no data is sent', function(done) {
-
-            supertest(apiEndPoint)
-            .post('/')
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .expect(400)
-            .end(function(err, res) {
-                if (err) return done(err);
-                done();
-            });
-        });
-
-        it('returns id with 201 response', function(done) {
-
-            var testGroupFor201 = testGroup;
-
-            supertest(apiEndPoint)
-            .post('/')
-            .send({group:testGroupFor201})
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .expect(201)
-            .end(function(err, res) {
-                if (err) return done(err);
-                res.body.should.have.property('id');
-                res.body.id.should.not.equal('');
-                done();
-            });
-        });
-
-        it('id is valid', function(done) {
-
-            var groupToAdd = testGroup;
-
-            supertest(apiEndPoint)
-            .post('/')
-            .send({group:groupToAdd})
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .expect(201)
-            .end(function(err, res) {
-                if (err) return done(err);
-
-                //TODO: id will be generated by tidepool not mongo    
-
-                done();
-            });
-        });
-        
+      supertest(apiEndPoint)
+      .post('/')
+      .set('X-Tidepool-Session-Token', sessionToken)
+      .expect(400)
+      .end(function(err, res) {
+        if (err) return done(err);
+        done();
+      });
     });
 
-    describe('GET /membership/:userid/member', function() {
+    it('returns id with 201 response', function(done) {
 
-        it('returns 200 and two groups when I ask for 3343', function(done) {
+      var testGroupFor201 = testGroup;
 
-            supertest(apiEndPoint)
-            .get('/membership/3343/member')
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .expect(200)
-            .end(function(err, res) {
-                if (err) return done(err);
-
-                res.body.groups.length.should.equal(2);
-
-                done();
-            });
-        });
-
-        it('the groups should be valid', function(done) {
-
-            supertest(apiEndPoint)
-            .get('/membership/3343/member')
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .expect(200)
-            .end(function(err, res) {
-                if (err) return done(err);
-
-                var foundGroups = res.body.groups;
-
-                foundGroups.forEach(function(group){
-                    armadaTestHelper.validateGroup(group).should.equal(true);
-                });
-
-                done();
-            });
-        });
+      supertest(apiEndPoint)
+      .post('/')
+      .send({group:testGroupFor201})
+      .set('X-Tidepool-Session-Token', sessionToken)
+      .expect(201)
+      .end(function(err, res) {
+        if (err) return done(err);
+        res.body.should.have.property('id');
+        res.body.id.should.not.equal('');
+        done();
+      });
     });
 
-    describe('POST /:groupid/user', function() {
+    it('id is valid', function(done) {
 
-        var testGroupContent;
+      var groupToAdd = testGroup;
 
-        before(function(done){
-            //Get existing group to use in tests 
-            testDbInstance.groups.findOne({},function(err, doc) {
+      supertest(apiEndPoint)
+      .post('/')
+      .send({group:groupToAdd})
+      .set('X-Tidepool-Session-Token', sessionToken)
+      .expect(201)
+      .end(function(err, res) {
+        if (err) return done(err);
+        //TODO: id will be generated by tidepool not mongo
+        done();
+      });
+    });
+
+  });
+
+  describe('GET /membership/:userid/member', function() {
+
+    it('returns 200 and two groups when I ask for 3343', function(done) {
+
+      supertest(apiEndPoint)
+      .get('/membership/3343/member')
+      .set('X-Tidepool-Session-Token', sessionToken)
+      .expect(200)
+      .end(function(err, res) {
+        if (err) return done(err);
+
+        res.body.groups.length.should.equal(2);
+
+        done();
+      });
+    });
+
+    it('the groups should be valid', function(done) {
+
+      supertest(apiEndPoint)
+      .get('/membership/3343/member')
+      .set('X-Tidepool-Session-Token', sessionToken)
+      .expect(200)
+      .end(function(err, res) {
+        if (err) return done(err);
+
+        var foundGroups = res.body.groups;
+
+        foundGroups.forEach(function(group){
+          armadaTestHelper.validateGroup(group).should.equal(true);
+        });
+
+        done();
+      });
+    });
+  });
+
+  describe('POST /:groupid/user', function() {
+
+    var testGroupContent;
+
+    before(function(done){
+              //Get existing group to use in tests
+              testDbInstance.groups.findOne({},function(err, doc) {
                 testGroupContent = doc;
                 done();
+              });
             });
-        });
 
-        it('returns 200 when user is added to the group', function(done) {
+    it('returns 200 when user is added to the group', function(done) {
 
-            var groupId = testGroupContent._id;
-            var userToAdd = '12345997';
+      var groupId = testGroupContent._id;
+      var userToAdd = '12345997';
 
-            supertest(apiEndPoint)
-            .post('/'+groupId+'/user')
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .send({userid : userToAdd})
-            .expect(200)
-            .end(function(err, res) {
-                if (err) return done(err);
-            
-                res.body.should.have.property('group');
+      supertest(apiEndPoint)
+      .post('/'+groupId+'/user')
+      .set('X-Tidepool-Session-Token', sessionToken)
+      .send({userid : userToAdd})
+      .expect(200)
+      .end(function(err, res) {
+        if (err) return done(err);
 
-                done();
-            });
-        });
+        res.body.should.have.property('group');
 
-        it('the updated group is returned with the new user and is valid', function(done) {
-
-            var groupId = testGroupContent._id;
-            var userToAdd = '12345997';
-
-            supertest(apiEndPoint)
-            .post('/'+groupId+'/user')
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .send({userid : userToAdd})
-            .expect(200)
-            .end(function(err, res) {
-                if (err) return done(err);
-                //get the group and check
-                var updatedGroup = res.body.group;
-                updatedGroup.members.should.contain(userToAdd);
-                armadaTestHelper.validateGroup(updatedGroup).should.equal(true);
-
-                done();
-            });
-        });
-
+        done();
+      });
     });
 
-    describe('DELETE /:groupid/user', function() {
+    it('the updated group is returned with the new user and is valid', function(done) {
 
-        var testdelUserGroup;
+      var groupId = testGroupContent._id;
+      var userToAdd = '12345997';
 
-        before(function(done){
-            //Get existing group to use in tests 
-            testDbInstance.groups.findOne(function(err, doc) {
+      supertest(apiEndPoint)
+      .post('/'+groupId+'/user')
+      .set('X-Tidepool-Session-Token', sessionToken)
+      .send({userid : userToAdd})
+      .expect(200)
+      .end(function(err, res) {
+        if (err) return done(err);
+        //get the group and check
+        var updatedGroup = res.body.group;
+        updatedGroup.members.should.contain(userToAdd);
+        armadaTestHelper.validateGroup(updatedGroup).should.equal(true);
+
+        done();
+      });
+    });
+
+  });
+
+  describe('DELETE /:groupid/user', function() {
+
+    var testdelUserGroup;
+
+    before(function(done){
+              //Get existing group to use in tests
+              testDbInstance.groups.findOne(function(err, doc) {
                 testdelUserGroup = doc;
                 done();
+              });
             });
-        });
 
-        it('returns 200 and the updated group when user is removed from the group', function(done) {
+    it('returns 200 and the updated group when user is removed from the group', function(done) {
 
-            var groupId = testdelUserGroup._id;
-            var userToRemove = testdelUserGroup.members[1];
+      var groupId = testdelUserGroup._id;
+      var userToRemove = testdelUserGroup.members[1];
 
-            supertest(apiEndPoint)
-            .del('/'+groupId+'/user')
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .send({userid : userToRemove})
-            .expect(200)
-            .end(function(err, res) {
-                if (err) return done(err);
-                res.body.should.have.property('group');
-                done();
-            });
-        });
-
-        it('the updated group does not contain the user and is valid', function(done) {
-
-            var groupId = testdelUserGroup._id;
-            var userToRemove = testdelUserGroup.members[1];
-
-            supertest(apiEndPoint)
-            .del('/'+groupId+'/user')
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .send({userid : userToRemove})
-            .expect(200)
-            .end(function(err, res) {
-                if (err) return done(err);
-                //get the group and check
-                var updatedGroup = res.body.group;
-                updatedGroup.members.should.not.contain(userToRemove);
-
-                armadaTestHelper.validateGroup(updatedGroup).should.equal(true);
-
-                done();
-            });
-        });
-
-        it('returns 200 when try to remove a user that is not in the group anyway', function(done) {
-
-            //i am just guessing????
-            var groupId = testdelUserGroup._id;
-            var userToRemove = '123xx45997';
-
-            supertest(apiEndPoint)
-            .del('/deluser/'+groupId)
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .send({userid : userToRemove})
-            .expect(200,done());
-        });
-
+      supertest(apiEndPoint)
+      .del('/'+groupId+'/user')
+      .set('X-Tidepool-Session-Token', sessionToken)
+      .send({userid : userToRemove})
+      .expect(200)
+      .end(function(err, res) {
+        if (err) return done(err);
+        res.body.should.have.property('group');
+        done();
+      });
     });
 
-    describe('GET /:groupid/members', function() {
+    it('the updated group does not contain the user and is valid', function(done) {
 
-        var groupToGetMembersFor;
+      var groupId = testdelUserGroup._id;
+      var userToRemove = testdelUserGroup.members[1];
 
-        before(function(done){
-            //Get existing group to use in tests 
-            testDbInstance.groups.findOne(function(err, doc) {
+      supertest(apiEndPoint)
+      .del('/'+groupId+'/user')
+      .set('X-Tidepool-Session-Token', sessionToken)
+      .send({userid : userToRemove})
+      .expect(200)
+      .end(function(err, res) {
+        if (err) return done(err);
+        //get the group and check
+        var updatedGroup = res.body.group;
+        updatedGroup.members.should.not.contain(userToRemove);
+
+        armadaTestHelper.validateGroup(updatedGroup).should.equal(true);
+
+        done();
+      });
+    });
+
+    it('returns 200 when try to remove a user that is not in the group anyway', function(done) {
+
+              //i am just guessing????
+              var groupId = testdelUserGroup._id;
+              var userToRemove = '123xx45997';
+
+              supertest(apiEndPoint)
+              .del('/deluser/'+groupId)
+              .set('X-Tidepool-Session-Token', sessionToken)
+              .send({userid : userToRemove})
+              .expect(200,done());
+            });
+
+  });
+
+  describe('GET /:groupid/members', function() {
+
+    var groupToGetMembersFor;
+
+    before(function(done){
+              //Get existing group to use in tests
+              testDbInstance.groups.findOne(function(err, doc) {
                 groupToGetMembersFor = doc;
                 done();
-            });
-        });
-
-        it('returns 200 and the updated group when user is removed from the group', function(done) {
-
-            var groupId = groupToGetMembersFor._id;
-
-            supertest(apiEndPoint)
-            .get('/'+groupId+'/members')
-            .set('X-Tidepool-Session-Token', sessionToken)
-            .expect(200)
-            .end(
-              function(err, res) {
-                if (err) {
-                  return done(err);
-                }
-                console.log('\nyay', res.body);
-                res.body.should.have.property('members');
-                done();
               });
-        });
+            });
 
+    it('returns 200 and the updated group when user is removed from the group', function(done) {
+
+      var groupId = groupToGetMembersFor._id;
+
+      supertest(apiEndPoint)
+      .get('/'+groupId+'/members')
+      .set('X-Tidepool-Session-Token', sessionToken)
+      .expect(200)
+      .end(
+        function(err, res) {
+          if (err) {
+            return done(err);
+          }
+          console.log('\nyay', res.body);
+          res.body.should.have.property('members');
+          done();
+        });
     });
+
+  });
 
 });

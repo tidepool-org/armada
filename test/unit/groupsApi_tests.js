@@ -234,19 +234,19 @@ describe('Groups API', function() {
 
     });
 
-    it('GET /membership returns 204 when no data', function(done) {
+    it('GET /membership returns 404 when no data', function(done) {
 
       supertest(groupsAPI)
       .get('/membership/33333/member')
-      .expect(204,done);
+      .expect(404,done);
     });
 
-    it('POST /:groupid/user returns 204 when no match', function(done) {
+    it('POST /:groupid/user returns 404 when no match', function(done) {
 
       supertest(groupsAPI)
       .post('/88888888/user')
       .send({userid:'12345997'})
-      .expect(204,done);
+      .expect(404,done);
     });
 
     it('DELETE /:groupid/user returns 404 when no match', function(done) {
@@ -257,11 +257,11 @@ describe('Groups API', function() {
       .expect(404,done);
     });
 
-    it('GET /:groupid returns 204 when no match', function(done) {
+    it('GET /:groupid returns 404 when no match', function(done) {
 
       supertest(groupsAPI)
       .get('/88888888888888')
-      .expect(204,done);
+      .expect(404,done);
     });
 
   });

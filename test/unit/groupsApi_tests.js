@@ -176,22 +176,6 @@ describe('Groups API', function() {
       .expect(204,done);
     });
 
-    it('DELETE /:groupid/user returns the updated group', function(done) {
-
-      supertest(groupsAPI)
-      .del('/34444444/user')
-      .send({userid:'12345997'})
-      .expect(204)
-      .end(function(err, res) {
-        if (err) return done(err);
-        res.body.should.property('group');
-        var group = res.body.group;
-        group.should.property('id');
-        group.should.property('members');
-        done();
-      });
-    });
-
     it('GET /:groupid returns 200', function(done) {
 
       supertest(groupsAPI)
@@ -206,7 +190,6 @@ describe('Groups API', function() {
       .expect(200)
       .end(function(err, res) {
         if (err) return done(err);
-        res.body.should.property('group');
         var group = res.body.group;
         group.should.property('id');
         group.should.property('members');

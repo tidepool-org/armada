@@ -3,6 +3,9 @@ armada
 
 The Groups API
 
+Documentation for this API lives here:  [http://docs.tidepoolarmada.apiary.io/](http://docs.tidepoolarmada.apiary.io/)
+
+
 ## Install
 
 Requirements:

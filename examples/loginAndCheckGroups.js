@@ -1,3 +1,22 @@
+/*
+ == BSD2 LICENSE ==
+ Copyright (c) 2014, Tidepool Project
+
+ This program is free software; you can redistribute it and/or modify it under
+ the terms of the associated License, which is identical to the BSD 2-Clause
+ License as published by the Open Source Initiative at opensource.org.
+
+ This program is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE. See the License for more details.
+
+ You should have received a copy of the License along with this program; if
+ not, you can obtain one from Tidepool Project at tidepool.org.
+ == BSD2 LICENSE ==
+ */
+
+'use strict';
+
 var url = require('url');
 
 var userApiService = process.argv[2] || 'user-api';
@@ -14,7 +33,7 @@ function ensureResponse(err, res, expectedStatus) {
   }
 
   if (res.status !== expectedStatus) {
-    console.log("Failed with status.", res.status);
+    console.log('Failed with status.', res.status);
     console.log(res.message);
     console.log(res.text);
     throw new Error();
@@ -70,7 +89,7 @@ var sessionToken = null;
 
 function getSessionToken() {
   armadaHost = url.format(armadaWatch.get()[0]);
-  console.log("Using armada host", armadaHost);
+  console.log('Using armada host', armadaHost);
 
   userApiClient.login('loginAndCheckGroups', '123456789', function(err, token, userInfo){
     console.log(userInfo);

@@ -24,6 +24,7 @@
     "user-api-client": "0.1.4"
   },
   "devDependencies": {
+    "chai": "1.9.0",
     "grunt": "0.4.2",
     "grunt-cli": "0.1.13",
     "grunt-contrib-jshint": "0.7.2",
@@ -31,6 +32,7 @@
     "grunt-docco2": "0.1.5",
     "grunt-shell-spawn": "0.3.0",
     "grunt-mocha-test": "0.8.1",
-    "salinity": "0.0.3"
+    "salinity": "0.0.3",
+    "supertest": "0.9.0"
   }
 }

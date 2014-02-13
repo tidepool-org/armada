@@ -9,7 +9,7 @@
   "scripts": {
     "test": "make test"
   },
-  "repository": "https://github.com/tidepool-org/armarda.git",
+  "repository": "https://github.com/tidepool-org/armada.git",
   "author": "Tidepool",
   "license": "Tidepool",
   "dependencies": {

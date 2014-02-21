@@ -59,20 +59,22 @@ module.exports = (function(){
 
   env.mongoDbConnectionString = process.env.MONGO_CONNECTION_STRING || 'mongodb://localhost/groups';
 
-  env.userApi = {};
-  // Name of the hakken service for user-api discovery
-  env.userApi.serviceName = config.fromEnvironment("USER_API_SERVICE");
+  env.userApi = {
+    // Name of the hakken service for user-api discovery
+    serviceSpec: JSON.parse(config.fromEnvironment("USER_API_SERVICE")),
 
-  // Name of this server to pass to user-api when getting a server token
-  env.userApi.serverName = config.fromEnvironment("SERVER_NAME", "armada");
+    // Name of this server to pass to user-api when getting a server token
+    serverName: config.fromEnvironment("SERVER_NAME", "armada"),
 
-  // The secret to use when getting a server token from user-api
-  env.userApi.serverSecret = config.fromEnvironment("SERVER_SECRET");
+    // The secret to use when getting a server token from user-api
+    serverSecret: config.fromEnvironment("SERVER_SECRET")
+  };
 
   // The host to contact for discovery
   if (process.env.DISCOVERY_HOST != null) {
-    env.discovery = {};
-    env.discovery.host = process.env.DISCOVERY_HOST;
+    env.discovery = {
+      host: process.env.DISCOVERY_HOST
+    };
 
     // The service name to expose to discovery
     env.serviceName = config.fromEnvironment("SERVICE_NAME");

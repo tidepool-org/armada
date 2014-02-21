@@ -1,0 +1,168 @@
+FORMAT: 1A
+HOST: http://api.tidepool.io
+
+# Tidepool Armada
+**Armada is an aquatic term for a group of something (in this case, warships). Armada stores and manipulates groups of users for managing permissions and messages.**
+
+## Overview
+
+Armada stores and manipulates groups of users for managing permissions and messages.
+
+
+# Group Group
+
+## Health Check [/status]
+### Retrieve status information [GET]
+Returns a status health check with a list of status of its dependencies. 
+If the server is operating properly and all dependencies are up and 
+running, returns 200, otherwise 500. In either case, the body contains a 
+list of up and down dependencies.
+
+
++ Response 200
+
+        {
+            "up" : [ "mongo" ],
+            "down" : []
+        }
+    
++ Response 500
+
+        If the server is *not* operating properly and one or more dependencies
+        have failed to start or are no longer running.
+
+        {
+            "up" : [],
+            "down" : [ "mongo" ]
+        }
+
+## User Membership [/membership/{userid}/member]
+### Fetch the list of a groups a user is in [GET]
+Returns the groups that the given userID is a member of. If found, returns
+an object containing an array of groups. If there are no groups, the response 
+is a 204 (rather than an empty array). 
+
++ Request
+
+    + Headers
+    
+            x-tidepool-session-token : 23sadf87.123840.aasd90JKj
+            
+
++ Response 200
+
+        {
+            groups: [ "12a34f5", "13bdc814" ]
+        }
+        
++ Response 204
+
++ Response 400
+
+## Managing groups [/]
+### Create a group [POST]
+Creates a new group object and returns its ID.
+
++ Request
+
+    + Headers
+    
+            x-tidepool-session-token : 23sadf87.123840.aasd90JKj
+            
+    + Body
+        
+            {
+                "members": ["99999", "222222", "33333212"]
+            }
+
++ Response 201
+
+        {
+            id: "12a34f5"
+        }
+        
++ Response 400
+
+
+## Managing group members [/{groupid}/user]
+### Add a user to a group [POST]
+Puts the identified user into a group. 200 if it succeeds, 204 if the group 
+ID was not valid, 400 if the groupid or userid were not specified.
+
+See issues [#7](https://github.com/tidepool-org/armada/issues/7) and [#8](https://github.com/tidepool-org/armada/issues/8).
+
++ Request
+
+    + Headers
+    
+            x-tidepool-session-token : 23sadf87.123840.aasd90JKj
+            
+    + Body
+        
+            {
+                "userid": "12363523"
+            }
+
++ Response 200
+
+        {
+            group: "12a34f5"
+        }
+        
++ Response 204
+
++ Response 400
+
+### Remove a user from a group [DELETE]
+Removes the identified user from a group. 200 if it succeeds, 204 if the group 
+ID was not valid, 400 if the groupid or userid were not specified.
+
+See issue [#7](https://github.com/tidepool-org/armada/issues/7).
+
++ Request
+
+    + Headers
+    
+            x-tidepool-session-token : 23sadf87.123840.aasd90JKj
+            
+    + Body
+        
+            {
+                "userid": "12363523"
+            }
+
++ Response 200
+
+        {
+            group: "12a34f5"
+        }
+        
++ Response 204
+
++ Response 400
+
+## Group Members [/{groupid}/members]
+### Fetch the list of members in a group [GET]
+Returns the members of a given group. If found, returns
+an object containing an array of members. If the group was not found, 
+status is a 204. 
+
+See issue [#7](https://github.com/tidepool-org/armada/issues/7).
+
++ Request
+
+    + Headers
+    
+            x-tidepool-session-token : 23sadf87.123840.aasd90JKj
+            
+
++ Response 200
+
+        {
+            groups: [ "12a34f5", "13bdc814" ]
+        }
+        
++ Response 204
+
++ Response 400
+

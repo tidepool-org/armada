@@ -60,7 +60,7 @@ module.exports = (function(){
   env.mongoDbConnectionString = process.env.MONGO_CONNECTION_STRING || 'mongodb://localhost/groups';
 
   env.userApi = {
-    // Name of the hakken service for user-api discovery
+    // The config object to discover user-api.  This is just passed through to hakken.watchFromConfig()
     serviceSpec: JSON.parse(config.fromEnvironment("USER_API_SERVICE")),
 
     // Name of this server to pass to user-api when getting a server token

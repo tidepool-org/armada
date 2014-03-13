@@ -3,6 +3,9 @@ armada
 
 The Groups API
 
+[![Build Status](https://travis-ci.org/tidepool-org/armada.png)](https://travis-ci.org/tidepool-org/armada)
+
+
 Documentation for this API lives here:  [http://docs.tidepoolarmada.apiary.io/](http://docs.tidepoolarmada.apiary.io/)
 
 

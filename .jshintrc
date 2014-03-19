@@ -23,5 +23,6 @@
   "trailing": true,
   "undef": true,
   "eqnull": true,
-  "unused": "vars"
+  "unused": "vars",
+  "expr": true
 }

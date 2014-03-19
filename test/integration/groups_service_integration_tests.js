@@ -32,7 +32,15 @@ var env = {
 var userApiClient = mockableObject.make('checkToken');
 
 var mongoHandler = require('../../lib/handler/mongoHandler')(env.mongoConnectionString);
-var armada = require('../../lib/armadaService')(env,mongoHandler,userApiClient);
+
+
+var armada = require('../../lib/armadaService')(
+  env,
+  mongoHandler,
+  userApiClient,
+  require('../helpers/mockSeagullHandler')()
+);
+
 var supertest = require('supertest')('http://localhost:' + env.httpPort);
 var testDbInstance = require('mongojs')(env.mongoConnectionString, ['groups']);
 

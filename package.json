@@ -21,7 +21,8 @@
     "mongojs": "0.9.8",
     "request": "2.25.0",
     "restify": "2.6.0",
-    "user-api-client": "0.1.4"
+    "user-api-client": "0.1.4",
+    "tidepool-seagull-client": "0.0.2"
   },
   "devDependencies": {
     "chai": "1.9.0",

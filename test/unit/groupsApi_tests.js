@@ -16,12 +16,12 @@ not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
 'use strict';
-var fixture = require('./../helpers/fixtures.js'),
 /*jshint unused:false */
-should = fixture.should,
-supertest = fixture.supertest,
-restify = require('restify'),
-testGroup = fixture.testData.individual;
+var should = require('chai').should();
+var supertest = require('supertest');
+var restify = require('restify');
+
+var testGroup = require('../data/testGroupsData').individual;
 /*
 ============
 
@@ -63,7 +63,7 @@ describe('Groups API', function() {
 
     before(function(){
 
-      var mockMongoHandler = require('./../mocks/mockMongoHandler')({
+      var mockMongoHandler = require('../helpers/mockMongoHandler')({
         throwErrors : false,
         returnNone : false
       });
@@ -208,7 +208,7 @@ describe('Groups API', function() {
 
     before(function(){
 
-      var mockMongoHandler = require('./../mocks/mockMongoHandler')({
+      var mockMongoHandler = require('../helpers/mockMongoHandler')({
         throwErrors : false,
         returnNone : true
       });
@@ -259,7 +259,7 @@ describe('Groups API', function() {
 
     before(function(){
 
-      var mockHandler = require('./../mocks/mockMongoHandler')({
+      var mockHandler = require('../helpers/mockMongoHandler')({
         throwErrors : true,
         returnNone : false
       });

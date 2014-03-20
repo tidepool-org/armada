@@ -17,8 +17,8 @@ not, you can obtain one from Tidepool Project at tidepool.org.
 
 'use strict';
 
-var log,
-settings;
+var log;
+var settings;
 
 /*
   Handler CRUD opertaions via Mongo instance,
@@ -36,7 +36,7 @@ var mockMongoHandler = function(testingConfig) {
   settings = testingConfig;
 
   return {
-    status : status,
+    status : handleStatus,
     createGroup : handleCreateGroup,
     findGroupsMemberOf : handleFindGroupsMemberOf,
     addUserToGroup : handleAddUserToGroup,
@@ -46,7 +46,7 @@ var mockMongoHandler = function(testingConfig) {
 
 };
 
-function status(callback){
+function handleStatus(callback){
 
   var dependencyStatus = { running: false, deps: { up: [], down: [] } };
 

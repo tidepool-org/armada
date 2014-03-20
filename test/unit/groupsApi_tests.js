@@ -16,7 +16,6 @@ not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
 'use strict';
-/*jshint unused:false */
 var expect = require('salinity').expect;
 var supertest = require('supertest');
 var restify = require('restify');

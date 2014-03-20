@@ -37,8 +37,7 @@ var mongoHandler = require('../../lib/handler/mongoHandler')(env.mongoConnection
 var armada = require('../../lib/armadaService')(
   env,
   mongoHandler,
-  userApiClient,
-  require('../helpers/mockSeagullHandler')()
+  userApiClient
 );
 
 var supertest = require('supertest')('http://localhost:' + env.httpPort);

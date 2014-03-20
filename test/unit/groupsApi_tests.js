@@ -17,7 +17,7 @@ not, you can obtain one from Tidepool Project at tidepool.org.
 
 'use strict';
 /*jshint unused:false */
-var should = require('chai').should();
+var expect = require('salinity').expect;
 var supertest = require('supertest');
 var restify = require('restify');
 
@@ -109,7 +109,7 @@ describe('Groups API', function() {
       .expect(201)
       .end(function(err, res) {
         if (err) return done(err);
-        res.body.should.property('id');
+        expect(res.body).to.have.property('id');
         done();
       });
 
@@ -138,9 +138,9 @@ describe('Groups API', function() {
       .expect(200)
       .end(function(err, res) {
         if (err) return done(err);
-        res.body.should.property('groups');
+        expect(res.body).to.have.property('groups');
         var groups = res.body.groups;
-        groups.should.be.instanceof(Array);
+        expect(groups).to.be.instanceof(Array);
         done();
       });
     });
@@ -160,10 +160,10 @@ describe('Groups API', function() {
       .expect(200)
       .end(function(err, res) {
         if (err) return done(err);
-        res.body.should.property('group');
+        expect(res.body).to.have.property('group');
         var group = res.body.group;
-        group.should.property('id');
-        group.should.property('members');
+        expect(group).to.have.property('id');
+        expect(group).to.have.property('members');
         done();
       });
     });
@@ -191,8 +191,8 @@ describe('Groups API', function() {
       .end(function(err, res) {
         if (err) return done(err);
         var group = res.body.group;
-        group.should.property('id');
-        group.should.property('members');
+        expect(group).to.have.property('id');
+        expect(group).to.have.property('members');
         done();
       });
     });
@@ -275,8 +275,8 @@ describe('Groups API', function() {
       .expect(500)
       .end(function(err, res) {
         if (err) return done(err);
-        res.body.should.not.property('error');
-        res.body.should.have.property('down').with.length.greaterThan(0);
+        expect(res.body).to.not.have.property('error');
+        expect(res.body).to.have.property('down').with.length.greaterThan(0);
         done();
       });
 
@@ -293,7 +293,7 @@ describe('Groups API', function() {
       .expect(500)
       .end(function(err, res) {
         if (err) return done(err);
-        res.body.should.not.property('error');
+        expect(res.body).to.not.have.property('error');
         done();
       });
     });
@@ -305,7 +305,7 @@ describe('Groups API', function() {
       .expect(500)
       .end(function(err, res) {
         if (err) return done(err);
-        res.body.should.not.property('error');
+        expect(res.body).to.not.have.property('error');
         done();
       });
 
@@ -319,7 +319,7 @@ describe('Groups API', function() {
       .expect(500)
       .end(function(err, res) {
         if (err) return done(err);
-        res.body.should.not.property('error');
+        expect(res.body).to.not.have.property('error');
         done();
       });
     });
@@ -332,7 +332,7 @@ describe('Groups API', function() {
       .expect(500)
       .end(function(err, res) {
         if (err) return done(err);
-        res.body.should.not.property('error');
+        expect(res.body).to.not.have.property('error');
         done();
       });
     });
@@ -344,7 +344,7 @@ describe('Groups API', function() {
       .expect(500)
       .end(function(err, res) {
         if (err) return done(err);
-        res.body.should.not.property('error');
+        expect(res.body).to.not.have.property('error');
         done();
       });
     });

@@ -48,7 +48,7 @@ module.exports = (function(){
     maybeReplaceWithContentsOfFile(env.httpsConfig, 'cert');
     maybeReplaceWithContentsOfFile(env.httpsConfig, 'pfx');
   }
-    
+
   if (env.httpsPort != null && env.httpsConfig == null) {
     throw new Error('No https config provided, please set HTTPS_CONFIG with at least the certificate to use.');
   }
@@ -61,13 +61,13 @@ module.exports = (function(){
 
   env.userApi = {
     // The config object to discover user-api.  This is just passed through to hakken.watchFromConfig()
-    serviceSpec: JSON.parse(config.fromEnvironment("USER_API_SERVICE")),
+    serviceSpec: JSON.parse(config.fromEnvironment('USER_API_SERVICE')),
 
     // Name of this server to pass to user-api when getting a server token
-    serverName: config.fromEnvironment("SERVER_NAME", "armada"),
+    serverName: config.fromEnvironment('SERVER_NAME', 'armada'),
 
     // The secret to use when getting a server token from user-api
-    serverSecret: config.fromEnvironment("SERVER_SECRET")
+    serverSecret: config.fromEnvironment('SERVER_SECRET')
   };
 
   // The host to contact for discovery
@@ -77,10 +77,10 @@ module.exports = (function(){
     };
 
     // The service name to expose to discovery
-    env.serviceName = config.fromEnvironment("SERVICE_NAME");
+    env.serviceName = config.fromEnvironment('SERVICE_NAME');
 
     // The local host to expose to discovery
-    env.publishHost = config.fromEnvironment("PUBLISH_HOST");
+    env.publishHost = config.fromEnvironment('PUBLISH_HOST');
   }
 
   return env;

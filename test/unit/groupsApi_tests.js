@@ -16,12 +16,11 @@ not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
 'use strict';
-var fixture = require('./../helpers/fixtures.js'),
-/*jshint unused:false */
-should = fixture.should,
-supertest = fixture.supertest,
-restify = require('restify'),
-testGroup = fixture.testData.individual;
+var expect = require('salinity').expect;
+var supertest = require('supertest');
+var restify = require('restify');
+
+var testGroup = require('../data/testGroupsData').individual;
 /*
 ============
 
@@ -63,7 +62,7 @@ describe('Groups API', function() {
 
     before(function(){
 
-      var mockMongoHandler = require('./../mocks/mockMongoHandler')({
+      var mockMongoHandler = require('../helpers/mockMongoHandler')({
         throwErrors : false,
         returnNone : false
       });
@@ -109,7 +108,7 @@ describe('Groups API', function() {
       .expect(201)
       .end(function(err, res) {
         if (err) return done(err);
-        res.body.should.property('id');
+        expect(res.body).to.have.property('id');
         done();
       });
 
@@ -138,9 +137,9 @@ describe('Groups API', function() {
       .expect(200)
       .end(function(err, res) {
         if (err) return done(err);
-        res.body.should.property('groups');
+        expect(res.body).to.have.property('groups');
         var groups = res.body.groups;
-        groups.should.be.instanceof(Array);
+        expect(groups).to.be.instanceof(Array);
         done();
       });
     });
@@ -160,10 +159,10 @@ describe('Groups API', function() {
       .expect(200)
       .end(function(err, res) {
         if (err) return done(err);
-        res.body.should.property('group');
+        expect(res.body).to.have.property('group');
         var group = res.body.group;
-        group.should.property('id');
-        group.should.property('members');
+        expect(group).to.have.property('id');
+        expect(group).to.have.property('members');
         done();
       });
     });
@@ -191,8 +190,8 @@ describe('Groups API', function() {
       .end(function(err, res) {
         if (err) return done(err);
         var group = res.body.group;
-        group.should.property('id');
-        group.should.property('members');
+        expect(group).to.have.property('id');
+        expect(group).to.have.property('members');
         done();
       });
     });
@@ -208,7 +207,7 @@ describe('Groups API', function() {
 
     before(function(){
 
-      var mockMongoHandler = require('./../mocks/mockMongoHandler')({
+      var mockMongoHandler = require('../helpers/mockMongoHandler')({
         throwErrors : false,
         returnNone : true
       });
@@ -259,7 +258,7 @@ describe('Groups API', function() {
 
     before(function(){
 
-      var mockHandler = require('./../mocks/mockMongoHandler')({
+      var mockHandler = require('../helpers/mockMongoHandler')({
         throwErrors : true,
         returnNone : false
       });
@@ -275,8 +274,8 @@ describe('Groups API', function() {
       .expect(500)
       .end(function(err, res) {
         if (err) return done(err);
-        res.body.should.not.property('error');
-        res.body.should.have.property('down').with.length.greaterThan(0);
+        expect(res.body).to.not.have.property('error');
+        expect(res.body).to.have.property('down').with.length.greaterThan(0);
         done();
       });
 
@@ -293,7 +292,7 @@ describe('Groups API', function() {
       .expect(500)
       .end(function(err, res) {
         if (err) return done(err);
-        res.body.should.not.property('error');
+        expect(res.body).to.not.have.property('error');
         done();
       });
     });
@@ -305,7 +304,7 @@ describe('Groups API', function() {
       .expect(500)
       .end(function(err, res) {
         if (err) return done(err);
-        res.body.should.not.property('error');
+        expect(res.body).to.not.have.property('error');
         done();
       });
 
@@ -319,7 +318,7 @@ describe('Groups API', function() {
       .expect(500)
       .end(function(err, res) {
         if (err) return done(err);
-        res.body.should.not.property('error');
+        expect(res.body).to.not.have.property('error');
         done();
       });
     });
@@ -332,7 +331,7 @@ describe('Groups API', function() {
       .expect(500)
       .end(function(err, res) {
         if (err) return done(err);
-        res.body.should.not.property('error');
+        expect(res.body).to.not.have.property('error');
         done();
       });
     });
@@ -344,7 +343,7 @@ describe('Groups API', function() {
       .expect(500)
       .end(function(err, res) {
         if (err) return done(err);
-        res.body.should.not.property('error');
+        expect(res.body).to.not.have.property('error');
         done();
       });
     });

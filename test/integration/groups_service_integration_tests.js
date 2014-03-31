@@ -233,7 +233,29 @@ describe('Groups API', function() {
     it('the updated group is returned with the new user and is valid', function(done) {
 
       var groupId = testGroupContent._id;
-      var userToAdd = '12345997';
+      var userToAdd = '12345998';
+
+      supertest
+      .put('/'+groupId+'/user')
+      .set('X-Tidepool-Session-Token', sessiontoken)
+      .send({userid : userToAdd})
+      .expect(200)
+      .end(function(err, res) {
+        if (err) return done(err);
+        //get the group and check
+        var updatedGroup = res.body.group;
+        expect(updatedGroup.members).contain(userToAdd);
+        expect(validateGroup(updatedGroup)).is.equal(true);
+        expect(updatedGroup.members.length).is.equal(5);
+        expectToken(sessiontoken);
+        done();
+      });
+    });
+
+    it('adding the same user twice fails to change the group', function(done) {
+
+      var groupId = testGroupContent._id;
+      var userToAdd = '12345998';
 
       supertest
       .put('/'+groupId+'/user')
@@ -247,6 +269,7 @@ describe('Groups API', function() {
         expect(updatedGroup.members).contain(userToAdd);
         expect(validateGroup(updatedGroup)).is.equal(true);
         expectToken(sessiontoken);
+        expect(updatedGroup.members.length).is.equal(5);
         done();
       });
     });
